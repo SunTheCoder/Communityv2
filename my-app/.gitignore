@@ -1,0 +1,76 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+dist
+dist-ssr
+.cache
+.parcel-cache
+.venv/
+.env/
+.venv/
+*.egg-info/
+.eggs/
+
+# Build artifacts
+build/
+dist/
+out/
+.next/
+.svelte-kit/
+.esbuild*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.pydevproject
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-workspace
+
+# Environment and Secrets
+.env
+*.env
+supabase-key.json
+supabase-config.js
+
+# Python Specific
+instance/
+*.sqlite3
+*.db
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+Pipfile
+Pipfile.lock
+poetry.lock
+.coverage
+.tox/
+pytest_cache/
+htmlcov/
+
+# Testing and Coverage
+coverage/
+.nyc_output/
+.vitest/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Miscellaneous
+*.bak
+*.tmp
+*.temp
