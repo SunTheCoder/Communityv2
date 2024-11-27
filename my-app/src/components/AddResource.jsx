@@ -31,6 +31,62 @@ const AddResource = () => {
     ],
   })
 
+  const states = createListCollection({
+    items: [
+      { label: "Alabama", value: "AL" },
+      { label: "Alaska", value: "AK" },
+      { label: "Arizona", value: "AZ" },
+      { label: "Arkansas", value: "AR" },
+      { label: "California", value: "CA" },
+      { label: "Colorado", value: "CO" },
+      { label: "Connecticut", value: "CT" },
+      { label: "Delaware", value: "DE" },
+      { label: "Florida", value: "FL" },
+      { label: "Georgia", value: "GA" },
+      { label: "Hawaii", value: "HI" },
+      { label: "Idaho", value: "ID" },
+      { label: "Illinois", value: "IL" },
+      { label: "Indiana", value: "IN" },
+      { label: "Iowa", value: "IA" },
+      { label: "Kansas", value: "KS" },
+      { label: "Kentucky", value: "KY" },
+      { label: "Louisiana", value: "LA" },
+      { label: "Maine", value: "ME" },
+      { label: "Maryland", value: "MD" },
+      { label: "Massachusetts", value: "MA" },
+      { label: "Michigan", value: "MI" },
+      { label: "Minnesota", value: "MN" },
+      { label: "Mississippi", value: "MS" },
+      { label: "Missouri", value: "MO" },
+      { label: "Montana", value: "MT" },
+      { label: "Nebraska", value: "NE" },
+      { label: "Nevada", value: "NV" },
+      { label: "New Hampshire", value: "NH" },
+      { label: "New Jersey", value: "NJ" },
+      { label: "New Mexico", value: "NM" },
+      { label: "New York", value: "NY" },
+      { label: "North Carolina", value: "NC" },
+      { label: "North Dakota", value: "ND" },
+      { label: "Ohio", value: "OH" },
+      { label: "Oklahoma", value: "OK" },
+      { label: "Oregon", value: "OR" },
+      { label: "Pennsylvania", value: "PA" },
+      { label: "Rhode Island", value: "RI" },
+      { label: "South Carolina", value: "SC" },
+      { label: "South Dakota", value: "SD" },
+      { label: "Tennessee", value: "TN" },
+      { label: "Texas", value: "TX" },
+      { label: "Utah", value: "UT" },
+      { label: "Vermont", value: "VT" },
+      { label: "Virginia", value: "VA" },
+      { label: "Washington", value: "WA" },
+      { label: "West Virginia", value: "WV" },
+      { label: "Wisconsin", value: "WI" },
+      { label: "Wyoming", value: "WY" },
+    ],
+      
+  })
+
   const handleAddResource = async (e) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -96,21 +152,33 @@ const AddResource = () => {
          type="text"
          required
          >
-            <SelectRoot collection={resourceTypes} size="sm" width="320px">
-      <SelectLabel>Select Type</SelectLabel>
-      <SelectTrigger>
-        <SelectValueText placeholder="Select type" />
-      </SelectTrigger>
-      <SelectContent>
-        {resourceTypes.items.map((type) => (
-          <SelectItem item={type} key={type.value}>
-            {type.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </SelectRoot>
+            <SelectRoot 
+                collection={resourceTypes} 
+                size="sm" width="320px" 
+                value={resourceType} 
+                onValueChange={(e) => {
+                    console.log("Selected value:", e.value);
+                    setResourceType(e.value);
+                  }}
+                    >
+            <SelectLabel>Select Type</SelectLabel>
+            <SelectTrigger>
+                <SelectValueText placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+                {resourceTypes.items.map((type) => (
+                <SelectItem item={type} key={type.value}>
+                    {type.label}
+                </SelectItem>
+                ))}
+                
+            </SelectContent>
+            </SelectRoot>
 
-            {/* <select
+         
+
+        </Field>
+   {/* <select
             value={resourceType}
             onChange={(e) => setResourceType(e.target.value)}
             required
@@ -125,9 +193,6 @@ const AddResource = () => {
             <option value="community acupuncture">Community Acupuncture</option>
             <option value="herbalist">Herbalist</option>
             </select> */}
-
-        </Field>
-
         <Field
          label= "Description"
          type="text"
@@ -179,7 +244,37 @@ const AddResource = () => {
           </Field>
 
 
-          <select
+        <Field
+            label="State"
+            type="text"
+            required
+            helperText="Please provide the state of the resource."
+            errorText='State is required'
+            >
+
+            <SelectRoot 
+                collection={states} 
+                size="sm" width="320px"   
+                value={state}
+                onValueChange={(e) => {
+                    console.log("Selected value:", e.value);
+                    setState(e.value)
+                }}
+                >
+                <SelectLabel>Select State</SelectLabel>
+                <SelectTrigger>
+                    <SelectValueText placeholder="Select State" />
+                </SelectTrigger>
+                <SelectContent>
+                    {states.items.map((state) => (
+                    <SelectItem item={state} key={state.value}>
+                        {state.label}
+                    </SelectItem>
+                    ))}
+                </SelectContent>
+            </SelectRoot>
+
+          {/* <select
         value={state}
         onChange={(e) => setState(e.target.value)}
         required
@@ -244,7 +339,9 @@ const AddResource = () => {
         <option value="WV">West Virginia</option>
         <option value="WI">Wisconsin</option>
         <option value="WY">Wyoming</option>
-        </select>
+        </select> */}
+
+        </Field>
 
         <input
           type="text"
