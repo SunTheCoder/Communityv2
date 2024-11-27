@@ -7,6 +7,7 @@ import {  SelectContent,
     SelectRoot,
     SelectTrigger,
     SelectValueText } from "./ui/select";
+import { Button } from "./ui/button";
 import { Input, Textarea, Box, createListCollection } from "@chakra-ui/react";
 
 
@@ -20,6 +21,7 @@ const AddResource = () => {
   const [zipCode, setZipCode] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const resourceTypes = createListCollection({
     items: [
@@ -362,19 +364,18 @@ const AddResource = () => {
           
           </Field>
 
-        <button
-          type="submit"
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#4caf50",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
-          Add Resource
-        </button>
+          <Button
+            type="submit"
+            isLoading={isLoading}
+            loadingText="Submitting..."
+            colorScheme="blue"
+            variant="solid"
+            size="md"
+            disabled={isLoading} // Optional if isLoading handles this
+            marginTop="1rem"
+            >
+            Add Resource
+        </Button>
       </form>
 
       {errorMessage && <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>}
