@@ -9,6 +9,8 @@ import {  SelectContent,
     SelectValueText } from "./ui/select";
 import { Button } from "./ui/button";
 import { Input, Textarea, Box, createListCollection } from "@chakra-ui/react";
+import { RiArrowRightLine, RiMailLine } from "react-icons/ri"
+
 
 
 const AddResource = () => {
@@ -129,7 +131,20 @@ const AddResource = () => {
   };
 
   return (
-    <Box>
+    <Box
+        bg="gray.800" // Dark gray background
+        color="whiteAlpha.900" // Slightly off-white text for readability
+        p={6} // Padding around the content
+        borderRadius="lg" // Rounded corners
+        shadow="lg" // Subtle shadow for depth
+        border="1px" // Thin border
+        borderColor="gray.700" // Border color slightly lighter than background
+        _hover={{ bg: "gray.700", transform: "scale(1.02)" }} // Hover effect
+        transition="all 0.3s ease" // Smooth animation
+        maxW="600px" // Limit the maximum width
+        mx="auto" // Center horizontally
+        mt={4} // Margin at the top    
+    >
       <h2>Add a Resource</h2>
 
       <form onSubmit={handleAddResource}>
@@ -370,11 +385,12 @@ const AddResource = () => {
             loadingText="Submitting..."
             colorScheme="blue"
             variant="solid"
-            size="md"
+            size="xs"
             disabled={isLoading} // Optional if isLoading handles this
             marginTop="1rem"
+            bgColor="teal.600"
             >
-            Add Resource
+            Add Resource <RiArrowRightLine />
         </Button>
       </form>
 
