@@ -1,5 +1,14 @@
 import React, { useState } from "react";
 import { supabase } from "./SignUp";
+import { Field } from "./ui/field"
+import {  SelectContent,
+    SelectItem,
+    SelectLabel,
+    SelectRoot,
+    SelectTrigger,
+    SelectValueText } from "./ui/select";
+import { Input, Textarea, Box, createListCollection } from "@chakra-ui/react";
+
 
 const AddResource = () => {
   const [resourceName, setResourceName] = useState("");
@@ -11,6 +20,16 @@ const AddResource = () => {
   const [zipCode, setZipCode] = useState("");
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+
+  const resourceTypes = createListCollection({
+    items: [
+      { label: "Community Fridge", value: "Community Fridge" },
+      { label: "Social Worker", value: "Social Worker" },
+      { label: "Community Acupuncture", value: "Community Acupuncture" },
+      { label: "Herbalist", value: "Herbalist" },
+      { label: "Mutual Aid", value: "Mutual Aid" },
+    ],
+  })
 
   const handleAddResource = async (e) => {
     e.preventDefault();
@@ -52,89 +71,114 @@ const AddResource = () => {
   };
 
   return (
-    <div style={{ maxWidth: "600px", margin: "auto", textAlign: "center" }}>
+    <Box>
       <h2>Add a Resource</h2>
 
       <form onSubmit={handleAddResource}>
-        <input
-          type="text"
-          placeholder="ex. Lovin' Fridge"
-          value={resourceName}
-          onChange={(e) => setResourceName(e.target.value)}
-          required
-          style={{
-            display: "block",
-            margin: "10px auto",
-            padding: "8px",
-            width: "100%",
-            maxWidth: "400px",
-          }}
-        />
-
-        <select
-        value={resourceType}
-        onChange={(e) => setResourceType(e.target.value)}
+        <Field
+        label="Resource Name"
+        type="text"
+        
         required
-        style={{
-            display: "block",
-            margin: "10px auto",
-            padding: "8px",
-            width: "100%",
-            maxWidth: "400px",
-        }}
         >
-        <option value="" disabled>
-            Select a resource type
-        </option>
-        <option value="community fridge">Community Fridge</option>
-        <option value="social worker">Social Worker</option>
-        <option value="mutual aid">Mutual Aid</option>
-        <option value="community acupuncture">Community Acupuncture</option>
-        <option value="herbalist">Herbalist</option>
-        </select>
+            <Input
+                type="text"
+                placeholder="ex. Lovin' Fridge"
+                value={resourceName}
+                onChange={(e) => setResourceName(e.target.value)}
+        
+            
+            />
+        </Field>
 
-        <textarea
-          placeholder="ex. Lovin' Fridge has wonderful produce regularly stocked..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-          style={{
-            display: "block",
-            margin: "10px auto",
-            padding: "8px",
-            width: "100%",
-            maxWidth: "400px",
-            height: "100px",
-          }}
-        ></textarea>
-        <input
-          type="text"
-          placeholder="ex. 292 Tubman Rd."
-          value={streetAddress}
-          onChange={(e) => setStreetAddress(e.target.value)}
-          required
-          style={{
-            display: "block",
-            margin: "10px auto",
-            padding: "8px",
-            width: "100%",
-            maxWidth: "400px",
-          }}
-        />
-        <input
+        <Field
+         label="Resource Type"
+         type="text"
+         required
+         >
+            <SelectRoot collection={resourceTypes} size="sm" width="320px">
+      <SelectLabel>Select Type</SelectLabel>
+      <SelectTrigger>
+        <SelectValueText placeholder="Select type" />
+      </SelectTrigger>
+      <SelectContent>
+        {resourceTypes.items.map((type) => (
+          <SelectItem item={type} key={type.value}>
+            {type.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </SelectRoot>
+
+            {/* <select
+            value={resourceType}
+            onChange={(e) => setResourceType(e.target.value)}
+            required
+       
+            >
+            <option value="" disabled>
+                Select a resource type
+            </option>
+            <option value="community fridge">Community Fridge</option>
+            <option value="social worker">Social Worker</option>
+            <option value="mutual aid">Mutual Aid</option>
+            <option value="community acupuncture">Community Acupuncture</option>
+            <option value="herbalist">Herbalist</option>
+            </select> */}
+
+        </Field>
+
+        <Field
+         label= "Description"
+         type="text"
+         helperText="Please provide a brief description of the resource."
+         errorText='Decsription is required'
+         required
+        >
+            <Textarea
+            placeholder="ex. Lovin' Fridge has wonderful produce regularly stocked..."
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            required
+           
+            ></Textarea>
+        </Field>
+
+        <Field
+            label="Street Address"
+            type="text"
+            required
+            helperText="Please provide the street address of the resource."
+            errorText='Street Address is required'
+        >
+            <Input
+            type="text"
+            placeholder="ex. 292 Tubman Rd."
+            value={streetAddress}
+            onChange={(e) => setStreetAddress(e.target.value)}
+            required
+            
+            />
+        </Field>
+
+        <Field
+            label="City"
+            type="text"
+            required
+            helperText="Please provide the city of the resource."
+            errorText='City is required'
+        >
+        <Input
           type="text"
           placeholder="ex. Oakland"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           required
-          style={{
-            display: "block",
-            margin: "10px auto",
-            padding: "8px",
-            width: "100%",
-            maxWidth: "400px",
-          }}
+         
           />
+          </Field>
+
+
           <select
         value={state}
         onChange={(e) => setState(e.target.value)}
@@ -234,7 +278,7 @@ const AddResource = () => {
 
       {errorMessage && <p style={{ color: "red", marginTop: "10px" }}>{errorMessage}</p>}
       {successMessage && <p style={{ color: "green", marginTop: "10px" }}>{successMessage}</p>}
-    </div>
+    </Box>
   );
 };
 
