@@ -343,20 +343,24 @@ const AddResource = () => {
 
         </Field>
 
-        <input
+        <Field
+            label="Zip Code"
+            type="text"
+            required
+            helperText="Please provide the zip code of the resource."
+            errorText='Zip Code is required'
+        >
+
+        <Input
           type="text"
           placeholder="ex. 94608"
           value={zipCode}
           onChange={(e) => setZipCode(e.target.value)}
           required
-          style={{
-            display: "block",
-            margin: "10px auto",
-            padding: "8px",
-            width: "100%",
-            maxWidth: "400px",
-          }}
+          
           />
+          
+          </Field>
 
         <button
           type="submit"
