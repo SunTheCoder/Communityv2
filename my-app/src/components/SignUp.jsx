@@ -190,7 +190,7 @@ const SignUp = () => {
             >
               <Input
                 type="text"
-                placeholder="Username"
+                placeholder="ex. MLK2025"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -208,7 +208,7 @@ const SignUp = () => {
             >
               <Input
                 type="text"
-                placeholder="Avatar URL (optional)"
+                placeholder="ex. https://example.com/profile.jpg"
                 value={avatarUrl}
                 onChange={(e) => setAvatarUrl(e.target.value)}
                 className="Input"
