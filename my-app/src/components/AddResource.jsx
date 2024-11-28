@@ -141,7 +141,7 @@ const AddResource = () => {
         borderColor="gray.700" // Border color slightly lighter than background
         _hover={{ bg: "gray.700", transform: "scale(1.02)" }} // Hover effect
         transition="all 0.3s ease" // Smooth animation
-        maxW="600px" // Limit the maximum width
+        maxW="380px" // Limit the maximum width
         mx="auto" // Center horizontally
         mt={4} // Margin at the top    
     >
