@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { Input, Text, Link, Box } from "@chakra-ui/react";
+import { Button } from "./ui/button";
+import { Field } from "./ui/field";
 
 // Supabase configuration
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
@@ -117,80 +120,123 @@ const SignUp = () => {
   };
 
   return (
-    <div className="auth-container" style={{ maxWidth: "400px", margin: "auto", textAlign: "center" }}>
+    <Box className="auth-container" 
+        // bg="gray.800" // Dark gray background
+        // color="whiteAlpha.900" // Slightly off-white text for readability
+        p={6} // Padding around the content
+        borderRadius="lg" // Rounded corners
+        shadow="lg" // Subtle shadow for depth
+        border="1px" // Thin border
+        borderColor="gray.700" // Border color slightly lighter than background
+        _hover={{  transform: "scale(1.02)" }} // Hover effect
+        transition="all 0.3s ease" // Smooth animation
+        maxW="380px" // Limit the maximum width
+        mx="auto" // Center horizontally
+        mt={4} // Margin at the top
+    >
       <h2>{isSignUp ? "Sign Up" : "Login"}</h2>
 
       <form onSubmit={isSignUp ? handleSignUp : handleLogin}>
-        <input
+
+        <Field
+          label="Email"
           type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           required
-          className="input"
-          style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
-        />
-        <input
+          helperText="We'll never share your email with anyone else."
+          errorText="Please enter a valid email address."
+        >
+          <Input
+            type="email"
+            placeholder="ex. FannieLou@woke.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="Input"
+            style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+          />
+        </Field>
+
+        <Field
+          label="Password"
           type="password"
-          placeholder="Password"
+          required
+          helperText="Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number."
+          errorText="Please enter a valid password."
+        >
+        <Input
+          type="password"
+          placeholder="ex. strength2Love"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="input"
+          className="Input"
           style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
         />
+        </Field>
 
         {isSignUp && (
           <>
-            <input
+          <Field
+            label="Username"
+            type="text"
+            required
+            helperText="Must be at least 3 characters long and contain only letters."
+            errorText="Please enter a valid username."
+            >
+              <Input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className="Input"
+                style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+              />
+            </Field>
+
+            <Field
+              label="Avatar URL (optional)"
               type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-              className="input"
-              style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
-            />
-            <input
-              type="text"
-              placeholder="Avatar URL (optional)"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              className="input"
-              style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
-            />
+              helperText="Provide a URL to an image representing your profile."
+              errorText="Please enter a valid URL."
+              pattern="^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w.-]*)*\/?$"
+            >
+              <Input
+                type="text"
+                placeholder="Avatar URL (optional)"
+                value={avatarUrl}
+                onChange={(e) => setAvatarUrl(e.target.value)}
+                className="Input"
+                style={{ marginBottom: "1rem", padding: "0.5rem", width: "100%" }}
+              />
+            </Field>
           </>
         )}
 
-        <button
+        <Button
           type="submit"
           className="submit-button"
-          style={{
-            padding: "0.75rem",
-            backgroundColor: "#4caf50",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            width: "100%",
-          }}
+          size="xs"
         >
           {isSignUp ? "Sign Up" : "Login"}
-        </button>
+        </Button>
       </form>
 
       {errorMessage && <p style={{ color: "red", marginTop: "1rem" }}>{errorMessage}</p>}
       {successMessage && <p style={{ color: "green", marginTop: "1rem" }}>{successMessage}</p>}
 
-      <p style={{ marginTop: "1rem" }}>
+      <Text mt="1rem">
         {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
-        <span
+        <Link
           onClick={() => setIsSignUp(!isSignUp)}
-          style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+          color="blue.500"
+          textDecoration="underline"
+          cursor="pointer"
         >
           {isSignUp ? "Login" : "Sign Up"}
-        </span>
-      </p>
-    </div>
+        </Link>
+      </Text>
+    </Box>
   );
 };
 

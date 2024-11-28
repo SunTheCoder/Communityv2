@@ -132,14 +132,14 @@ const AddResource = () => {
 
   return (
     <Box
-        bg="gray.800" // Dark gray background
-        color="whiteAlpha.900" // Slightly off-white text for readability
+        // bg="gray.800" // Dark gray background
+        // color="whiteAlpha.900" // Slightly off-white text for readability
         p={6} // Padding around the content
         borderRadius="lg" // Rounded corners
         shadow="lg" // Subtle shadow for depth
         border="1px" // Thin border
         borderColor="gray.700" // Border color slightly lighter than background
-        _hover={{ bg: "gray.700", transform: "scale(1.02)" }} // Hover effect
+        _hover={{  transform: "scale(1.02)" }} // Hover effect
         transition="all 0.3s ease" // Smooth animation
         maxW="380px" // Limit the maximum width
         mx="auto" // Center horizontally
