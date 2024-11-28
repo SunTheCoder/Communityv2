@@ -3,6 +3,8 @@ import { createClient } from "@supabase/supabase-js";
 import { Input, Text, Link, Box } from "@chakra-ui/react";
 import { Button } from "./ui/button";
 import { Field } from "./ui/field";
+import { RiArrowRightLine, RiMailLine } from "react-icons/ri"
+
 
 // Supabase configuration
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
@@ -24,6 +26,9 @@ const SignUp = () => {
   // State for messages
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
 
   // Handle Sign Up
   const handleSignUp = async (e) => {
@@ -217,8 +222,16 @@ const SignUp = () => {
           type="submit"
           className="submit-button"
           size="xs"
+          isLoading={isLoading}
+            loadingText="Submitting..."
+            colorScheme="blue"
+            variant="solid"
+           
+            disabled={isLoading} // Optional if isLoading handles this
+            marginTop="1rem"
+            bgColor="teal.600"
         >
-          {isSignUp ? "Sign Up" : "Login"}
+          {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
         </Button>
       </form>
 
@@ -229,8 +242,8 @@ const SignUp = () => {
         {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
         <Link
           onClick={() => setIsSignUp(!isSignUp)}
-          color="blue.500"
-          textDecoration="underline"
+          
+          
           cursor="pointer"
         >
           {isSignUp ? "Login" : "Sign Up"}
