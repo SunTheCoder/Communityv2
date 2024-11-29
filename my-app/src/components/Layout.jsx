@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-import { Grid, GridItem, Box, Heading, Text, Tabs} from "@chakra-ui/react";
+import { Grid, GridItem, Box, Heading, Text, Tabs, Stack} from "@chakra-ui/react";
 import AddResourceDrawer from "./AddResourceDrawer";
 import SignUp from "./SignUp";
 import ResourceList from "./ResourceList";
@@ -10,8 +10,17 @@ const Layout = () => {
     const [value, setValue] = useState("first")
 
   return (
-    <>
+    <Box 
+        _dark={{ bg: "gray.800" }}
+        minHeight="100vh" // Ensures it spans the entire height of the viewport
+        display="flex" 
+        // flexDirection="column"
+        justifyContent='center'
+        >
+            <Box position="absolute"top={2} right={4} >
+
       <ColorModeButton />
+            </Box>
       <Tabs.Root 
       value={value} 
       onValueChange={(e) => setValue(e.value)}
@@ -48,7 +57,7 @@ const Layout = () => {
         <Text>Another additional content</Text>
       </Tabs.Content>
     </Tabs.Root>
-  </>
+  </Box>
   );
 };
 

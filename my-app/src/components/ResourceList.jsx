@@ -1,13 +1,33 @@
 import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  Heading,
+  Text,
+  Spinner,
+} from "@chakra-ui/react";
+import {
+  PaginationItems,
+  PaginationNextTrigger,
+  PaginationPageText,
+  PaginationPrevTrigger,
+  PaginationRoot,
+} from "./ui/pagination"; // Adjust the path as needed
 import { supabase } from "./SignUp";
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]); // State to hold resources
   const [errorMessage, setErrorMessage] = useState(null); // State for error messages
+  const [loading, setLoading] = useState(true); // Loading state
+
+  const itemsPerPage = 6; // Number of resources per page
+  const [page, setPage] = useState(1); // Controlled state for current page
 
   // Fetch resources from Supabase
   useEffect(() => {
     const fetchResources = async () => {
+      setLoading(true);
       const { data, error } = await supabase
         .from("resources") // Replace "resources" with your actual table name
         .select("*"); // Select all columns, or specify columns as needed
@@ -18,55 +38,91 @@ const ResourceList = () => {
       } else {
         setResources(data || []); // Set resources data or an empty array
       }
+      setLoading(false);
     };
 
     fetchResources();
   }, []); // Empty dependency array ensures this runs once on component mount
 
+  // Pagination logic
+  const totalPages = Math.ceil(resources.length / itemsPerPage);
+  const startIndex = (page - 1) * itemsPerPage;
+  const currentResources = resources.slice(startIndex, startIndex + itemsPerPage);
+
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
-      <h2>Resource List</h2>
+    <Box maxW="1200px" mx="auto" textAlign="center" p={6}>
+      <Heading as="h2" size="lg" mb={6}>
+        Resource List
+      </Heading>
 
-      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+      {loading ? (
+        <Spinner size="lg" />
+      ) : errorMessage ? (
+        <Text color="red.500">{errorMessage}</Text>
+      ) : resources.length > 0 ? (
+        <>
+          <Grid
+            templateColumns={{
+              base: "repeat(1, 1fr)", // 1 column on small screens
+              md: "repeat(2, 1fr)", // 2 columns on medium screens
+              lg: "repeat(3, 1fr)", // 3 columns on large screens
+            }}
+            gap={6}
+          >
+            {currentResources.map((resource) => (
+              <GridItem
+                key={resource.id}
+                borderWidth="1px"
+                borderRadius="lg"
+                p={4}
+                shadow="md"
+                bg="gray.100"
+              >
+                <Heading as="h3" size="md" mb={2}>
+                  {resource.resource_name || "Unnamed Resource"}
+                </Heading>
+                <Text>{resource.description || "No description available."}</Text>
+                <Text mt={2}>
+                  <strong>Location:</strong> {resource.city || "Unknown"}
+                </Text>
+                <Text>
+                  <strong>Resource Type:</strong> {resource.resource_type || "Unknown"}
+                </Text>
+                <Text>
+                  <strong>Address:</strong> {resource.street_address || "Unknown"}
+                </Text>
+                <Text>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(resource.created_at).toLocaleString()}
+                </Text>
+                {resource.created_by_id && (
+                  <Text>
+                    <strong>Created By:</strong> {resource.created_by_id}
+                  </Text>
+                )}
+              </GridItem>
+            ))}
+          </Grid>
 
-      <ul style={{ listStyleType: "none", padding: 0 }}>
-        {resources.length > 0 ? (
-          resources.map((resource) => (
-            <li
-              key={resource.id}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                padding: "10px",
-                marginBottom: "10px",
-              }}
-            >
-              <h3>{resource.resource_name || "Unnamed Resource"}</h3>
-              <p>{resource.description || "No description available."}</p>
-              <p>
-                <strong>Location:</strong> {resource.city || "Unknown"}
-              </p>
-              <p>
-                <strong>Resource Type:</strong> {resource.resource_type || "Unknown"}
-              </p>
-              <p>
-                <strong>Address:</strong> {resource.street_address || "Unknown"}
-              </p>
-              <p>
-                <strong>Created At:</strong> {resource.created_at.toLocaleString()}
-              </p>
-              {resource.created_by_id && (
-                <p>
-                  <strong>Created By:</strong> {resource.created_by_id}
-                </p>
-              )}
-            </li>
-          ))
-        ) : (
-          <p>No resources available.</p>
-        )}
-      </ul>
-    </div>
+          {/* Chakra UI Pagination */}
+          <PaginationRoot
+            page={page}
+            count={resources.length}
+            pageSize={itemsPerPage}
+            onPageChange={(details) => setPage(details.page)}
+          >
+            <Box mt={6}>
+              <PaginationPrevTrigger />
+              <PaginationItems siblingCount={1} />
+              <PaginationNextTrigger />
+              <PaginationPageText />
+            </Box>
+          </PaginationRoot>
+        </>
+      ) : (
+        <Text>No resources available.</Text>
+      )}
+    </Box>
   );
 };
 
