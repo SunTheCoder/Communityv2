@@ -9,7 +9,7 @@ import {
   SelectTrigger, 
   SelectValueText 
 } from "./ui/select";
-import { Button, Input, Stack, createListCollection } from "@chakra-ui/react";
+import { Button, Input, Stack, Textarea, createListCollection } from "@chakra-ui/react";
 import { RiArrowRightLine } from "react-icons/ri";
 import {
   DrawerBackdrop,
@@ -62,6 +62,8 @@ const AddResourceDrawer = () => {
         {
           resource_name: data.resourceName,
           resource_type: data.resourceType,
+          description: data.description,
+          streetAddress: data.streetAddress,
           zip_code: data.zipCode,
           created_by_id: user.id,
         },
@@ -108,6 +110,7 @@ const AddResourceDrawer = () => {
                 label="Name"
                 invalid={!!errors.resourceName}
                 errorText={errors.resourceName?.message}
+                required
               >
                 <Input
                   placeholder="ex. Thuggin' Fridge"
@@ -121,6 +124,7 @@ const AddResourceDrawer = () => {
                 label="Resource Type"
                 invalid={!!errors.resourceType}
                 errorText={errors.resourceType?.message}
+                required
               >
                 <SelectRoot
                   value={watch("resourceType")}
@@ -140,11 +144,55 @@ const AddResourceDrawer = () => {
                 </SelectRoot>
               </Field>
 
+              {/* Description Field */}
+              <Field
+                label="Description"
+                invalid={!!errors.description}
+                errorText={errors.description?.message}
+              >
+                <Textarea
+                  placeholder="ex. Community Fridge helps provide essential resources to residents."
+                  type="text"
+                  {...register("description", { required: "Description is required" })}
+                />
+              </Field>
+
+              {/* Resource Address Field */}
+
+              <Field
+                label="Street Address"
+                invalid={!!errors.streetAddress}
+                errorText={errors.streetAddress?.message}
+                required
+              >
+                <Input
+                  placeholder="ex. 187 Main St"
+                  type="text"
+                  {...register("streetAddress", { required: "Street address is required" })}
+                />
+              </Field>
+
+              {/* Resource City Field */}
+              <Field
+                label="City"
+                invalid={!!errors.city}
+                errorText={errors.city?.message}
+                required
+                >
+                    <Input
+                  placeholder="ex. New York"
+                  type="text"
+                  {...register("city", { required: "City is required" })}
+                  />
+              </Field>
+
+
               {/* Zip Code Field */}
               <Field
                 label="ZipCode"
                 invalid={!!errors.zipCode}
                 errorText={errors.zipCode?.message}
+                required
               >
                 <Input
                   placeholder="ex. 23187"
