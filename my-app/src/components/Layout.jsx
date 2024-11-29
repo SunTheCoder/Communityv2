@@ -112,7 +112,7 @@ const Layout = () => {
       </Box>
 
       {/* Color Mode Button */}
-      <Box position="absolute" top={2} right={4}>
+      <Box position="absolute" top={2} right={4} zIndex='1500'>
         <ColorModeButton />
       </Box>
 
