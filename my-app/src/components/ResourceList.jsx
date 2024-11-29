@@ -6,6 +6,7 @@ import {
   Heading,
   Text,
   Spinner,
+  // Divider,
 } from "@chakra-ui/react";
 import {
   PaginationItems,
@@ -80,6 +81,10 @@ const ResourceList = () => {
   const startIndex = (page - 1) * itemsPerPage;
   const currentResources = resources.slice(startIndex, startIndex + itemsPerPage);
 
+  // Separate featured resource from the rest
+  const featuredResource = currentResources[0]; // Highlight the first resource
+  const otherResources = currentResources.slice(1);
+
   return (
     <Box maxW="1200px" mx="auto" textAlign="center" p={6}>
       <Heading as="h2" size="lg" mb={6}>
@@ -92,6 +97,53 @@ const ResourceList = () => {
         <Text color="red.500">{errorMessage}</Text>
       ) : resources.length > 0 ? (
         <>
+          {/* Featured Resource */}
+          {featuredResource && (
+            <Box
+              borderWidth="1px"
+              borderRadius="lg"
+              p={6}
+              shadow="lg"
+              bg="gray.100"
+              _dark={{ bg: "gray.700" }}
+              mb={8}
+              width='500px'
+              textAlign="left"
+              display='flex'
+              justifySelf='center'
+              justifyContent='center'
+              alignItems='center'
+              flexDirection='column'
+            >
+              <Heading as="h3" size="lg" mb={4}>
+                Featured: {featuredResource.resource_name || "Unnamed Resource"}
+              </Heading>
+              <Text>{featuredResource.description || "No description available."}</Text>
+              <Text mt={2}>
+                <strong>Location:</strong> {featuredResource.city || "Unknown"}
+              </Text>
+              <Text>
+                <strong>Resource Type:</strong> {featuredResource.resource_type || "Unknown"}
+              </Text>
+              <Text>
+                <strong>Address:</strong> {featuredResource.street_address || "Unknown"}
+              </Text>
+              <Text>
+                <strong>Created At:</strong>{" "}
+                {new Date(featuredResource.created_at).toLocaleString()}
+              </Text>
+              {featuredResource.created_by_id && (
+                <Text>
+                  <strong>Created By:</strong>{" "}
+                  {profiles[featuredResource.created_by_id] || "Unknown User"}
+                </Text>
+              )}
+            </Box>
+          )}
+
+          {/* <Divider mb={6} /> */}
+
+          {/* Other Resources */}
           <Grid
             templateColumns={{
               base: "repeat(1, 1fr)", // 1 column on small screens
@@ -100,7 +152,7 @@ const ResourceList = () => {
             }}
             gap={6}
           >
-            {currentResources.map((resource) => (
+            {otherResources.map((resource) => (
               <GridItem
                 key={resource.id}
                 borderWidth="1px"
@@ -109,7 +161,7 @@ const ResourceList = () => {
                 shadow="md"
                 bg="gray.100"
                 _dark={{ bg: "gray.800" }}
-                _hover={{ scale: 1.05 }}
+                _hover={{ transform: "scale(1.05)" }}
               >
                 <Heading as="h3" size="md" mb={2}>
                   {resource.resource_name || "Unnamed Resource"}
