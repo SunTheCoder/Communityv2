@@ -278,7 +278,7 @@ const AddResource = () => {
                     setState(e.value)
                 }}
                 >
-                <SelectLabel></SelectLabel>
+                <SelectLabel>Select State</SelectLabel>
                 <SelectTrigger>
                     <SelectValueText placeholder="Select State" />
                 </SelectTrigger>
