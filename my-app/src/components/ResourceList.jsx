@@ -18,31 +18,62 @@ import { supabase } from "./SignUp";
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]); // State to hold resources
+  const [profiles, setProfiles] = useState({}); // Object to map created_by_id to usernames
   const [errorMessage, setErrorMessage] = useState(null); // State for error messages
   const [loading, setLoading] = useState(true); // Loading state
 
   const itemsPerPage = 6; // Number of resources per page
   const [page, setPage] = useState(1); // Controlled state for current page
 
-  // Fetch resources from Supabase
+  // Fetch resources and profiles from Supabase
   useEffect(() => {
     const fetchResources = async () => {
       setLoading(true);
-      const { data, error } = await supabase
-        .from("resources") // Replace "resources" with your actual table name
-        .select("*"); // Select all columns, or specify columns as needed
+      try {
+        // Fetch resources
+        const { data: resourcesData, error: resourcesError } = await supabase
+          .from("resources")
+          .select("*");
 
-      if (error) {
-        console.error("Error fetching resources:", error.message);
+        if (resourcesError) throw new Error(resourcesError.message);
+
+        setResources(resourcesData || []);
+
+        // Extract unique `created_by_id` values and filter out invalid ones
+        const profileIds = [
+          ...new Set(
+            resourcesData
+              .map((resource) => resource.created_by_id)
+              .filter((id) => id && id !== "null") // Ensure valid IDs
+          ),
+        ];
+
+        // Fetch profiles from the `profiles` table
+        if (profileIds.length > 0) {
+          const { data: profilesData, error: profilesError } = await supabase
+            .from("profiles")
+            .select("id, username")
+            .in("id", profileIds);
+
+          if (profilesError) throw new Error(profilesError.message);
+
+          // Map profile IDs to usernames
+          const profileMap = profilesData.reduce((acc, profile) => {
+            acc[profile.id] = profile.username;
+            return acc;
+          }, {});
+          setProfiles(profileMap);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
         setErrorMessage("Unable to fetch resources. Please try again later.");
-      } else {
-        setResources(data || []); // Set resources data or an empty array
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchResources();
-  }, []); // Empty dependency array ensures this runs once on component mount
+  }, []);
 
   // Pagination logic
   const totalPages = Math.ceil(resources.length / itemsPerPage);
@@ -77,6 +108,8 @@ const ResourceList = () => {
                 p={4}
                 shadow="md"
                 bg="gray.100"
+                _dark={{ bg: "gray.800" }}
+                _hover={{ scale: 1.05 }}
               >
                 <Heading as="h3" size="md" mb={2}>
                   {resource.resource_name || "Unnamed Resource"}
@@ -97,7 +130,8 @@ const ResourceList = () => {
                 </Text>
                 {resource.created_by_id && (
                   <Text>
-                    <strong>Created By:</strong> {resource.created_by_id}
+                    <strong>Created By:</strong>{" "}
+                    {profiles[resource.created_by_id] || "Unknown User"}
                   </Text>
                 )}
               </GridItem>
