@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { supabase } from "./SignUp";
 import { Field } from "./ui/field";
+import { Toaster, toaster } from "./ui/toaster"; // Import the toaster
+
 import { 
   SelectContent, 
   SelectItem, 
@@ -92,7 +94,7 @@ const states = createListCollection({
       
   })
 
-
+ 
 const AddResourceDrawer = () => {
   const {
     register,
@@ -103,11 +105,11 @@ const AddResourceDrawer = () => {
   } = useForm();
 
   const [errorMessage, setErrorMessage] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  
 
   const onSubmit = async (data) => {
     setErrorMessage(null);
-    setSuccessMessage(null);
+    
 
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -129,16 +131,29 @@ const AddResourceDrawer = () => {
       if (error) {
         throw new Error("Error adding resource. Please try again.");
       }
-
-      setSuccessMessage("Resource added successfully!");
+      toaster.create({
+        title: "Resource Added",
+        description: "The resource was successfully added to the database.",
+        type: "success",
+      });
     } catch (error) {
       console.error("Error adding resource:", error.message);
       setErrorMessage(error.message);
+
+      // Show error toast
+      toaster.create({
+        title: "Error Adding Resource",
+        description: error.message,
+        type: "error",
+        
+        
+      });
     }
   };
 
   return (
     <DrawerRoot size="sm">
+
       <DrawerBackdrop />
       <DrawerTrigger asChild>
         <Button variant="outline">
@@ -153,6 +168,7 @@ const AddResourceDrawer = () => {
         align="center"
         justify="center"
       >
+        <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
         </DrawerCloseTrigger>
@@ -206,6 +222,7 @@ const AddResourceDrawer = () => {
                 label="Description"
                 invalid={!!errors.description}
                 errorText={errors.description?.message}
+                required
               >
                 <Textarea
                   placeholder="ex. Community Fridge helps provide essential resources to residents."
@@ -270,7 +287,7 @@ const AddResourceDrawer = () => {
                     </SelectContent>
 
                     </SelectRoot>
-                    
+
                  </Field>
 
 
@@ -295,7 +312,7 @@ const AddResourceDrawer = () => {
             </Button>
           </DrawerFooter>
         </form>
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+        {/* {successMessage && <p style={{ color: "green" }}>{successMessage}</p>} */}
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
       </DrawerContent>
     </DrawerRoot>
