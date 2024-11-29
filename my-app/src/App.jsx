@@ -5,6 +5,7 @@ import ResourceList from "./components/ResourceList";
 import Demo from "./components/Demo"; // Import your Demo component
 import { ColorModeButton } from "./components/ui/color-mode"; // Adjust the path if necessary
 import { Flex, Box } from "@chakra-ui/react"; // Adjust the imports and component names if necessary
+import AddResourceDrawer from "./components/AddResourceDrawer"; // Import your AddResourceDrawer component
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
     >
       <SignUp />
       <AddResource />
+      <AddResourceDrawer />
       <ResourceList />
       <Demo />
     </Box>
