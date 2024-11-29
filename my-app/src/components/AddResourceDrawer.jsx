@@ -109,7 +109,7 @@ const AddResourceDrawer = () => {
 
   const onSubmit = async (data) => {
     setErrorMessage(null);
-    
+    console.log(data)
 
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -120,9 +120,11 @@ const AddResourceDrawer = () => {
       const { error } = await supabase.from("resources").insert([
         {
           resource_name: data.resourceName,
-          resource_type: data.resourceType,
+          resource_type: data.resourceType.join(),
           description: data.description,
-          streetAddress: data.streetAddress,
+          street_address: data.streetAddress,
+          city: data.city,
+          state: data.state.join(),
           zip_code: data.zipCode,
           created_by_id: user.id,
         },
@@ -201,7 +203,10 @@ const AddResourceDrawer = () => {
               >
                 <SelectRoot
                   value={watch("resourceType")}
-                  onValueChange={(value) => setValue("resourceType", value)}
+                  onValueChange={(value) => {
+                    console.log("Selected resourceType value:", value.value[0]); // Log the raw value
+                    setValue("resourceType", value.value);
+                  }}
                   collection={resourceTypes}
                 >
                   <SelectTrigger>
@@ -269,7 +274,8 @@ const AddResourceDrawer = () => {
                 >   
                 <SelectRoot
                   value={watch("state")}
-                  onValueChange={(value) => setValue("state", value)}
+                  onValueChange={(value) => 
+                    setValue("state", value.value)}
                   collection={states}
                 >
                     <SelectTrigger>
