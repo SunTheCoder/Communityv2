@@ -26,20 +26,11 @@ const Layout = () => {
       </Tabs.List>
 
       <Tabs.Content value="first">
-        <Grid templateColumns="repeat(auto-fit, minmax(200px, 1fr))" gap={8}>
-          <GridItem>
-            <Box>
-              <Heading as="h3">Add Resource</Heading>
-              <AddResourceDrawer />
+        <ResourceList />
+            <Box display="flex" justifyContent="center" mt={4}>
+                <AddResourceDrawer />
             </Box>
-          </GridItem>
-          <GridItem>
-            <Box>
-              <Heading as="h3">Resource List</Heading>
-              <ResourceList />
-            </Box>
-          </GridItem>
-        </Grid>
+    
       </Tabs.Content>
       <Tabs.Content value="second">
         <Box>
