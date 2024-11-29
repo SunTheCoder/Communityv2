@@ -75,6 +75,7 @@ const Layout = () => {
       minHeight="100vh" // Ensures it spans the entire height of the viewport
       display="flex"
       flexDirection="column"
+      
     >
       {/* Top Section with Avatar and User Info */}
       <Box position="absolute" top={4} left={14}>
@@ -121,6 +122,11 @@ const Layout = () => {
           style={{
             display: "flex",
             justifyContent: "center",
+            
+            width: 'fit-content',
+            position:"relative",
+            left:"50%",
+            transform:"translateX(-50%)",
             gap: "1rem",
           }}
         >
