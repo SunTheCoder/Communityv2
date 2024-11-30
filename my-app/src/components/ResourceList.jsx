@@ -89,7 +89,7 @@ const ResourceList = () => {
   const otherResources = currentResources.slice(1);
 
   return (
-    <Box maxW="1200px" mx="auto" textAlign="center" p={6}>
+    <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
       <Heading as="h2" size="lg" mb={6}>
         Resource List
       </Heading>
@@ -111,14 +111,14 @@ const ResourceList = () => {
               _dark={{ bg: "gray.700" }}
               mb={8}
               width='500px'
-              textAlign="left"
+              textAlign="start"
               display='flex'
               justifySelf='center'
-              justifyContent='center'
-              alignItems='center'
+              // justifyContent='center'
+              // alignItems='center'
               flexDirection='column'
             >
-              <Heading as="h3" size="lg" mb={4}>
+              <Heading as="h3" size="lg" mb={4} textAlign='center'>
                 Featured: {featuredResource.resource_name || "Unnamed Resource"}
               </Heading>
               <Box
@@ -128,6 +128,7 @@ const ResourceList = () => {
                 >
                   <Image
                     height="200px"
+                    rounded="md"
                     
                     alt={featuredResource.resource_name || "Unnamed Resource"}
                     src={featuredResource.image_url || "/no-image.png"}
@@ -178,18 +179,19 @@ const ResourceList = () => {
                 _dark={{ bg: "gray.800" }}
                 _hover={{ transform: "scale(1.05)" }}
               >
-                <Heading as="h3" size="md" mb={2}>
+                <Heading as="h3" size="md" mb={2} textAlign='center'>
                   {resource.resource_name || "Unnamed Resource"}
                 </Heading>
                 <Box
                   display='flex'
                   justifyContent='center'
                   paddingBottom={4}
-
+                  // shadow="md"
+                  
                 >
                   <Image
                     height="200px"
-                    
+                    rounded="md"
                     alt={resource.resource_name || "Unnamed Resource"}
                     src={resource.image_url || "/no-image.png"}
                   />
@@ -218,23 +220,27 @@ const ResourceList = () => {
             ))}
           </Grid>
 
-            <Box py={10}>
+            <Box py={10} textAlign='center'>
               <AddResourceDrawer />
             </Box>
           {/* Chakra UI Pagination */}
-          <PaginationRoot
-            page={page}
-            count={resources.length}
-            pageSize={itemsPerPage}
-            onPageChange={(details) => setPage(details.page)}
-          >
-            <Box mt={4} >
-              <PaginationPrevTrigger />
-              <PaginationItems siblingCount={1} />
-              <PaginationNextTrigger />
-              <PaginationPageText />
-            </Box>
-          </PaginationRoot>
+          <Box textAlign='center' p={3}>
+            <PaginationRoot
+              page={page}
+              count={resources.length}
+              pageSize={itemsPerPage}
+              onPageChange={(details) => setPage(details.page)}
+            >
+              <Box mt={4} >
+                <PaginationPrevTrigger />
+                <PaginationItems siblingCount={1} />
+                <PaginationNextTrigger />
+                <Box py={5}>
+                  <PaginationPageText />
+                </Box>
+              </Box>
+            </PaginationRoot>
+          </Box>
         </>
       ) : (
         <Text>No resources available.</Text>
