@@ -161,8 +161,7 @@ const SignUp = () => {
               invalid={!!errors.email}
             >
               <Input
-                                  variant='subtle'
-
+                variant='subtle'
                 type="email"
                 placeholder="ex. FannieLou@woke.com"
                 {...register("email", {
@@ -184,6 +183,7 @@ const SignUp = () => {
               <Stack>
                 <PasswordInput
                   variant='subtle'
+                  placeholder="ex. password123"
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
