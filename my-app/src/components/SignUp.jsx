@@ -161,6 +161,8 @@ const SignUp = () => {
               invalid={!!errors.email}
             >
               <Input
+                                  variant='subtle'
+
                 type="email"
                 placeholder="ex. FannieLou@woke.com"
                 {...register("email", {
@@ -181,6 +183,7 @@ const SignUp = () => {
             >
               <Stack>
                 <PasswordInput
+                  variant='subtle'
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
@@ -204,6 +207,7 @@ const SignUp = () => {
                   invalid={!!errors.username}
                 >
                   <Input
+                    variant='subtle'
                     type="text"
                     placeholder="ex. MLK2025"
                     {...register("username", {
@@ -223,6 +227,7 @@ const SignUp = () => {
                   invalid={!!errors.avatarUrl}
                 >
                   <Input
+                    variant='subtle'
                     type="url"
                     placeholder="ex. https://example.com/avatar.jpg"
                     {...register("avatarUrl", {
