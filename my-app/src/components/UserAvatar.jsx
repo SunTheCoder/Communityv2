@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from './ui/menu';
+import { MenuRoot, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from './ui/menu';
 import { Avatar } from './ui/avatar';
 import { HStack, Stack, Text, defineStyle } from '@chakra-ui/react';
 import { supabase } from './SignUp';
@@ -63,6 +63,7 @@ const UserAvatar = () => {
             bg="white"
             _dark={{ bg: "gray.700" }}
           >
+            <MenuItem>{user?.username || "No Username Available"}</MenuItem>
             <MenuItem>{user?.email || "No Email Available"}</MenuItem>
             <MenuItem
               value="profile"
@@ -80,6 +81,7 @@ const UserAvatar = () => {
             >
               Settings
             </MenuItem>
+            <MenuSeparator />
             <MenuItem
               value="logout"
               onClick={handleLogout}

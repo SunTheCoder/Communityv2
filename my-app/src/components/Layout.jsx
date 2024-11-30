@@ -5,7 +5,10 @@ import {
   Text,
   Tabs,
   Spinner,
+  IconButton, 
+  Tooltip
 } from "@chakra-ui/react";
+import { Toaster, toaster } from "./ui/toaster";
 import SignUp from "./SignUp";
 import ResourceList from "./ResourceList";
 import { ColorModeButton } from "./ui/color-mode"; // Adjust the path if necessary
@@ -13,6 +16,9 @@ import { supabase } from "./SignUp"; // Adjust the path if necessary
 import UserAvatar from "./UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userSlice"; // Adjust the import path
+import { HiOutlinePencilSquare, HiMiniChatBubbleLeftEllipsis } from "react-icons/hi2";
+
+
 
 const Layout = () => {
   const [value, setValue] = useState("first");
@@ -88,6 +94,43 @@ const Layout = () => {
          <UserAvatar />
         
         )}
+      </Box>
+
+      {/* DM Component*/}
+      <Box 
+        position="absolute" 
+        top={30} 
+        left={280}
+        cursor="pointer" 
+        zIndex={1}
+        onClick={() => toaster.create({
+            title: "Welcome to Community Map!",
+            description: `Welcome, ${user?.username}!`,
+            type: "info",
+        })} 
+        >
+
+        <HiOutlinePencilSquare />
+
+      </Box>
+
+      {/* Post Component*/}
+      
+      <Box 
+        position="absolute" 
+        top={30} 
+        left={230}
+        cursor="pointer" 
+        zIndex={1}
+        onClick={() => toaster.create({
+            title: "Join our community!",
+            description: "Join our growing community and contribute to the map!",
+            type: "info",
+        })}
+        >
+
+        <HiMiniChatBubbleLeftEllipsis />
+
       </Box>
 
       {/* App Title */}
