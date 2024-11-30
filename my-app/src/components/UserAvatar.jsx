@@ -5,6 +5,7 @@ import { Avatar } from './ui/avatar';
 import { HStack, Stack, Text, defineStyle } from '@chakra-ui/react';
 import { supabase } from './SignUp';
 import { logout } from '../redux/userSlice'; // Adjust the import path for your Redux slice
+import { Toaster, toaster } from './ui/toaster';
 
 const UserAvatar = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user); // Fetch user from Redux store
@@ -27,6 +28,11 @@ const UserAvatar = () => {
 
       // Clear user from Redux store
       dispatch(logout());
+
+      toaster.create({
+        description: "Logged out successfully",
+        type: "success",
+      });
 
       console.log("Logged out successfully");
       // Optionally, navigate to login or home page
