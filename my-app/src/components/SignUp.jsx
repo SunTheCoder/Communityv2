@@ -239,14 +239,20 @@ const SignUp = () => {
           </Stack>
         </Card.Body>
         <Card.Footer justifyContent="space-between">
-          <Button variant="outline" onClick={() => setIsSignUp(!isSignUp)}>
+          <Button 
+              variant="solid" 
+              onClick={() => setIsSignUp(!isSignUp)}
+              bg="gray.400"
+              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+              >
             {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
           </Button>
           <Button
             type="submit"
             isLoading={isLoading}
             loadingText="Submitting..."
-            colorScheme="blue"
+            bg="green.500"
+            _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}
           >
             {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
           </Button>
