@@ -131,7 +131,7 @@ const states = createListCollection({
   })
 
  
-const AddResourceDrawer = () => {
+const RequestResourceDrawer = () => {
   const {
     register,
     handleSubmit,
@@ -385,4 +385,4 @@ const AddResourceDrawer = () => {
   );
 };
 
-export default AddResourceDrawer;
+export default RequestResourceDrawer;

@@ -63,6 +63,7 @@ const Layout = () => {
           setUser(profileData); // Set the user's profile
         } else {
           setError("No user logged in.");
+         
         }
       } catch (error) {
         console.error("Error fetching user profile:", error.message);

@@ -6,8 +6,9 @@ import {
   Heading,
   Text,
   Spinner,
-  Image
-  // Divider,
+  Image,
+  Button,
+  Card,
 } from "@chakra-ui/react";
 import {
   PaginationItems,
@@ -17,24 +18,21 @@ import {
   PaginationRoot,
 } from "./ui/pagination"; // Adjust the path as needed
 import { supabase } from "./SignUp";
-import AddResource from "./AddResource";
 import AddResourceDrawer from "./AddResourceDrawer";
 
 const ResourceList = () => {
-  const [resources, setResources] = useState([]); // State to hold resources
-  const [profiles, setProfiles] = useState({}); // Object to map created_by_id to usernames
-  const [errorMessage, setErrorMessage] = useState(null); // State for error messages
-  const [loading, setLoading] = useState(true); // Loading state
+  const [resources, setResources] = useState([]);
+  const [profiles, setProfiles] = useState({});
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const itemsPerPage = 6; // Number of resources per page
-  const [page, setPage] = useState(1); // Controlled state for current page
+  const itemsPerPage = 6;
+  const [page, setPage] = useState(1);
 
-  // Fetch resources and profiles from Supabase
   useEffect(() => {
     const fetchResources = async () => {
       setLoading(true);
       try {
-        // Fetch resources
         const { data: resourcesData, error: resourcesError } = await supabase
           .from("resources")
           .select("*");
@@ -43,16 +41,14 @@ const ResourceList = () => {
 
         setResources(resourcesData || []);
 
-        // Extract unique `created_by_id` values and filter out invalid ones
         const profileIds = [
           ...new Set(
             resourcesData
               .map((resource) => resource.created_by_id)
-              .filter((id) => id && id !== "null") // Ensure valid IDs
+              .filter((id) => id && id !== "null")
           ),
         ];
 
-        // Fetch profiles from the `profiles` table
         if (profileIds.length > 0) {
           const { data: profilesData, error: profilesError } = await supabase
             .from("profiles")
@@ -61,7 +57,6 @@ const ResourceList = () => {
 
           if (profilesError) throw new Error(profilesError.message);
 
-          // Map profile IDs to usernames
           const profileMap = profilesData.reduce((acc, profile) => {
             acc[profile.id] = profile.username;
             return acc;
@@ -79,18 +74,16 @@ const ResourceList = () => {
     fetchResources();
   }, []);
 
-  // Pagination logic
   const totalPages = Math.ceil(resources.length / itemsPerPage);
   const startIndex = (page - 1) * itemsPerPage;
   const currentResources = resources.slice(startIndex, startIndex + itemsPerPage);
 
-  // Separate featured resource from the rest
-  const featuredResource = currentResources[0]; // Highlight the first resource
+  const featuredResource = currentResources[0];
   const otherResources = currentResources.slice(1);
 
   return (
     <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
-      <Heading as="h2" size="lg" mb={6} textAlign='center'>
+      <Heading as="h2" size="lg" mb={6} textAlign="center">
         Resource List
       </Heading>
 
@@ -102,136 +95,128 @@ const ResourceList = () => {
         <>
           {/* Featured Resource */}
           {featuredResource && (
-            <Box
+            <Card.Root
               borderWidth="1px"
               borderRadius="lg"
-              p={6}
+              overflow="hidden"
               shadow="lg"
               bg="gray.100"
               _dark={{ bg: "gray.700" }}
               mb={8}
-              width='500px'
               textAlign="start"
-              display='flex'
-              justifySelf='center'
-              // justifyContent='center'
-              // alignItems='center'
-              flexDirection='column'
+              maxW="500px"
+              mx="auto"
             >
-              <Heading as="h3" size="lg" mb={4} textAlign='center'>
-                Featured: {featuredResource.resource_name || "Unnamed Resource"}
-              </Heading>
-              <Box
-                  display='flex'
-                  justifyContent='center'
-                  paddingBottom={4}
-                >
-                  <Image
-                    height="200px"
-                    rounded="md"
-                    
-                    alt={featuredResource.resource_name || "Unnamed Resource"}
-                    src={featuredResource.image_url || "/no-image.png"}
-                  />
-                </Box>
-              <Text>{featuredResource.description || "No description available."}</Text>
-              <Text mt={2}>
-                <strong>Location:</strong> {featuredResource.city || "Unknown"}
-              </Text>
-              <Text>
-                <strong>Resource Type:</strong> {featuredResource.resource_type || "Unknown"}
-              </Text>
-              <Text>
-                <strong>Address:</strong> {featuredResource.street_address || "Unknown"}
-              </Text>
-              <Text>
-                <strong>Created At:</strong>{" "}
-                {new Date(featuredResource.created_at).toLocaleString()}
-              </Text>
-              {featuredResource.created_by_id && (
+              <Image
+                src={featuredResource.image_url || "/no-image.png"}
+                alt={featuredResource.resource_name || "Unnamed Resource"}
+                height="200px"
+                objectFit="cover"
+              />
+              <Card.Body gap={4}>
+                <Card.Title>
+                  Featured: {featuredResource.resource_name || "Unnamed Resource"}
+                </Card.Title>
+                <Card.Description>
+                  {featuredResource.description || "No description available."}
+                </Card.Description>
                 <Text>
-                  <strong>Created By:</strong>{" "}
-                  {profiles[featuredResource.created_by_id] || "Unknown User"}
+                  <strong>Location:</strong> {featuredResource.city || "Unknown"}
                 </Text>
-              )}
-            </Box>
+                <Text>
+                  <strong>Resource Type:</strong>{" "}
+                  {featuredResource.resource_type || "Unknown"}
+                </Text>
+                <Text>
+                  <strong>Address:</strong>{" "}
+                  {featuredResource.street_address || "Unknown"}
+                </Text>
+                <Text>
+                  <strong>Created At:</strong>{" "}
+                  {new Date(featuredResource.created_at).toLocaleString()}
+                </Text>
+                {featuredResource.created_by_id && (
+                  <Text>
+                    <strong>Created By:</strong>{" "}
+                    {profiles[featuredResource.created_by_id] || "Unknown User"}
+                  </Text>
+                )}
+              </Card.Body>
+            </Card.Root>
           )}
-
-          {/* <Divider mb={6} /> */}
 
           {/* Other Resources */}
           <Grid
             templateColumns={{
-              base: "repeat(1, 1fr)", // 1 column on small screens
-              md: "repeat(2, 1fr)", // 2 columns on medium screens
-              lg: "repeat(3, 1fr)", // 3 columns on large screens
+              base: "repeat(1, 1fr)",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(3, 1fr)",
             }}
             gap={6}
           >
             {otherResources.map((resource) => (
-              <GridItem
+              <Card.Root
                 key={resource.id}
                 borderWidth="1px"
                 borderRadius="lg"
-                p={4}
+                overflow="hidden"
                 shadow="md"
                 bg="gray.100"
                 _dark={{ bg: "gray.800" }}
                 _hover={{ transform: "scale(1.05)" }}
               >
-                <Heading as="h3" size="md" mb={2} textAlign='center'>
-                  {resource.resource_name || "Unnamed Resource"}
-                </Heading>
-                <Box
-                  display='flex'
-                  justifyContent='center'
-                  paddingBottom={4}
-                  // shadow="md"
-                  
-                >
-                  <Image
-                    height="200px"
-                    rounded="md"
-                    alt={resource.resource_name || "Unnamed Resource"}
-                    src={resource.image_url || "/no-image.png"}
-                  />
-                </Box>
-                <Text>{resource.description || "No description available."}</Text>
-                <Text mt={2}>
-                  <strong>Location:</strong> {resource.city || "Unknown"}
-                </Text>
-                <Text>
-                  <strong>Resource Type:</strong> {resource.resource_type || "Unknown"}
-                </Text>
-                <Text>
-                  <strong>Address:</strong> {resource.street_address || "Unknown"}
-                </Text>
-                <Text>
-                  <strong>Created At:</strong>{" "}
-                  {new Date(resource.created_at).toLocaleString()}
-                </Text>
-                {resource.created_by_id && (
+                <Image
+                  src={resource.image_url || "/no-image.png"}
+                  alt={resource.resource_name || "Unnamed Resource"}
+                  height="200px"
+                  objectFit="cover"
+                />
+                <Card.Body gap={4}>
+                  <Card.Title>
+                    {resource.resource_name || "Unnamed Resource"}
+                  </Card.Title>
+                  <Card.Description>
+                    {resource.description || "No description available."}
+                  </Card.Description>
                   <Text>
-                    <strong>Created By:</strong>{" "}
-                    {profiles[resource.created_by_id] || "Unknown User"}
+                    <strong>Location:</strong> {resource.city || "Unknown"}
                   </Text>
-                )}
-              </GridItem>
+                  <Text>
+                    <strong>Resource Type:</strong>{" "}
+                    {resource.resource_type || "Unknown"}
+                  </Text>
+                  <Text>
+                    <strong>Address:</strong> {resource.street_address || "Unknown"}
+                  </Text>
+                  <Text>
+                    <strong>Created At:</strong>{" "}
+                    {new Date(resource.created_at).toLocaleString()}
+                  </Text>
+                  {resource.created_by_id && (
+                    <Text>
+                      <strong>Created By:</strong>{" "}
+                      {profiles[resource.created_by_id] || "Unknown User"}
+                    </Text>
+                  )}
+                </Card.Body>
+              </Card.Root>
             ))}
           </Grid>
 
-            <Box py={10} textAlign='center'>
-              <AddResourceDrawer />
-            </Box>
-          {/* Chakra UI Pagination */}
-          <Box textAlign='center' p={3}>
+          {/* Add Resource Button */}
+          <Box py={10} textAlign="center">
+            <AddResourceDrawer />
+          </Box>
+
+          {/* Pagination */}
+          <Box textAlign="center" p={3}>
             <PaginationRoot
               page={page}
               count={resources.length}
               pageSize={itemsPerPage}
               onPageChange={(details) => setPage(details.page)}
             >
-              <Box mt={4} >
+              <Box mt={4}>
                 <PaginationPrevTrigger />
                 <PaginationItems siblingCount={1} />
                 <PaginationNextTrigger />
