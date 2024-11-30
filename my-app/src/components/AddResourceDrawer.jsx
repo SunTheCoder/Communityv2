@@ -194,7 +194,7 @@ const AddResourceDrawer = () => {
 
       <DrawerBackdrop />
       <DrawerTrigger asChild>
-        <Button bg= "gray.400" variant="solid">
+        <Button  bg= "gray.400" _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }} variant="solid">
           Add Resource <RiArrowRightLine />
         </Button>
       </DrawerTrigger>
@@ -375,7 +375,7 @@ const AddResourceDrawer = () => {
             </Stack>
           </DrawerBody>
           <DrawerFooter>
-            <Button type="submit" variant="solid" bg= "gray.400">
+            <Button type="submit" variant="solid" bg= "gray.400" _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}>
               Submit <RiArrowRightLine />
             </Button>
           </DrawerFooter>
