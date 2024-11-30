@@ -13,6 +13,8 @@ import {
 } from "./ui/select";
 import { Button, Input, Stack, Textarea, createListCollection } from "@chakra-ui/react";
 import { RiArrowRightLine } from "react-icons/ri";
+import { HiUpload } from "react-icons/hi"
+
 import {
   DrawerBackdrop,
   DrawerBody,
@@ -26,6 +28,11 @@ import {
 } from "./ui/drawer";
 import { CloseButton } from "./ui/close-button";
 import { useForm } from "react-hook-form";
+import {
+    FileUploadList,
+    FileUploadRoot,
+    FileUploadTrigger,
+  } from "./ui/file-upload"
 
 // Resource Types Collection
 const resourceTypes = createListCollection({
@@ -183,11 +190,11 @@ const AddResourceDrawer = () => {
   };
 
   return (
-    <DrawerRoot size="sm">
+    <DrawerRoot size="sm" >
 
       <DrawerBackdrop />
       <DrawerTrigger asChild>
-        <Button variant="outline">
+        <Button bg= "gray.400" variant="solid">
           Add Resource <RiArrowRightLine />
         </Button>
       </DrawerTrigger>
@@ -223,6 +230,32 @@ const AddResourceDrawer = () => {
                 />
               </Field>
 
+              <Field
+                    helperText="Provide an image to make the resource easier to find."
+                    >
+                    <FileUploadRoot
+                        accept={["image/png"]} // Restrict to PNG files
+                        directory
+                        inputProps={{
+                        multiple: false, // Allow single file uploads
+                        onChange: (e) => {
+                            const file = e.target.files[0];
+                            setValue("file", file); // Set the file in the form using react-hook-form's setValue
+                            clearErrors("file"); // Clear any previous errors for this field
+                        },
+                        ref: register("file", {
+                            required: "File is required",
+                        }).ref, // Attach react-hook-form's ref
+                        }}
+                    >
+                        <FileUploadTrigger asChild>
+                        <Button variant="outline" size="sm">
+                            <HiUpload /> Upload File
+                        </Button>
+                        </FileUploadTrigger>
+                        <FileUploadList />
+                    </FileUploadRoot>
+                </Field>
               {/* Resource Type Field */}
               <Field
                 label="Resource Type"
@@ -342,7 +375,7 @@ const AddResourceDrawer = () => {
             </Stack>
           </DrawerBody>
           <DrawerFooter>
-            <Button type="submit" variant="solid">
+            <Button type="submit" variant="solid" bg= "gray.400">
               Submit <RiArrowRightLine />
             </Button>
           </DrawerFooter>

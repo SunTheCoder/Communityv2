@@ -202,7 +202,7 @@ const Layout = () => {
         <Tabs.Content value="first">
           <ResourceList />
           <Box display="flex" justifyContent="center" mt={4}>
-            <AddResourceDrawer />
+            {/* <AddResourceDrawer /> */}
           </Box>
         </Tabs.Content>
         <Tabs.Content value="second">

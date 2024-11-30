@@ -6,6 +6,7 @@ import {
   Heading,
   Text,
   Spinner,
+  Image
   // Divider,
 } from "@chakra-ui/react";
 import {
@@ -16,6 +17,8 @@ import {
   PaginationRoot,
 } from "./ui/pagination"; // Adjust the path as needed
 import { supabase } from "./SignUp";
+import AddResource from "./AddResource";
+import AddResourceDrawer from "./AddResourceDrawer";
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]); // State to hold resources
@@ -118,6 +121,18 @@ const ResourceList = () => {
               <Heading as="h3" size="lg" mb={4}>
                 Featured: {featuredResource.resource_name || "Unnamed Resource"}
               </Heading>
+              <Box
+                  display='flex'
+                  justifyContent='center'
+                  paddingBottom={4}
+                >
+                  <Image
+                    height="200px"
+                    
+                    alt={featuredResource.resource_name || "Unnamed Resource"}
+                    src={featuredResource.image_url || "/no-image.png"}
+                  />
+                </Box>
               <Text>{featuredResource.description || "No description available."}</Text>
               <Text mt={2}>
                 <strong>Location:</strong> {featuredResource.city || "Unknown"}
@@ -166,6 +181,19 @@ const ResourceList = () => {
                 <Heading as="h3" size="md" mb={2}>
                   {resource.resource_name || "Unnamed Resource"}
                 </Heading>
+                <Box
+                  display='flex'
+                  justifyContent='center'
+                  paddingBottom={4}
+
+                >
+                  <Image
+                    height="200px"
+                    
+                    alt={resource.resource_name || "Unnamed Resource"}
+                    src={resource.image_url || "/no-image.png"}
+                  />
+                </Box>
                 <Text>{resource.description || "No description available."}</Text>
                 <Text mt={2}>
                   <strong>Location:</strong> {resource.city || "Unknown"}
@@ -190,6 +218,9 @@ const ResourceList = () => {
             ))}
           </Grid>
 
+            <Box py={10}>
+              <AddResourceDrawer />
+            </Box>
           {/* Chakra UI Pagination */}
           <PaginationRoot
             page={page}
@@ -197,7 +228,7 @@ const ResourceList = () => {
             pageSize={itemsPerPage}
             onPageChange={(details) => setPage(details.page)}
           >
-            <Box mt={6}>
+            <Box mt={4} >
               <PaginationPrevTrigger />
               <PaginationItems siblingCount={1} />
               <PaginationNextTrigger />
