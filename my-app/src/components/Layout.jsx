@@ -23,12 +23,17 @@ import ResourceList from "./ResourceList";
 import { ColorModeButton } from "./ui/color-mode"; // Adjust the path if necessary
 import { Avatar } from "./ui/avatar"; // Adjust the path if necessary
 import { supabase } from "./SignUp"; // Adjust the path if necessary
+import UserAvatar from "./UserAvatar";
+import { useDispatch, useSelector } from "react-redux";
+import { login, logout } from "../redux/userSlice"; // Adjust the import path
 
 const Layout = () => {
   const [value, setValue] = useState("first");
-  const [user, setUser] = useState(null); // State to hold user profile
+//   const [user, setUser] = useState(null); // State to hold user profile
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const dispatch = useDispatch();
+  const { user, isLoggedIn } = useSelector((state) => state.user); // Access Redux store
 
   const ringCss = defineStyle({
     outlineWidth: "2px",
@@ -60,9 +65,17 @@ const Layout = () => {
 
           if (profileError) throw new Error(profileError.message);
 
-          setUser(profileData); // Set the user's profile
+          dispatch(
+            login({
+              id: profileData.id,
+              username: profileData.username,
+              avatarUrl: profileData.avatar_url,
+              email: profileData.email,
+            })
+          );
         } else {
-          setError("No user logged in.");
+        //   setError("No user logged in.");
+        <UserAvatar/>
          
         }
       } catch (error) {
@@ -74,7 +87,7 @@ const Layout = () => {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [dispatch]);
 
 
   const handleLogout = async () => {
@@ -82,6 +95,7 @@ const Layout = () => {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
     
+      dispatch(logout()); // Dispatch Redux logout action
 
       console.log("Logged out successfully");
       // Optionally, redirect the user or clear local state
@@ -105,65 +119,9 @@ const Layout = () => {
         ) : error ? (
           <Text color="red.500">{error}</Text>
         ) : (
-          user && (
-            <HStack gap={4}>
-            <MenuRoot positioning={{ gutter: 80 }}>
-              {/* Menu Trigger */}
-              <MenuTrigger asChild>
-                <Avatar
-                  size="md"
-                  src={user.avatar_url || "https://via.placeholder.com/150"}
-                  alt={user.username || "User avatar"}
-                  colorPalette="pink"
-                  css={ringCss}
-                  zIndex="1"
-                />
-              </MenuTrigger>
-          
-              {/* Menu Content */}
-              <MenuContent mx='50px' boxShadow="lg" borderRadius="md" bg="white" _dark={{ bg: "gray.700" }}>
-                <MenuItem>
-                    {user.email || "No Email Available"}
-                </MenuItem>
-                <MenuItem 
-                    value="profile" 
-                    onSelect={() => console.log("Profile clicked")}
-                    _hover={{ bg: "gray.100", _dark: { bg: "gray.600" } }}
-                    _focus={{ bg: "gray.200", _dark: { bg: "gray.500" } }}
-                    
-                    >
-                  Profile
-                </MenuItem>
-                <MenuItem 
-                    value="settings" 
-                    onSelect={() => console.log("Settings clicked")}
-                    _hover={{ bg: "gray.100", _dark: { bg: "gray.600" } }}
-                    _focus={{ bg: "gray.200", _dark: { bg: "gray.500" } }}
-                    >
-                  Settings
-                </MenuItem>
-                {/* <MenuSeparator /> Separator between groups */}
-                <MenuItem 
-                    value="logout" 
-                    onClick={handleLogout}
-                    _hover={{ bg: "red.400", _dark: { bg: "red.500" } }}
-                    _focus={{ bg: "gray.200", _dark: { bg: "red.500" } }}
-                    >
-
-                  Logout
-                </MenuItem>
-              </MenuContent>
-            </MenuRoot>
-          
-            {/* User Info */}
-            <Stack spacing={0}>
-              <Text fontWeight="bold">{user.username || "Unknown User"}</Text>
-              {/* <Text color="gray.500" fontSize="sm">
-                {user.email || "No Email Available"}
-              </Text> */}
-            </Stack>
-          </HStack>
-          )
+       
+         <UserAvatar />
+        
         )}
       </Box>
 

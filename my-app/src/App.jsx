@@ -7,7 +7,8 @@ import { ColorModeButton } from "./components/ui/color-mode"; // Adjust the path
 import { Flex, Box } from "@chakra-ui/react"; // Adjust the imports and component names if necessary
 import AddResourceDrawer from "./components/AddResourceDrawer"; // Import your AddResourceDrawer component
 import Layout from "./components/Layout";
-
+import { Provider } from "react-redux";
+import store from "./store";
 
 function App() {
   return (
@@ -43,7 +44,10 @@ function App() {
   //     <Demo />
   //   </Box>
   // </Flex>
-  <Layout/>
+    <Provider store={store}>
+      <Layout/>
+    </Provider>
+
   );
 }
 
