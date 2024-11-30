@@ -10,9 +10,7 @@ import { Toaster, toaster } from './ui/toaster';
 const UserAvatar = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user); // Fetch user from Redux store
   const dispatch = useDispatch();
-  // console.log('User', user);
-  // console.log(user.isLoggedIn);
-  // console.log(user.user.email);
+  
 
   const ringCss = defineStyle({
     outlineWidth: "2px",

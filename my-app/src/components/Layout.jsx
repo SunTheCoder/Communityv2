@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Grid,
-  GridItem,
   Heading,
   Text,
   Tabs,
-  Stack,
-  HStack,
-  defineStyle,
   Spinner,
 } from "@chakra-ui/react";
-import {
-    MenuContent,
-    MenuItem,
-    MenuRoot,
-    MenuTrigger,
-  } from "./ui/menu"
-import AddResourceDrawer from "./AddResourceDrawer";
 import SignUp from "./SignUp";
 import ResourceList from "./ResourceList";
 import { ColorModeButton } from "./ui/color-mode"; // Adjust the path if necessary
-import { Avatar } from "./ui/avatar"; // Adjust the path if necessary
 import { supabase } from "./SignUp"; // Adjust the path if necessary
 import UserAvatar from "./UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
-import { login, logout } from "../redux/userSlice"; // Adjust the import path
+import { login } from "../redux/userSlice"; // Adjust the import path
 
 const Layout = () => {
   const [value, setValue] = useState("first");
@@ -34,13 +21,6 @@ const Layout = () => {
   const [error, setError] = useState(null); // Error state
   const dispatch = useDispatch();
   const { user, isLoggedIn } = useSelector((state) => state.user); // Access Redux store
-
-  const ringCss = defineStyle({
-    outlineWidth: "2px",
-    outlineColor: "colorPalette.500",
-    outlineOffset: "2px",
-    outlineStyle: "solid",
-  });
 
   // Fetch the logged-in user's profile
   useEffect(() => {
@@ -88,21 +68,6 @@ const Layout = () => {
 
     fetchUserProfile();
   }, [dispatch]);
-
-
-  const handleLogout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-    
-      dispatch(logout()); // Dispatch Redux logout action
-
-      console.log("Logged out successfully");
-      // Optionally, redirect the user or clear local state
-    } catch (error) {
-      console.error("Error logging out:", error.message);
-    }
-  };
 
   return (
     <Box
