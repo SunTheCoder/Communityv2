@@ -11,6 +11,12 @@ import {
   defineStyle,
   Spinner,
 } from "@chakra-ui/react";
+import {
+    MenuContent,
+    MenuItem,
+    MenuRoot,
+    MenuTrigger,
+  } from "./ui/menu"
 import AddResourceDrawer from "./AddResourceDrawer";
 import SignUp from "./SignUp";
 import ResourceList from "./ResourceList";
@@ -69,6 +75,20 @@ const Layout = () => {
     fetchUserProfile();
   }, []);
 
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    
+
+      console.log("Logged out successfully");
+      // Optionally, redirect the user or clear local state
+    } catch (error) {
+      console.error("Error logging out:", error.message);
+    }
+  };
+
   return (
     <Box
       _dark={{ bg: "gray.800" }}
@@ -86,20 +106,62 @@ const Layout = () => {
         ) : (
           user && (
             <HStack gap={4}>
-              <Avatar
-                size="md"
-                src={user.avatar_url || "https://via.placeholder.com/150"}
-                alt={user.username || "User avatar"}
-                colorPalette="pink"
-                css={ringCss}
-              />
-              <Stack spacing={0}>
-                <Text fontWeight="bold">{user.username || "Unknown User"}</Text>
-                <Text color="gray.500" fontSize="sm">
-                  {user.email || "No Email Available"}
-                </Text>
-              </Stack>
-            </HStack>
+            <MenuRoot positioning={{ gutter: 80 }}>
+              {/* Menu Trigger */}
+              <MenuTrigger asChild>
+                <Avatar
+                  size="md"
+                  src={user.avatar_url || "https://via.placeholder.com/150"}
+                  alt={user.username || "User avatar"}
+                  colorPalette="pink"
+                  css={ringCss}
+                  zIndex="1"
+                />
+              </MenuTrigger>
+          
+              {/* Menu Content */}
+              <MenuContent mx='50px' boxShadow="lg" borderRadius="md" bg="white" _dark={{ bg: "gray.700" }}>
+                <MenuItem>
+                    {user.email || "No Email Available"}
+                </MenuItem>
+                <MenuItem 
+                    value="profile" 
+                    onSelect={() => console.log("Profile clicked")}
+                    _hover={{ bg: "gray.100", _dark: { bg: "gray.600" } }}
+                    _focus={{ bg: "gray.200", _dark: { bg: "gray.500" } }}
+                    
+                    >
+                  Profile
+                </MenuItem>
+                <MenuItem 
+                    value="settings" 
+                    onSelect={() => console.log("Settings clicked")}
+                    _hover={{ bg: "gray.100", _dark: { bg: "gray.600" } }}
+                    _focus={{ bg: "gray.200", _dark: { bg: "gray.500" } }}
+                    >
+                  Settings
+                </MenuItem>
+                {/* <MenuSeparator /> Separator between groups */}
+                <MenuItem 
+                    value="logout" 
+                    onClick={handleLogout}
+                    _hover={{ bg: "red.400", _dark: { bg: "red.500" } }}
+                    _focus={{ bg: "gray.200", _dark: { bg: "red.500" } }}
+                    >
+
+                  Logout
+                </MenuItem>
+              </MenuContent>
+            </MenuRoot>
+          
+            {/* User Info */}
+            <Stack spacing={0}>
+              <Text fontWeight="bold">{user.username || "Unknown User"}</Text>
+              {/* <Text color="gray.500" fontSize="sm">
+                {user.email || "No Email Available"}
+              </Text> */}
+            </Stack>
+          </HStack>
           )
         )}
       </Box>
