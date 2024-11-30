@@ -108,7 +108,7 @@ const SignUp = () => {
 
   return (
    
-    <Card.Root maxW="sm" mx="auto" mt={8} shadow='lg'>
+    <Card.Root maxW="sm" mx="auto" mt={8} shadow='lg' _dark={{ bg: "gray.800" }}>
       <Toaster/>
       <Card.Header>
         <Card.Title>{isSignUp ? "Sign Up" : "Login"}</Card.Title>
@@ -119,7 +119,7 @@ const SignUp = () => {
         </Card.Description>
       </Card.Header>
       <form onSubmit={handleSubmit(isSignUp ? handleSignUp : handleLogin)}>
-        <Card.Body>
+        <Card.Body >
           <Stack spacing={4}>
             {/* Email Field */}
             <Field
@@ -223,6 +223,7 @@ const SignUp = () => {
         </Card.Footer>
       </form>
     </Card.Root>
+    
    
   );
 };

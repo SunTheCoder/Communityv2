@@ -208,7 +208,7 @@ const Layout = () => {
         </Tabs.Content>
         <Tabs.Content value="second">
           <Box>
-            <Heading as="h3">Sign Up</Heading>
+            <Heading as="h3"></Heading>
             <SignUp />
           </Box>
         </Tabs.Content>
