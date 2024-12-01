@@ -7,7 +7,9 @@ import {
   Spinner,
   IconButton,
   SimpleGrid,
-  HStack
+  HStack,
+  Separator,
+  Portal,
 } from "@chakra-ui/react";
 import { Toaster, toaster } from "./ui/toaster";
 import SignUp from "./SignUp";
@@ -146,7 +148,7 @@ const Layout = () => {
 
         {/* Row 2: Tabs Section */}
         <Box gridColumn="span 1"></Box>
-        <Box gridColumn="span 10">
+        <Box gridColumn="span 9">
           <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)}>
             <Tabs.List
               style={{
@@ -180,16 +182,18 @@ const Layout = () => {
                 
                 
                 <SignUp />
-            </Tabs.Content> */}
+                </Tabs.Content> */}
           </Tabs.Root>
 
         
 
         </Box>
-
+        <Box display='flex' justifyContent='center'>
+                <Separator orientation="vertical" height="100%" width="fit-content"/>
+        </Box>
         <Box 
             py={40}
-            gridColumn="span 9"
+            gridColumn="span 8"
             display="flex"
             justifyContent="center"
             
