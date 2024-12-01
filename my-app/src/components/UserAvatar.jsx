@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MenuRoot, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from './ui/menu';
 import { Avatar } from './ui/avatar';
@@ -6,11 +6,12 @@ import { HStack, Stack, Text, defineStyle } from '@chakra-ui/react';
 import { supabase } from './SignUp';
 import { logout } from '../redux/userSlice'; // Adjust the import path for your Redux slice
 import { Toaster, toaster } from './ui/toaster';
+import SignUpDrawer from './SignUpDrawer';
 
 const UserAvatar = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user); // Fetch user from Redux store
   const dispatch = useDispatch();
-  
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State to control drawer visibility
 
   const ringCss = defineStyle({
     outlineWidth: "2px",
@@ -31,9 +32,6 @@ const UserAvatar = () => {
         description: "Logged out successfully",
         type: "success",
       });
-
-      console.log("Logged out successfully");
-      // Optionally, navigate to login or home page
     } catch (error) {
       console.error("Error logging out:", error.message);
     }
@@ -42,7 +40,7 @@ const UserAvatar = () => {
   return (
     <HStack gap={4}>
       {isLoggedIn ? (
-        <MenuRoot positioning={{ gutter: 80 }}>
+        <MenuRoot>
           {/* Menu Trigger */}
           <MenuTrigger asChild>
             <Avatar
@@ -93,20 +91,46 @@ const UserAvatar = () => {
           </MenuContent>
         </MenuRoot>
       ) : (
-        <Avatar
-          size="md"
-          src="https://via.placeholder.com/150"
-          alt="Guest Avatar"
-          colorPalette="pink"
-          css={ringCss}
-          zIndex="1"
-        />
+        <MenuRoot positioning={{ gutter: 80 }}>
+          {/* Menu Trigger */}
+          <MenuTrigger asChild>
+            <Avatar
+              size="md"
+              src="https://via.placeholder.com/150"
+              alt="Guest Avatar"
+              colorPalette="pink"
+              css={ringCss}
+              zIndex="1"
+            />
+          </MenuTrigger>
+
+          {/* Menu Content */}
+          <MenuContent
+            mx="50px"
+            boxShadow="lg"
+            borderRadius="md"
+            bg="white"
+            _dark={{ bg: "gray.700" }}
+          >
+            <MenuItem
+              value="login"
+              onClick={() => setIsDrawerOpen(true)} // Open the drawer on click
+              _hover={{ bg: "green.400", _dark: { bg: "green.500" } }}
+              _focus={{ bg: "gray.200", _dark: { bg: "green.500" } }}
+            >
+              Login
+            </MenuItem>
+          </MenuContent>
+        </MenuRoot>
       )}
 
       {/* User Info */}
       <Stack spacing={0}>
         <Text fontWeight="bold">{user?.username || "Guest"}</Text>
       </Stack>
+
+      {/* SignUpDrawer */}
+      <SignUpDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
     </HStack>
   );
 };

@@ -23,6 +23,8 @@ import { PiFlowerLight } from "react-icons/pi";
 
 import SearchBar from "./SearchBar";
 
+
+
 const Layout = () => {
   const [value, setValue] = useState("first");
   const [loading, setLoading] = useState(true);
@@ -157,22 +159,27 @@ const Layout = () => {
             gap: "1rem",
               }}
             >
-              <Tabs.Trigger value="first">First tab</Tabs.Trigger>
-              <Tabs.Trigger value="second">Second tab</Tabs.Trigger>
-              <Tabs.Trigger value="third">Third tab</Tabs.Trigger>
-              <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
-              <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger>
+              <Tabs.Trigger value="first">Feed</Tabs.Trigger>
+              <Tabs.Trigger value="second">Map</Tabs.Trigger>
+              <Tabs.Trigger value="third">Resource List</Tabs.Trigger>
+              {/* <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
+              <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger> */}
             </Tabs.List>
 
             <Tabs.Content value="first">
-              <ResourceList />
+                <Text>Community Feed Placeholder</Text>
             </Tabs.Content>
             <Tabs.Content value="second">
-              <SignUp />
+                <Text>Map Placeholder</Text>
             </Tabs.Content>
             <Tabs.Content value="third">
-              <Text>Additional content here</Text>
+                <ResourceList />
             </Tabs.Content>
+            {/* <Tabs.Content value="fourth">
+                
+                
+                <SignUp />
+            </Tabs.Content> */}
           </Tabs.Root>
         </Box>
       </SimpleGrid>
