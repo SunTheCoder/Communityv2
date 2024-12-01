@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { MenuRoot, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from './ui/menu';
 import { Avatar } from './ui/avatar';
 import { HStack, Stack, Text, defineStyle } from '@chakra-ui/react';
-import { supabase } from './SignUp';
+import { supabase } from '../App';
 import { logout } from '../redux/userSlice'; // Adjust the import path for your Redux slice
 import { Toaster, toaster } from './ui/toaster';
 import SignUpDrawer from './SignUpDrawer';

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "./SignUp";
+import { supabase } from "../App"
 import { Field } from "./ui/field";
 import { Toaster, toaster } from "./ui/toaster"; // Import the toaster
 
@@ -11,7 +11,7 @@ import {
   SelectTrigger, 
   SelectValueText 
 } from "./ui/select";
-import { Button, Input, Stack, Textarea, Card, createListCollection } from "@chakra-ui/react";
+import { Button, Input, Stack, Textarea, Card, createListCollection, Image } from "@chakra-ui/react";
 import { RiArrowRightLine } from "react-icons/ri";
 import { HiUpload } from "react-icons/hi"
 
@@ -73,6 +73,7 @@ const resourceTypes = createListCollection({
     { label: "Creative Connection Group", value: "Creative Connection Group" },
     { label: "Co-Op / Third Space", value: "Co-Op / Third Space" },
     { lavel: "Activist Group", value: "Activist Group" },
+    { label: "Farmer's Market", value: "Farmers Market" },
 
   ],
 });
@@ -145,6 +146,7 @@ const AddResourceDrawer = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   
+  const placeholderImage = "https://placehold.co/600x400/png"; // Default placeholder image URL
 
   const onSubmit = async (data) => {
     setErrorMessage(null);
@@ -156,6 +158,10 @@ const AddResourceDrawer = () => {
         throw new Error("Could not get user. Please log in.");
       }
 
+      // Use placeholder if no file is provided
+      const file = watch("file") || placeholderImage;
+
+
       const { error } = await supabase.from("resources").insert([
         {
           resource_name: data.resourceName,
@@ -166,6 +172,8 @@ const AddResourceDrawer = () => {
           state: data.state.join(),
           zip_code: data.zipCode,
           created_by_id: user.id,
+          image_url: file === placeholderImage ? placeholderImage : file.name, // Use placeholder or file name
+
         },
       ]);
 
@@ -238,27 +246,34 @@ const AddResourceDrawer = () => {
                     />
                   </Field>
                   <Field helperText="Provide an image to make the resource easier to find.">
-                    <FileUploadRoot
-                      accept={["image/png"]}
-                      directory
-                      inputProps={{
-                        multiple: false,
-                        onChange: (e) => {
-                          const file = e.target.files[0];
-                          setValue("file", file);
-                        },
-                        ref: register("file", {
-                          required: "File is required",
-                        }).ref,
-                      }}
-                    >
-                      <FileUploadTrigger asChild>
+                  <FileUploadRoot
+                        accept={["image/png"]}
+                        directory
+                        inputProps={{
+                            multiple: false,
+                            onChange: (e) => {
+                            const file = e.target.files[0];
+                            setValue("file", file, { shouldValidate: true }); // Validate immediately
+                            },
+                        }}
+                        >
+                    <FileUploadTrigger asChild>
                         <Button variant="outline" size="sm">
                           <HiUpload /> Upload File
                         </Button>
                       </FileUploadTrigger>
                       <FileUploadList />
                     </FileUploadRoot>
+                    {/* Preview uploaded file or placeholder */}
+                    <Image
+                      src={
+                        watch("file")
+                          ? URL.createObjectURL(watch("file"))
+                          : placeholderImage
+                      }
+                      alt="Preview"
+                      style={{ width: "100px", height: "100px", marginTop: "10px" }}
+                    />
                   </Field>
                   <Field
                     label="Resource Type"

@@ -19,12 +19,13 @@ import {
   DrawerRoot,
   DrawerTitle,
 } from "./ui/drawer";
+import { supabase } from "../App";
 
 
 // Supabase configuration
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+// const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
+// export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const SignUpDrawer = ({ open, onClose }) => {
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between SignUp/Login

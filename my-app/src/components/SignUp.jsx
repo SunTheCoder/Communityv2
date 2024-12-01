@@ -12,11 +12,12 @@ import {
 import { RiArrowRightLine } from "react-icons/ri";
 import { Toaster, toaster } from "./ui/toaster";
 import { login, logout } from "../redux/userSlice";
+import { supabase } from "../App";
 
 // Supabase configuration
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+// const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
+// export const supabase = createClient(supabaseUrl, supabaseKey);
 
 const SignUp = () => {
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between SignUp/Login

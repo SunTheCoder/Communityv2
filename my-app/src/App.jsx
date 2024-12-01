@@ -4,6 +4,12 @@ import { Provider } from "react-redux";
 import store from "./store";
 import SplashPage from "./components/pages/SplashPage";
 import MainPage from "./components/pages/MainPage";
+import { createClient } from "@supabase/supabase-js";
+
+
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 function App() {
   return (

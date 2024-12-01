@@ -13,7 +13,7 @@ import { Toaster, toaster } from "./ui/toaster";
 import SignUp from "./SignUp";
 import ResourceList from "./ResourceList";
 import { ColorModeButton } from "./ui/color-mode";
-import { supabase } from "./SignUp";
+import { supabase } from "../App";
 import UserAvatar from "./UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userSlice";

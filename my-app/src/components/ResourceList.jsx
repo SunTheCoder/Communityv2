@@ -17,7 +17,7 @@ import {
   PaginationPrevTrigger,
   PaginationRoot,
 } from "./ui/pagination"; // Adjust the path as needed
-import { supabase } from "./SignUp";
+import { supabase } from "../App";
 import AddResourceDrawer from "./AddResourceDrawer";
 
 const ResourceList = () => {
@@ -79,7 +79,7 @@ const ResourceList = () => {
   const currentResources = resources.slice(startIndex, startIndex + itemsPerPage);
 
   const featuredResource = currentResources[0];
-  const otherResources = currentResources.slice(1);
+  const otherResources = currentResources;
 
   return (
     <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
@@ -94,7 +94,7 @@ const ResourceList = () => {
       ) : resources.length > 0 ? (
         <>
           {/* Featured Resource */}
-          {featuredResource && (
+          {/* {featuredResource && (
             <Card.Root
               borderWidth="1px"
               borderRadius="lg"
@@ -135,7 +135,7 @@ const ResourceList = () => {
                   <strong>Created At:</strong>{" "}
                   {new Date(featuredResource.created_at).toLocaleString()}
                 </Text> */}
-                {featuredResource.created_by_id && (
+                {/* {featuredResource.created_by_id && (
                   <Text>
                     <strong>Created By:</strong>{" "}
                     {profiles[featuredResource.created_by_id] || "Unknown User"}
@@ -143,7 +143,7 @@ const ResourceList = () => {
                 )}
               </Card.Body>
             </Card.Root>
-          )}
+          )} */} 
 
           {/* Other Resources */}
           <Grid
