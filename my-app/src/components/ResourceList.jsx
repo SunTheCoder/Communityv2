@@ -175,9 +175,9 @@ const ResourceList = () => {
                   <Card.Title>
                     {resource.resource_name || "Unnamed Resource"}
                   </Card.Title>
-                  <Card.Description>
+                  {/* <Card.Description>
                     {resource.description.split(" ").slice(0,16).join(" ") + "..." || "No description available."}
-                  </Card.Description>
+                  </Card.Description> */}
                   <Text fontSize="sm">
                     <strong>City:</strong> {resource.city || "Unknown"}
                   </Text>
@@ -192,12 +192,12 @@ const ResourceList = () => {
                     <strong>Created At:</strong>{" "}
                     {new Date(resource.created_at).toLocaleString()}
                   </Text> */}
-                  {resource.created_by_id && (
+                  {/* {resource.created_by_id && (
                     <Text fontSize="sm">
                       <strong>Created By:</strong>{" "}
                       {profiles[resource.created_by_id] || "Unknown User"}
                     </Text>
-                  )}
+                  )} */}
                 </Card.Body>
               </Card.Root>
             ))}

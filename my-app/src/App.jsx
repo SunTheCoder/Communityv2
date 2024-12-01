@@ -5,6 +5,8 @@ import store from "./store";
 import SplashPage from "./components/pages/SplashPage";
 import MainPage from "./components/pages/MainPage";
 import { createClient } from "@supabase/supabase-js";
+import 'leaflet/dist/leaflet.css';
+
 
 
 const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;

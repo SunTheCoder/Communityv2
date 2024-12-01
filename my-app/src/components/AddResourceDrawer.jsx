@@ -134,6 +134,7 @@ const states = createListCollection({
       
   })
 
+  
  
 const AddResourceDrawer = () => {
   const {
@@ -161,6 +162,17 @@ const AddResourceDrawer = () => {
       // Use placeholder if no file is provided
       const file = watch("file") || placeholderImage;
 
+       // Generate full address for geocoding
+    const fullAddress = `${data.streetAddress}, ${data.city}, ${data.state} ${data.zipCode}`;
+    
+    // Fetch latitude and longitude
+    const coordinates = await geocodeAddress(fullAddress);
+    if (!coordinates) {
+      throw new Error("Could not fetch geolocation. Please check the address.");
+    }
+
+    const { latitude, longitude } = coordinates;
+
 
       const { error } = await supabase.from("resources").insert([
         {
@@ -171,6 +183,8 @@ const AddResourceDrawer = () => {
           city: data.city,
           state: data.state.join(),
           zip_code: data.zipCode,
+          latitude: latitude,
+          longitude: longitude,
           created_by_id: user.id,
           image_url: file === placeholderImage ? placeholderImage : file.name, // Use placeholder or file name
 

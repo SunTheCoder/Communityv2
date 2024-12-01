@@ -25,8 +25,30 @@ import { PiFlowerLight } from "react-icons/pi";
 
 import SearchBar from "./SearchBar";
 import Map from "./Map";
+import CommunityMap from "./CommunityMap";
+import axios from "axios";
 
 
+const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
+
+  export const geocodeAddress = async (address) => {
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
+      address
+    )}&key=${GEOCODE_API_KEY}`;
+  
+    try {
+      const response = await axios.get(url);
+      if (response.data.results.length > 0) {
+        const { lat, lng } = response.data.results[0].geometry;
+        return { latitude: lat, longitude: lng };
+      } else {
+        throw new Error("No geocoding results found.");
+      }
+    } catch (error) {
+      console.error("Error fetching geocoding data:", error.message);
+      return null;
+    }
+  };
 
 const Layout = () => {
   const [value, setValue] = useState("first");
@@ -34,6 +56,8 @@ const Layout = () => {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const { user, isLoggedIn } = useSelector((state) => state.user);
+
+  
 
   // Fetch the logged-in user's profile
   useEffect(() => {
@@ -192,14 +216,15 @@ const Layout = () => {
                 <Separator orientation="vertical" height="100%" width="fit-content"/>
         </Box>
         <Box 
-            py={40}
+            // py={40}
             gridColumn="span 8"
             display="flex"
-            justifyContent="center"
+            // justifyContent="center"
             
 
           >
-                <Map />
+                {/* <Map /> */}
+                <CommunityMap/>
           </Box>
       </SimpleGrid>
     </Box>
