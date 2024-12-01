@@ -15,7 +15,7 @@ const SearchBar = () => {
             <Input
                 variant='subtle'
                 type="text"
-                placeholder="ex. MLK2025"
+                placeholder="Search for resource..."
             />
 
       </Field>
