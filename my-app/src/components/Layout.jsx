@@ -22,6 +22,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { PiFlowerLight } from "react-icons/pi";
 
 import SearchBar from "./SearchBar";
+import Map from "./Map";
 
 
 
@@ -181,7 +182,21 @@ const Layout = () => {
                 <SignUp />
             </Tabs.Content> */}
           </Tabs.Root>
+
+        
+
         </Box>
+
+        <Box 
+            py={40}
+            gridColumn="span 9"
+            display="flex"
+            justifyContent="center"
+            
+
+          >
+                <Map />
+          </Box>
       </SimpleGrid>
     </Box>
   );
