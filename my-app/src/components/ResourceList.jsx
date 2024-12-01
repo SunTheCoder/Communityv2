@@ -127,14 +127,14 @@ const ResourceList = () => {
                   <strong>Resource Type:</strong>{" "}
                   {featuredResource.resource_type || "Unknown"}
                 </Text>
-                <Text>
+                {/* <Text>
                   <strong>Address:</strong>{" "}
                   {featuredResource.street_address || "Unknown"}
-                </Text>
-                <Text>
+                </Text> */}
+                {/* <Text>
                   <strong>Created At:</strong>{" "}
                   {new Date(featuredResource.created_at).toLocaleString()}
-                </Text>
+                </Text> */}
                 {featuredResource.created_by_id && (
                   <Text>
                     <strong>Created By:</strong>{" "}
@@ -171,29 +171,29 @@ const ResourceList = () => {
                   height="200px"
                   objectFit="cover"
                 />
-                <Card.Body gap={4}>
+                <Card.Body gap={2}>
                   <Card.Title>
                     {resource.resource_name || "Unnamed Resource"}
                   </Card.Title>
                   <Card.Description>
-                    {resource.description || "No description available."}
+                    {resource.description.split(" ").slice(0,16).join(" ") + "..." || "No description available."}
                   </Card.Description>
-                  <Text>
-                    <strong>Location:</strong> {resource.city || "Unknown"}
+                  <Text fontSize="sm">
+                    <strong>City:</strong> {resource.city || "Unknown"}
                   </Text>
-                  <Text>
+                  <Text fontSize="sm">
                     <strong>Resource Type:</strong>{" "}
                     {resource.resource_type || "Unknown"}
                   </Text>
-                  <Text>
+                  {/* <Text>
                     <strong>Address:</strong> {resource.street_address || "Unknown"}
-                  </Text>
-                  <Text>
+                  </Text> */}
+                  {/* <Text>
                     <strong>Created At:</strong>{" "}
                     {new Date(resource.created_at).toLocaleString()}
-                  </Text>
+                  </Text> */}
                   {resource.created_by_id && (
-                    <Text>
+                    <Text fontSize="sm">
                       <strong>Created By:</strong>{" "}
                       {profiles[resource.created_by_id] || "Unknown User"}
                     </Text>

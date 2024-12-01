@@ -5,35 +5,36 @@ import {
   Text,
   Tabs,
   Spinner,
-  IconButton, 
-  Tooltip
+  IconButton,
+  SimpleGrid,
+  HStack
 } from "@chakra-ui/react";
 import { Toaster, toaster } from "./ui/toaster";
 import SignUp from "./SignUp";
 import ResourceList from "./ResourceList";
-import { ColorModeButton } from "./ui/color-mode"; // Adjust the path if necessary
-import { supabase } from "./SignUp"; // Adjust the path if necessary
+import { ColorModeButton } from "./ui/color-mode";
+import { supabase } from "./SignUp";
 import UserAvatar from "./UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/userSlice"; // Adjust the import path
+import { login } from "../redux/userSlice";
 import { HiOutlinePencilSquare, HiMiniChatBubbleLeftEllipsis } from "react-icons/hi2";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { PiFlowerLight } from "react-icons/pi";
 
-
+import SearchBar from "./SearchBar";
 
 const Layout = () => {
   const [value, setValue] = useState("first");
-//   const [user, setUser] = useState(null); // State to hold user profile
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const { user, isLoggedIn } = useSelector((state) => state.user); // Access Redux store
+  const { user, isLoggedIn } = useSelector((state) => state.user);
 
   // Fetch the logged-in user's profile
   useEffect(() => {
     const fetchUserProfile = async () => {
       setLoading(true);
       try {
-        // Get the logged-in user's session
         const {
           data: { session },
           error: sessionError,
@@ -42,7 +43,6 @@ const Layout = () => {
         if (sessionError) throw new Error(sessionError.message);
 
         if (session && session.user) {
-          // Fetch profile from the profiles table
           const { data: profileData, error: profileError } = await supabase
             .from("profiles")
             .select("id, username, bio, avatar_url, email")
@@ -59,10 +59,6 @@ const Layout = () => {
               email: profileData.email,
             })
           );
-        } else {
-        //   setError("No user logged in.");
-        <UserAvatar/>
-         
         }
       } catch (error) {
         console.error("Error fetching user profile:", error.message);
@@ -76,80 +72,82 @@ const Layout = () => {
   }, [dispatch]);
 
   return (
-    <Box
-      _dark={{ bg: "gray.800" }}
-      minHeight="100vh" // Ensures it spans the entire height of the viewport
-      display="flex"
-      flexDirection="column"
-      
-    >
-      {/* Top Section with Avatar and User Info */}
-      <Box position="absolute" top={4} left={14}>
-        {loading ? (
-          <Spinner />
-        ) : error ? (
-          <Text color="red.500">{error}</Text>
-        ) : (
-       
-         <UserAvatar />
-        
-        )}
-      </Box>
+    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" display="flex" flexDirection="column">
+      {/* Grid Layout */}
+      <SimpleGrid columns={20} spacing={4} p={4}>
+        {/* Row 1: Avatar, Icons, Search Bar, and Logo */}
+        {/* <Box gridColumn="span 1"></Box> */}
+        <Box gridColumn="span 1">
+          {loading ? (
+            <Spinner />
+          ) : error ? (
+            <Text color="red.500">{error}</Text>
+          ) : (
+            <UserAvatar />
+          )}
+        </Box>
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="end">
+          <HiOutlinePencilSquare
+            size="24"
+            cursor="pointer"
+            onClick={() =>
+              toaster.create({
+                title: "Join our community!",
+                description: "Contribute to the community map!",
+                type: "info",
+              })
+            }
+          />
+        </Box>
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="center">
+          <IoNotificationsOutline
+            size="24"
+            cursor="pointer"
+            onClick={() =>
+              toaster.create({
+                title: "Community Map Updates!",
+                description: "Check out the latest updates!",
+                type: "info",
+              })
+            }
+          />
+        </Box>
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
+          <HiMiniChatBubbleLeftEllipsis
+            size="24"
+            cursor="pointer"
+            onClick={() =>
+              toaster.create({
+                title: "Chat Feature",
+                description: "Start a conversation in the community!",
+                type: "info",
+              })
+            }
+          />
+        </Box>
+        <Box gridColumn="span 12"></Box>
+        <HStack gridColumn="span 4">
+            <Box width="240px" paddingRight="15px">
+            <SearchBar />
+            </Box>
+            <Box  textAlign="center" px="15px">
+            <Heading as="h1" size="3xl" >
+                <PiFlowerLight />
 
-      {/* DM Component*/}
-      <Box 
-        position="absolute" 
-        top={30} 
-        left={280}
-        cursor="pointer" 
-        zIndex={1}
-        onClick={() => toaster.create({
-            title: "Welcome to Community Map!",
-            description: `Welcome, ${user?.username}!`,
-            type: "info",
-        })} 
-        >
+            </Heading>
+            </Box>
+        <Box  >
+          <ColorModeButton />
+        </Box>
+        </HStack>
 
-        <HiOutlinePencilSquare />
-
-      </Box>
-
-      {/* Post Component*/}
-      
-      <Box 
-        position="absolute" 
-        top={30} 
-        left={230}
-        cursor="pointer" 
-        zIndex={1}
-        onClick={() => toaster.create({
-            title: "Join our community!",
-            description: "Join our growing community and contribute to the map!",
-            type: "info",
-        })}
-        >
-
-        <HiMiniChatBubbleLeftEllipsis />
-
-      </Box>
-
-      {/* App Title */}
-      <Box position="absolute" top={2} right={14}>
-        <Heading as="h1" size="2xl" mb={6}>
-          Community Map
-        </Heading>
-      </Box>
-
-      {/* Color Mode Button */}
-      <Box position="absolute" top={2} right={4} zIndex='1'>
-        <ColorModeButton />
-      </Box>
-
-      {/* Tabs Section */}
-      <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)}>
-        <Tabs.List
-          style={{
-            display: "flex",
+        {/* Row 2: Tabs Section */}
+        <Box gridColumn="span 1"></Box>
+        <Box gridColumn="span 10">
+          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)}>
+            <Tabs.List
+              style={{
+                display: "flex",
             justifyContent: "center",
             
             width: 'fit-content',
@@ -157,37 +155,27 @@ const Layout = () => {
             left:"50%",
             transform:"translateX(-50%)",
             gap: "1rem",
-          }}
-        >
-          <Tabs.Trigger value="first">First tab</Tabs.Trigger>
-          <Tabs.Trigger value="second">Second tab</Tabs.Trigger>
-          <Tabs.Trigger value="third">Third tab</Tabs.Trigger>
-          <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
-          <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger>
-        </Tabs.List>
+              }}
+            >
+              <Tabs.Trigger value="first">First tab</Tabs.Trigger>
+              <Tabs.Trigger value="second">Second tab</Tabs.Trigger>
+              <Tabs.Trigger value="third">Third tab</Tabs.Trigger>
+              <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
+              <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger>
+            </Tabs.List>
 
-        <Tabs.Content value="first">
-          <ResourceList />
-          <Box display="flex" justifyContent="center" mt={4}>
-            {/* <AddResourceDrawer /> */}
-          </Box>
-        </Tabs.Content>
-        <Tabs.Content value="second">
-          <Box>
-            <Heading as="h3"></Heading>
-            <SignUp />
-          </Box>
-        </Tabs.Content>
-        <Tabs.Content value="third">
-          <Text>Another additional content</Text>
-        </Tabs.Content>
-        <Tabs.Content value="fourth">
-          <Text>Another additional content</Text>
-        </Tabs.Content>
-        <Tabs.Content value="fifth">
-          <Text>Another additional content</Text>
-        </Tabs.Content>
-      </Tabs.Root>
+            <Tabs.Content value="first">
+              <ResourceList />
+            </Tabs.Content>
+            <Tabs.Content value="second">
+              <SignUp />
+            </Tabs.Content>
+            <Tabs.Content value="third">
+              <Text>Additional content here</Text>
+            </Tabs.Content>
+          </Tabs.Root>
+        </Box>
+      </SimpleGrid>
     </Box>
   );
 };
