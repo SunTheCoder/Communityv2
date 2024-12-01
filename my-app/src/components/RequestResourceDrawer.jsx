@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { supabase } from "./SignUp";
+import { supabase } from "../App"
 import { Field } from "./ui/field";
 import { Toaster, toaster } from "./ui/toaster"; // Import the toaster
 
@@ -11,7 +11,7 @@ import {
   SelectTrigger, 
   SelectValueText 
 } from "./ui/select";
-import { Button, Input, Stack, Textarea, Card, createListCollection } from "@chakra-ui/react";
+import { Button, Input, Stack, Textarea, Card, createListCollection, Image } from "@chakra-ui/react";
 import { RiArrowRightLine } from "react-icons/ri";
 import { HiUpload } from "react-icons/hi"
 
@@ -33,6 +33,7 @@ import {
     FileUploadRoot,
     FileUploadTrigger,
   } from "./ui/file-upload"
+import { geocodeAddress } from "./Layout";
 
 // Resource Types Collection
 const resourceTypes = createListCollection({
@@ -45,9 +46,7 @@ const resourceTypes = createListCollection({
     { label: "Community Acupuncture", value: "Community Acupuncture" },
     { label: "Herbalist", value: "Herbalist" },
     { label: "Mutual Aid", value: "Mutual Aid" },
-    { label: "Healthcare Professional", value: "Healthcare Professional" },
     { label: "Homeless Shelter", value: "Homeless Shelter" },
-    { label: "Nutritionist", value: "Nutritionist" },
     { label: "Pet Sitter", value: "Pet Sitter" },
     { label: "Psychiatrist", value: "Psychiatrist" },
     { label: "Veterinarian", value: "Veterinarian" },
@@ -65,11 +64,17 @@ const resourceTypes = createListCollection({
     { label: "Library", value: "Library" },
     { label: "Folklore School", value: "Folklore School" },
     { label: "Gymnasium", value: "Gymnasium" },
-    { label: "Health Club", value: "Health Club" },
+    { label: "Recreation Club", value: "Recreation Club" },
     { label: "Fraternity/Sorority House", value: "Fraternity/Sorority House" },
     { label: "English Language School", value: "English Language School" },
     { label: "Family Resource Center", value: "Family Resource Center" },
-    { label: "General Practitioner", value: "General Practitioner" },
+    { label: "Queer Connection Group", value: "Queer Connection Group" },
+    { label: "Queer Support Group", value: "Queer Support Group" },
+    { label: "Recreation Center", value: "Recreation Center" },
+    { label: "Creative Connection Group", value: "Creative Connection Group" },
+    { label: "Co-Op / Third Space", value: "Co-Op / Third Space" },
+    { lavel: "Activist Group", value: "Activist Group" },
+    { label: "Farmer's Market", value: "Farmers Market" },
 
   ],
 });
@@ -130,6 +135,7 @@ const states = createListCollection({
       
   })
 
+  
  
 const RequestResourceDrawer = () => {
   const {
@@ -142,52 +148,90 @@ const RequestResourceDrawer = () => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   
+  const placeholderImage = "https://placehold.co/600x400/png"; // Default placeholder image URL
 
   const onSubmit = async (data) => {
     setErrorMessage(null);
-    console.log(data)
-    
+    console.log(data);
+  
     try {
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      // Get the currently authenticated user
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
       if (userError || !user) {
         throw new Error("Could not get user. Please log in.");
       }
 
-      const { error } = await supabase.from("resources").insert([
+       // Use placeholder if no file is provided
+       const file = watch("file") || placeholderImage;
+  
+      // Generate full address for geocoding
+      const fullAddress = `${data.streetAddress}, ${data.city}, ${data.state} ${data.zipCode}`;
+  
+      // Fetch latitude and longitude using geocoding
+      const coordinates = await geocodeAddress(fullAddress); // Assume geocodeAddress is a helper function
+      if (!coordinates) {
+        throw new Error("Could not fetch geolocation. Please check the address.");
+      }
+  
+      const { latitude, longitude } = coordinates;
+  
+      // Insert into the resource_requests table
+      const { error } = await supabase.from("resource_requests").insert([
         {
-          resource_name: data.resourceName,
-          resource_type: data.resourceType.join(),
-          description: data.description,
-          street_address: data.streetAddress,
-          city: data.city,
-          state: data.state.join(),
-          zip_code: data.zipCode,
-          created_by_id: user.id,
+          user_id: user.id, // Authenticated user ID
+          name: data.resourceName, // Resource name from form
+          type: data.resourceType.join(), // Resource type from form
+          description: data.description, // Resource description
+          location: {
+            street_address: data.streetAddress,
+            city: data.city,
+            state: data.state.join(),
+            zip_code: data.zipCode,
+          }, // JSONB location
+          latitude: latitude, // Latitude from geocoding
+          longitude: longitude, // Longitude from geocoding
+          status: "pending", // Default status for a new request
+          admin_id: null, // Admin not assigned initially
+          comments: null, // No comments on initial submission
+          image_url: file === placeholderImage ? placeholderImage : file.name, // Use placeholder or file name
+          community_verified: false,
+            wheelchair_access: data.wheelchairAccess || false,
+            car_access: data.carAccess || false,
+            pickup_truck_access: data.pickupTruckAccess || false,
+            commercial_truck_access: data.commercialTruckAccess || false,
+            has_street_lights: data.hasStreetLights || false,
+            last_cleaned: null,
+            needs_maintenance: false,
+            last_maintenance: null,
+
         },
       ]);
-
+  
       if (error) {
-        throw new Error("Error adding resource. Please try again.");
+        throw new Error("Error requesting resource. Please try again.");
       }
+  
       toaster.create({
-        title: "Resource Added",
-        description: "The resource was successfully added to the database.",
+        title: "Resource Request Submitted",
+        description: "Your resource request has been submitted for admin review.",
         type: "success",
       });
     } catch (error) {
-      console.error("Error adding resource:", error.message);
+      console.error("Error requesting resource:", error.message);
       setErrorMessage(error.message);
-
+  
       // Show error toast
       toaster.create({
-        title: "Error Adding Resource",
+        title: "Error Requesting Resource",
         description: error.message,
         type: "error",
-        
-        
       });
     }
   };
+  
 
   return (
     <DrawerRoot size="sm">
@@ -198,7 +242,7 @@ const RequestResourceDrawer = () => {
           _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
           variant="solid"
         >
-          Add Resource <RiArrowRightLine />
+          Request Resource <RiArrowRightLine />
         </Button>
       </DrawerTrigger>
       <DrawerContent borderLeftRadius="lg" overflow="hidden" p={4} width="full">
@@ -207,7 +251,7 @@ const RequestResourceDrawer = () => {
           <CloseButton />
         </DrawerCloseTrigger>
         <DrawerHeader>
-          <DrawerTitle>Add Resource</DrawerTitle>
+          <DrawerTitle>Request Resource</DrawerTitle>
         </DrawerHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DrawerBody>
@@ -235,27 +279,34 @@ const RequestResourceDrawer = () => {
                     />
                   </Field>
                   <Field helperText="Provide an image to make the resource easier to find.">
-                    <FileUploadRoot
-                      accept={["image/png"]}
-                      directory
-                      inputProps={{
-                        multiple: false,
-                        onChange: (e) => {
-                          const file = e.target.files[0];
-                          setValue("file", file);
-                        },
-                        ref: register("file", {
-                          required: "File is required",
-                        }).ref,
-                      }}
-                    >
-                      <FileUploadTrigger asChild>
+                  <FileUploadRoot
+                        accept={["image/png"]}
+                        directory
+                        inputProps={{
+                            multiple: false,
+                            onChange: (e) => {
+                            const file = e.target.files[0];
+                            setValue("file", file, { shouldValidate: true }); // Validate immediately
+                            },
+                        }}
+                        >
+                    <FileUploadTrigger asChild>
                         <Button variant="outline" size="sm">
                           <HiUpload /> Upload File
                         </Button>
                       </FileUploadTrigger>
                       <FileUploadList />
                     </FileUploadRoot>
+                    {/* Preview uploaded file or placeholder */}
+                    <Image
+                      src={
+                        watch("file")
+                          ? URL.createObjectURL(watch("file"))
+                          : placeholderImage
+                      }
+                      alt="Preview"
+                      style={{ width: "100px", height: "100px", marginTop: "10px" }}
+                    />
                   </Field>
                   <Field
                     label="Resource Type"

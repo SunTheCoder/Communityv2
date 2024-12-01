@@ -63,6 +63,7 @@ const UserAvatar = () => {
           >
             <MenuItem>{user?.username || "No Username Available"}</MenuItem>
             <MenuItem>{user?.email || "No Email Available"}</MenuItem>
+            <MenuItem>{user?.role || "No Email Available"}</MenuItem>
             <MenuItem
               value="profile"
               onSelect={() => console.log("Profile clicked")}

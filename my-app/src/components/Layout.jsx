@@ -27,6 +27,7 @@ import SearchBar from "./SearchBar";
 import Map from "./Map";
 import CommunityMap from "./CommunityMap";
 import axios from "axios";
+import AdminDashboard from "./AdminDashboard";
 
 
 const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
@@ -74,7 +75,7 @@ const Layout = () => {
         if (session && session.user) {
           const { data: profileData, error: profileError } = await supabase
             .from("profiles")
-            .select("id, username, bio, avatar_url, email")
+            .select("id, username, bio, avatar_url, email, role")
             .eq("id", session.user.id)
             .single();
 
@@ -86,6 +87,7 @@ const Layout = () => {
               username: profileData.username,
               avatarUrl: profileData.avatar_url,
               email: profileData.email,
+              role: profileData.role,
             })
           );
         }
@@ -207,6 +209,9 @@ const Layout = () => {
                 
                 <SignUp />
                 </Tabs.Content> */}
+                {user?.role === "admin" && (
+                    <AdminDashboard/>
+                    )}
           </Tabs.Root>
 
         

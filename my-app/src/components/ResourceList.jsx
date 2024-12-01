@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
   Grid,
@@ -19,12 +20,20 @@ import {
 } from "./ui/pagination"; // Adjust the path as needed
 import { supabase } from "../App";
 import AddResourceDrawer from "./AddResourceDrawer";
+import RequestResourceDrawer from "./RequestResourceDrawer";
+
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]);
   const [profiles, setProfiles] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const { user, isLoggedIn } = useSelector((state) => state.user);
+  const [drawerOpen, setDrawerOpen] = useState(false); // State to control the drawer
+  const [selectedRequest, setSelectedRequest] = useState(null); // To store the selected request
+
+
 
   const itemsPerPage = 6;
   const [page, setPage] = useState(1);
@@ -80,6 +89,11 @@ const ResourceList = () => {
 
   const featuredResource = currentResources[0];
   const otherResources = currentResources;
+
+  const onDrawerClose = () => {
+    setSelectedRequest(null); // Clear the selected request
+    setDrawerOpen(false); // Close the drawer
+  };
 
   return (
     <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
@@ -204,9 +218,24 @@ const ResourceList = () => {
           </Grid>
 
           {/* Add Resource Button */}
-          <Box py={10} textAlign="center">
-            <AddResourceDrawer />
-          </Box>
+          {user?.role === "admin" ? (
+            <Box py={10} textAlign="center">
+              <AddResourceDrawer 
+  isOpen={drawerOpen} 
+  onClose={onDrawerClose} 
+  initialData={selectedRequest}
+/>
+            </Box>
+          ) : user?.role === "user" ? (
+            <Box py={10} textAlign="center">
+              <RequestResourceDrawer />
+            </Box>
+          ) : (
+            <Box py={10} textAlign="center">
+              <p>You do not have access to this feature.</p>
+            </Box>
+          )}
+
 
           {/* Pagination */}
           <Box textAlign="center" p={3}>

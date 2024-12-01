@@ -58,6 +58,7 @@ const SignUpDrawer = ({ open, onClose }) => {
         id: userData.user.id,
         username: username || "New User",
         avatar_url: avatarUrl?.trim() || null,
+        role: "user"
       });
 
       if (profileError) {
@@ -70,6 +71,7 @@ const SignUpDrawer = ({ open, onClose }) => {
           email,
           username,
           avatarUrl,
+          role
         })
       );
 
@@ -114,6 +116,7 @@ const SignUpDrawer = ({ open, onClose }) => {
           email,
           username: profile.username,
           avatarUrl: profile.avatar_url,
+          role: profile.role,
         })
       );
 
