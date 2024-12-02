@@ -40,7 +40,7 @@ const UserAvatar = () => {
   return (
     <HStack gap={4}>
       {isLoggedIn ? (
-        <MenuRoot>
+        <MenuRoot positioning={{ gutter: 65}}>
           {/* Menu Trigger */}
           <MenuTrigger asChild>
             <Avatar
@@ -55,15 +55,15 @@ const UserAvatar = () => {
 
           {/* Menu Content */}
           <MenuContent
-            mx="50px"
+            mx="30px"
             boxShadow="lg"
             borderRadius="md"
             bg="white"
             _dark={{ bg: "gray.700" }}
           >
-            <MenuItem>{user?.username || "No Username Available"}</MenuItem>
+            <MenuItem>Hello, {user?.username || "No Username Available"}!</MenuItem>
             <MenuItem>{user?.email || "No Email Available"}</MenuItem>
-            <MenuItem>{user?.role || "No Email Available"}</MenuItem>
+            <MenuItem>{user?.role || "No Role Available"}</MenuItem>
             <MenuItem
               value="profile"
               onSelect={() => console.log("Profile clicked")}
@@ -125,10 +125,10 @@ const UserAvatar = () => {
         </MenuRoot>
       )}
 
-      {/* User Info */}
+      {/* User Info
       <Stack spacing={0}>
         <Text fontWeight="bold">{user?.username || "Guest"}</Text>
-      </Stack>
+      </Stack> */}
 
       {/* SignUpDrawer */}
       <SignUpDrawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />

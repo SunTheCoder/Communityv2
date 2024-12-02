@@ -117,7 +117,7 @@ const Layout = () => {
             <UserAvatar />
           )}
         </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="end">
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
           <HiOutlinePencilSquare
             size="24"
             cursor="pointer"
@@ -130,7 +130,7 @@ const Layout = () => {
             }
           />
         </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="center">
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
           <IoNotificationsOutline
             size="24"
             cursor="pointer"
