@@ -3,7 +3,9 @@ import { Box, Text, VStack, HStack, Button, Flex } from "@chakra-ui/react";
 
 const Post = ({ post }) => {
   return (
-    <Box width="550px"p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4} _dark={{ bg:"gray.800"}}>
+    <Box width="550px"p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4} _dark={{ bg:"gray.800"}}
+    _hover={{ transform: "scale(1.25)", border: "1px solid", borderColor: "gray.700"}}
+    >
       <Flex justifyContent="space-between" alignItems="center">
         <Box>
           <Text color="gray.700"_dark={{color:"pink.200"}} fontWeight="bold" >{post.author_username}</Text>
