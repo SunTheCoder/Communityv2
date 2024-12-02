@@ -3,7 +3,7 @@ import { Box, Text, VStack, HStack, Button, Flex } from "@chakra-ui/react";
 
 const Post = ({ post }) => {
   return (
-    <Box p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4}>
+    <Box width="550px"p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4}>
       <Flex justifyContent="space-between" alignItems="center">
         <Box>
           <Text fontWeight="bold">{post.author_username}</Text>
@@ -18,7 +18,7 @@ const Post = ({ post }) => {
       </Flex>
 
       <HStack>
-      <Box maxWidth="375px">
+      <Box height="80px"maxWidth="425px">
         <Text fontSize="xs" mt={2}>{post.content}</Text>
       </Box>  
       {post.image_url && (
@@ -37,7 +37,7 @@ const Post = ({ post }) => {
         <VStack align="flex-start" mt={4}>
           <Text fontWeight="bold">Tagged Resources:</Text>
           {post.tagged_resources.map((tagged) => (
-            <Text key={tagged.resource_id} fontSize="sm" color="blue.500">
+            <Text key={tagged.resource_id} fontSize="sm" >
               {tagged.resources.resource_name || "Unknown Resource"}
             </Text>
           ))}
