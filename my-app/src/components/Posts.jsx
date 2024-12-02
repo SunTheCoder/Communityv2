@@ -3,23 +3,23 @@ import { Box, Text, VStack, HStack, Button, Flex } from "@chakra-ui/react";
 
 const Post = ({ post }) => {
   return (
-    <Box width="550px"p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4}>
+    <Box width="550px"p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4} _dark={{ bg:"gray.800"}}>
       <Flex justifyContent="space-between" alignItems="center">
         <Box>
-          <Text fontWeight="bold">{post.author_username}</Text>
-          <Text fontSize="xs" color="gray.500">
+          <Text color="gray.700"_dark={{color:"pink.200"}} fontWeight="bold" >{post.author_username}</Text>
+          <Text fontSize="xs" color="gray.700"_dark={{color:"pink.200"}}>
             {new Date(post.created_at).toLocaleString().split(",")[0]} at{" "}
             {new Date(post.created_at).toLocaleString().split(",")[1]}
           </Text>
         </Box>
-        <Button size="xs" variant="ghost">
+        <Button size="xs" variant="ghost" color="gray.700"_dark={{color:"pink.200"}}>
           Follow
         </Button>
       </Flex>
 
       <HStack>
-      <Box maxHeight="150px"maxWidth="425px">
-        <Text fontSize="xs" mt={2}>{post.content}</Text>
+      <Box maxHeight="150px"maxWidth="425px" color="gray.700" _dark={{ color:"pink.200"}}>
+        <Text fontSize="xs" mt={2}>{post.content} </Text>
       </Box>  
       {post.image_url && (
         <Box mt={4}>
@@ -58,13 +58,13 @@ const Post = ({ post }) => {
       )}
 
       <HStack mt={4} spacing={2}>
-        <Button size="xs" variant="ghost">
+        <Button size="xs" variant="ghost" color="gray.700" _dark={{color:"pink.200"}}>
           👍 Like
         </Button>
-        <Button size="xs" variant="ghost">
+        <Button size="xs" variant="ghost" color="gray.700" _dark={{color:"pink.200"}}>
           💬 Comment
         </Button>
-        <Button size="xs" variant="ghost">
+        <Button size="xs" variant="ghost" color="gray.700" _dark={{color:"pink.200"}}>
           ❤️ React
         </Button>
       </HStack>
