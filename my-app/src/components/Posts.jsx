@@ -18,7 +18,7 @@ const Post = ({ post }) => {
       </Flex>
 
       <HStack>
-      <Box height="80px"maxWidth="425px">
+      <Box maxHeight="150px"maxWidth="425px">
         <Text fontSize="xs" mt={2}>{post.content}</Text>
       </Box>  
       {post.image_url && (
