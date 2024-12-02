@@ -92,7 +92,7 @@ const UserAvatar = () => {
           </MenuContent>
         </MenuRoot>
       ) : (
-        <MenuRoot positioning={{ gutter: 80 }}>
+        <MenuRoot positioning={{ gutter: 65 }}>
           {/* Menu Trigger */}
           <MenuTrigger asChild>
             <Avatar
@@ -107,7 +107,7 @@ const UserAvatar = () => {
 
           {/* Menu Content */}
           <MenuContent
-            mx="50px"
+            mx="30px"
             boxShadow="lg"
             borderRadius="md"
             bg="white"
