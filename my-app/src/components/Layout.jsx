@@ -103,7 +103,7 @@ const Layout = () => {
   return (
     <Box _dark={{ bg: "gray.800" }} minHeight="100vh" display="flex" flexDirection="column">
             
-                <Separator position='absolute' top='62px'/>
+                <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
             
       {/* Grid Layout */}
       <SimpleGrid columns={20} spacing={4} p={3}>
@@ -176,7 +176,7 @@ const Layout = () => {
         <Box gridColumn="span 1"></Box>
         <Box gridColumn="span 9">
             
-          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px'>
+          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px' >
             <Tabs.List
               style={{
                 display: "flex",
@@ -187,7 +187,9 @@ const Layout = () => {
             left:"50%",
             transform:"translateX(-50%)",
             gap: "1rem",
+            
               }}
+              _dark={{borderColor:"pink.600"}}
             >
               <Tabs.Trigger value="first">Feed</Tabs.Trigger>
               <Tabs.Trigger value="second">Map</Tabs.Trigger>
@@ -219,7 +221,7 @@ const Layout = () => {
 
         </Box>
         <Box display='flex' justifyContent='center'>
-                <Separator marginTop="11px"orientation="vertical" height="100%px"  width="fit-content"/>
+                <Separator marginTop="11px"orientation="vertical" height="100%px"  width="fit-content" _dark={{borderColor:"pink.600"}}/>
         </Box>
         <Box 
             // py={40}
