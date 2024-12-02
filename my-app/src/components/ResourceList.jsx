@@ -33,9 +33,12 @@ const ResourceList = () => {
   const [drawerOpen, setDrawerOpen] = useState(false); // State to control the drawer
   const [selectedRequest, setSelectedRequest] = useState(null); // To store the selected request
 
+  const [itemsPerPage, setItemsPerPage] = useState(9); // Initial items per page
 
 
-  const itemsPerPage = 9;
+
+
+  // const itemsPerPage = 9;
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -81,6 +84,32 @@ const ResourceList = () => {
     };
 
     fetchResources();
+  }, []);
+
+
+  // Adjust itemsPerPage based on screen size
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      const width = window.innerWidth;
+      if (width < 600) {
+        setItemsPerPage(4); // Small screens
+      } else if (width < 900) {
+        setItemsPerPage(6); // Medium screens
+      } else {
+        setItemsPerPage(12); // Large screens
+      }
+    };
+
+    // Run on initial load
+    updateItemsPerPage();
+
+    // Add resize listener
+    window.addEventListener("resize", updateItemsPerPage);
+
+    // Cleanup listener
+    return () => {
+      window.removeEventListener("resize", updateItemsPerPage);
+    };
   }, []);
 
   const totalPages = Math.ceil(resources.length / itemsPerPage);
@@ -165,6 +194,7 @@ const ResourceList = () => {
               base: "repeat(1, 1fr)",
               md: "repeat(2, 1fr)",
               lg: "repeat(3, 1fr)",
+              xl: "repeat(4, 1fr)",
             }}
             gap={6}
           >

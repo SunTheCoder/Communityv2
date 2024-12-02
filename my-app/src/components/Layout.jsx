@@ -28,6 +28,7 @@ import Map from "./Map";
 import CommunityMap from "./CommunityMap";
 import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
+import CommunityFeed from "./CommunityFeed";
 
 
 const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
@@ -199,7 +200,8 @@ const Layout = () => {
             </Tabs.List>
 
             <Tabs.Content value="first">
-                <Text>Community Feed Placeholder</Text>
+                {/* <Text>Community Feed Placeholder</Text> */}
+                <CommunityFeed/>
             </Tabs.Content>
             <Tabs.Content value="second">
                 <Text>Map Placeholder</Text>
