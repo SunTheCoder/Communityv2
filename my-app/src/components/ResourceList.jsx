@@ -180,7 +180,8 @@ const ResourceList = () => {
                 shadow="md"
                 bg="gray.100"
                 _dark={{ bg: "gray.800" }}
-                _hover={{ transform: "scale(1.05)" }}
+                _hover={{ transform: "scale(1.02)", border: "1px solid", borderColor: "gray.700", cursor: "pointer" }}
+
               >
                 <Image
                   src={resource.image_url || "/no-image.png"}
