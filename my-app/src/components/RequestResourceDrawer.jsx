@@ -18,6 +18,7 @@ import { HiUpload } from "react-icons/hi"
 import {
   DrawerBackdrop,
   DrawerBody,
+  DrawerActionTrigger,
   DrawerCloseTrigger,
   DrawerContent,
   DrawerFooter,
@@ -411,23 +412,27 @@ const RequestResourceDrawer = () => {
             </Card.Root>
           </DrawerBody>
           <DrawerFooter justifyContent="flex-end" gap={4}>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() =>
-                toaster.create({ title: "Canceled", type: "info" })
-              }
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="solid"
-              bg="gray.400"
-              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
-            >
-              Submit <RiArrowRightLine />
-            </Button>
+            <DrawerActionTrigger>
+                <Button
+                type="button"
+                variant="outline"
+                onClick={() =>
+                    toaster.create({ title: "Canceled", type: "info" })
+                }
+                >
+                Cancel
+                </Button>
+            </DrawerActionTrigger>
+            <DrawerActionTrigger asChild>
+                <Button
+                type="submit"
+                variant="solid"
+                bg="gray.400"
+                _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+                >
+                Submit <RiArrowRightLine />
+                </Button>
+            </DrawerActionTrigger>
           </DrawerFooter>
         </form>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
