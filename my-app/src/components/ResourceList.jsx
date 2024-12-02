@@ -35,7 +35,7 @@ const ResourceList = () => {
 
 
 
-  const itemsPerPage = 6;
+  const itemsPerPage = 9;
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -170,6 +170,9 @@ const ResourceList = () => {
           >
             {otherResources.map((resource) => (
               <Card.Root
+                maxHeight="250px"
+                maxWidth="180px"
+                size="xs"
                 key={resource.id}
                 borderWidth="1px"
                 borderRadius="lg"
@@ -185,7 +188,7 @@ const ResourceList = () => {
                   height="200px"
                   objectFit="cover"
                 />
-                <Card.Body gap={2}>
+                <Card.Body gap={2} p={2}>
                   <Card.Title>
                     {resource.resource_name || "Unnamed Resource"}
                   </Card.Title>

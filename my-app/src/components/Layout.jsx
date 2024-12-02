@@ -102,35 +102,38 @@ const Layout = () => {
 
   return (
     <Box _dark={{ bg: "gray.800" }} minHeight="100vh" display="flex" flexDirection="column">
+            
+                <Separator position='absolute' top='62px'/>
+            
       {/* Grid Layout */}
-      <SimpleGrid columns={20} spacing={4} p={4}>
+      <SimpleGrid columns={20} spacing={4} p={3}>
         {/* Row 1: Avatar, Icons, Search Bar, and Logo */}
         {/* <Box gridColumn="span 1"></Box> */}
         <Box gridColumn="span 1">
           {loading ? (
-            <Spinner />
-          ) : error ? (
-            <Text color="red.500">{error}</Text>
-          ) : (
-            <UserAvatar />
-          )}
+              <Spinner />
+            ) : error ? (
+                <Text color="red.500">{error}</Text>
+            ) : (
+                <UserAvatar />
+            )}
         </Box>
         <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
           <HiOutlinePencilSquare
-            size="24"
+            size="20"
             cursor="pointer"
             onClick={() =>
-              toaster.create({
-                title: "Join our community!",
-                description: "Contribute to the community map!",
-                type: "info",
-              })
+                toaster.create({
+                    title: "Join our community!",
+                    description: "Contribute to the community map!",
+                    type: "info",
+                })
             }
-          />
+            />
         </Box>
         <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
           <IoNotificationsOutline
-            size="24"
+            size="20"
             cursor="pointer"
             onClick={() =>
               toaster.create({
@@ -143,7 +146,7 @@ const Layout = () => {
         </Box>
         <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
           <HiMiniChatBubbleLeftEllipsis
-            size="24"
+            size="20"
             cursor="pointer"
             onClick={() =>
               toaster.create({
@@ -169,17 +172,17 @@ const Layout = () => {
           <ColorModeButton />
         </Box>
         </HStack>
-
         {/* Row 2: Tabs Section */}
         <Box gridColumn="span 1"></Box>
         <Box gridColumn="span 9">
-          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)}>
+            
+          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px'>
             <Tabs.List
               style={{
                 display: "flex",
             justifyContent: "center",
             
-            width: 'fit-content',
+            width: 'calc(105% + 60px)',
             position:"relative",
             left:"50%",
             transform:"translateX(-50%)",
@@ -216,7 +219,7 @@ const Layout = () => {
 
         </Box>
         <Box display='flex' justifyContent='center'>
-                <Separator orientation="vertical" height="100%" width="fit-content"/>
+                <Separator marginTop="11px"orientation="vertical" height="100%px"  width="fit-content"/>
         </Box>
         <Box 
             // py={40}
