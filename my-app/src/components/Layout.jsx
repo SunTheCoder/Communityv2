@@ -58,8 +58,6 @@ const Layout = () => {
   const dispatch = useDispatch();
   const { user, isLoggedIn } = useSelector((state) => state.user);
 
-  
-
   // Fetch the logged-in user's profile
   useEffect(() => {
     const fetchUserProfile = async () => {

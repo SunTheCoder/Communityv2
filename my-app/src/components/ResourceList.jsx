@@ -221,10 +221,8 @@ const ResourceList = () => {
           {user?.role === "admin" ? (
             <Box py={10} textAlign="center">
               <AddResourceDrawer 
-  isOpen={drawerOpen} 
-  onClose={onDrawerClose} 
-  initialData={selectedRequest}
-/>
+                initialData={selectedRequest}
+              />
             </Box>
           ) : user?.role === "user" ? (
             <Box py={10} textAlign="center">

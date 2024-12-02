@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux"; // Access Redux state
 import { supabase } from "../App"; // Supabase client
-import { Box, Heading, Button, Stack, Text, Input } from "@chakra-ui/react";
+import { Box, Heading, Button, Stack, Text, Input, useDisclosure } from "@chakra-ui/react";
 import { Field } from "./ui/field";
 import { DataListItem, DataListRoot } from "./ui/data-list"
 
@@ -15,6 +15,7 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
 
   const {
     register,
@@ -30,7 +31,8 @@ const AdminDashboard = () => {
       setLoading(true);
       const { data, error } = await supabase
         .from("resource_requests")
-        .select("*");
+        .select("*")
+        .eq("status", "pending"); // Add the filter for status
 
       if (error) {
         throw new Error("Error fetching resource requests.");
@@ -196,17 +198,16 @@ const AdminDashboard = () => {
                         Add Comment
                         </Button>
                     </Box>
+
+                    {request.comments && (
                     <DataListRoot>
                     {request.comments.map((comment) => (
                         <DataListItem  label="Feedback:" value={comment}/>
                     ))}
                     </DataListRoot>
-                   
+                    )}
                 </Stack>
               </form>
-
-
-
               <Stack direction="row" spacing={4} mt={4}>
                 {/* <Button
                   colorScheme="green"
@@ -215,7 +216,7 @@ const AdminDashboard = () => {
                   Approve
                 </Button> */}
                 <AddResourceDrawer
-              
+                
                 initialData={request}
                 />
                 <Button
@@ -236,8 +237,6 @@ const AdminDashboard = () => {
       {/* AddResourceDrawer for admins to add resources */}
       {drawerOpen && (
         <AddResourceDrawer
-          isOpen={drawerOpen}
-          onClose={onDrawerClose}
           initialData={selectedRequest} // Pass pre-filled data
         />
       )}

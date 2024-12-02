@@ -12,6 +12,7 @@ import { login } from "../redux/userSlice";
 import {
   DrawerBackdrop,
   DrawerBody,
+  DrawerActionTrigger,
   DrawerCloseTrigger,
   DrawerContent,
   DrawerFooter,
@@ -240,15 +241,17 @@ const SignUpDrawer = ({ open, onClose }) => {
               >
             {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
           </Button>
-          <Button
-            type="submit"
-            isLoading={isLoading}
-            loadingText="Submitting..."
-            bg="green.500"
-            _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}
-          >
-            {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
-          </Button>
+          <DrawerActionTrigger asChild>
+            <Button
+                type="submit"
+                isLoading={isLoading}
+                loadingText="Submitting..."
+                bg="green.500"
+                _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}
+            >
+                {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
+            </Button>
+          </DrawerActionTrigger>
         </Card.Footer>
       </form>
             </Card.Body>
