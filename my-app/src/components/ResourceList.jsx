@@ -97,9 +97,9 @@ const ResourceList = () => {
 
   return (
     <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
-      <Heading as="h2" size="lg" mb={6} textAlign="center">
+      {/* <Heading as="h2" size="lg" mb={6} textAlign="center">
         Resource List
-      </Heading>
+      </Heading> */}
 
       {loading ? (
         <Spinner size="lg" />
