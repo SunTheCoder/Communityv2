@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux"; // Access Redux state
 import { supabase } from "../App"; // Supabase client
-import { Box, Heading, Button, Stack, Text } from "@chakra-ui/react";
+import { Box, Heading, Button, Stack, Text, Input } from "@chakra-ui/react";
+import { Field } from "./ui/field";
+import { DataListItem, DataListRoot } from "./ui/data-list"
+
 import { Toaster, toaster } from "./ui/toaster";
 import AddResourceDrawer from "./AddResourceDrawer";
+import { useForm } from "react-hook-form";
 
 const AdminDashboard = () => {
   const { user } = useSelector((state) => state.user); // Access user from Redux
@@ -11,6 +15,14 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm();
 
   // Fetch all resource requests (only for admins)
   const fetchResourceRequests = async () => {
@@ -32,6 +44,50 @@ const AdminDashboard = () => {
     }
   };
 
+  const addCommentToArray = async (newComment, requestId) => {
+    try {
+      // Fetch existing comments for the request
+      const { data: existingData, error: fetchError } = await supabase
+        .from("resource_requests")
+        .select("comments")
+        .eq("id", requestId)
+        .single();
+  
+      if (fetchError) throw new Error("Error fetching existing comments.");
+  
+      const existingComments = existingData?.comments || [];
+  
+      // Append the new comment to the existing array
+      const updatedComments = [...existingComments, newComment];
+  
+      // Update the comments array in the database
+      const { error: updateError } = await supabase
+        .from("resource_requests")
+        .update({ comments: updatedComments })
+        .eq("id", requestId);
+  
+      if (updateError) throw new Error("Error updating comments.");
+  
+      toaster.create({
+        title: "Comment Added",
+        description: "The new comment was successfully added to the request.",
+        type: "success",
+      });
+  
+      // Refresh the list after updating comments
+      fetchResourceRequests();
+    } catch (error) {
+      console.error("Error adding comment to array:", error.message);
+      toaster.create({
+        title: "Error",
+        description: "Could not add the comment.",
+        type: "error",
+      });
+    }
+  };
+  
+
+
   // Approve a resource request
   const approveRequest = (request) => {
     setSelectedRequest(request); // Set the selected request for pre-filling
@@ -46,7 +102,7 @@ const AdminDashboard = () => {
     try {
       const { error } = await supabase
         .from("resource_requests")
-        .update({ status: "rejected" })
+        .update({ status: "rejected"})
         .eq("id", id);
 
       if (error) {
@@ -111,7 +167,46 @@ const AdminDashboard = () => {
               </Heading>
               <Text>Description: {request.description}</Text>
               <Text>Status: {request.status}</Text>
-              <Text>Requested By: {request.user_id}</Text>
+              <Text paddingBottom={2}>Requested By: {request.user_id}</Text>
+
+              <form onSubmit={handleSubmit((data) => addCommentToArray(data.comments, request.id))}>
+                <Stack spacing={4}>
+                    <Field helperText="Add feedback">
+                    <Input
+                        type="text"
+                        placeholder="ex. Needs community approval."
+                        {...register("comments", {
+                        // required: "Comment is required", // Validation rule (optional)
+                        })}
+                    />
+                    {errors.comments && (
+                        <Text color="red.500" fontSize="sm">
+                        {errors.comments.message}
+                        </Text>
+                    )}
+                    </Field>
+                    <Box>
+                        <Button 
+                            type="submit" 
+                            bg="gray.400"
+                            _hover={{ bg: "gray.500", _dark: { bg: "gray.600" } }}
+                            _focus={{ bg: "gray.200", _dark: { bg: "gray.500" } }}
+                            
+                            >
+                        Add Comment
+                        </Button>
+                    </Box>
+                    <DataListRoot>
+                    {request.comments.map((comment) => (
+                        <DataListItem  label="Feedback:" value={comment}/>
+                    ))}
+                    </DataListRoot>
+                   
+                </Stack>
+              </form>
+
+
+
               <Stack direction="row" spacing={4} mt={4}>
                 {/* <Button
                   colorScheme="green"
@@ -120,12 +215,15 @@ const AdminDashboard = () => {
                   Approve
                 </Button> */}
                 <AddResourceDrawer
-                
+              
                 initialData={request}
                 />
                 <Button
                   colorScheme="red"
                   onClick={() => rejectRequest(request.id)}
+                  bg= "red.400"
+                  _hover={{ bg: "red.500", _dark: { bg: "red.500" } }}
+                  _focus={{ bg: "gray.200", _dark: { bg: "red.500" } }}
                 >
                   Reject
                 </Button>

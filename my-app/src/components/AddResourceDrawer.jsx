@@ -675,18 +675,22 @@ const AddResourceDrawer = ({ initialData = {} }) => {
   };
 
   return (
-    <DrawerRoot size="sm">
+    <DrawerRoot size="sm"   _hover={{ bg: "green.400", _dark: { bg: "green.500" } }}
+                _focus={{ bg: "gray.200", _dark: { bg: "green.500" } }}
+                >
       <DrawerBackdrop />
       <DrawerTrigger asChild>
         <Button
-          bg="gray.400"
-          _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+          bg="green.400"
+          _hover={{ bg: "green.500", _dark: { bg: "green.500" } }}
+          _focus={{ bg: "gray.200", _dark: { bg: "green.500" } }}
+          
           variant="solid"
         >
           Add Resource <RiArrowRightLine />
         </Button>
       </DrawerTrigger>
-      <DrawerContent borderLeftRadius="lg" overflow="hidden" p={4} width="full">
+      <DrawerContent borderLeftRadius="lg" overflow="hidden" p={4} width="full" >
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
