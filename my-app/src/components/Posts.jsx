@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, VStack, HStack, Button, Flex, defineStyle } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, Button, Flex, defineStyle, Separator } from "@chakra-ui/react";
 import { Avatar } from "./ui/avatar";
 import { useSelector } from "react-redux";
 import { supabase } from "../App";
@@ -68,6 +68,33 @@ const Post = ({ post }) => {
             <Text color="gray.700" _dark={{ color: "pink.200" }} fontWeight="semibold">
               {post.author_username}
             </Text>
+
+            {parentPost && (
+                <Box
+               
+              >
+                <HStack>
+             <Separator orientation="horizontal" size="sm" borderColor="pink.600" width="40px" />
+             <Box
+              bg="gray.50"
+                _dark={{ bg: "gray.700" }}
+                p={2}
+                borderRadius="md"
+                mt={2}
+                mb={2}
+                fontSize="xs"
+                width="400px"
+                shadow="sm"
+             >
+             <Text fontWeight="bold" mb={1}>
+             @{parentPost.author_username}
+           </Text>
+           <Text truncate >{parentPost.content}</Text>
+           </Box>
+           </HStack>
+           </Box>   
+            )}
+            
           </HStack>
           {post.profiles?.role === "admin" && (
             <Text fontSize="xs" color="red.500" fontWeight="bold">
@@ -79,13 +106,13 @@ const Post = ({ post }) => {
             {new Date(post.created_at).toLocaleString().split(",")[1]}
           </Text>
         </Box>
-        <Button size="xs" variant="ghost" color="gray.700" _dark={{ color: "pink.200" }}>
+        {/* <Button size="xs" variant="ghost" color="gray.700" _dark={{ color: "pink.200" }}>
           Follow
-        </Button>
+        </Button> */}
       </Flex>
 
       {/* If this post is a reply, show truncated parent post content */}
-      {parentPost && (
+      {/* {parentPost && (
         <Box
           bg="gray.50"
           _dark={{ bg: "gray.700" }}
@@ -100,7 +127,7 @@ const Post = ({ post }) => {
           </Text>
           <Text isTruncated>{parentPost.content}</Text>
         </Box>
-      )}
+      )} */}
 
       <HStack>
         <Box maxHeight="150px" maxWidth="425px" color="gray.700" _dark={{ color: "pink.200" }}>
