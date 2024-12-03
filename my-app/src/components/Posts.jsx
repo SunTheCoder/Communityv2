@@ -1,19 +1,48 @@
 import React from "react";
-import { Box, Text, VStack, HStack, Button, Flex } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, Button, Flex, defineStyle } from "@chakra-ui/react";
 import { Avatar } from './ui/avatar';
+import { useSelector } from "react-redux";
 
 const Post = ({ post }) => {
+    const { user } = useSelector((state) => state.user);
+    
+    const ringCss = defineStyle({
+        outlineWidth: "2px",
+        outlineColor: "colorPalette.500",
+        outlineOffset: "2px",
+        outlineStyle: "solid",
+      });
+
+      
+
   return (
     <Box width="550px"p={4} bg="white" borderRadius="md" boxShadow="sm" mb={4} _dark={{ bg:"gray.800"}}
     _hover={{ transform: "scale(1.25)", border: "1px solid", borderColor: "gray.700"}}
     >
       <Flex justifyContent="space-between" alignItems="center">
         <Box>
-            <HStack py={2}>
-            <Avatar></Avatar>
-           
-          <Text color="gray.700"_dark={{color:"pink.200"}} fontWeight="bold" >{post.author_username}</Text> 
-          </HStack>
+        <HStack py={2}>
+        {post.user_id === user?.id ? (
+            <Avatar
+            src={user?.avatarUrl || user?.username.slice(-1)}
+            alt={user?.username || "User avatar"}
+            colorPalette="pink"
+            css={ringCss}
+            zIndex="3"
+            />
+        ) : (
+            <Avatar />
+        )}
+        
+        <Text 
+            color="gray.700" 
+            _dark={{ color: "pink.200" }} 
+            fontWeight="bold"
+        >
+            {post.author_username}
+        </Text>
+        </HStack>
+
           <Text fontSize="xs" color="gray.700"_dark={{color:"pink.200"}}>
             {new Date(post.created_at).toLocaleString().split(",")[0]} at{" "}
             {new Date(post.created_at).toLocaleString().split(",")[1]}

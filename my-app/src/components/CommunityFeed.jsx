@@ -19,6 +19,7 @@ const CommunityFeed = () => {
             content,
             image_url,
             created_at,
+            user_id,
             author_username,
             posts_comments (id, content, user_id),
             posts_reactions (reaction_type, user_id),
