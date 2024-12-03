@@ -4,6 +4,7 @@ import { Avatar } from "./ui/avatar";
 import { useSelector } from "react-redux";
 import { supabase } from "../App";
 import PostReplyDrawer from "./PostsReplyDrawer";
+import PostDate from "./PostDate";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user);
@@ -52,6 +53,12 @@ const Post = ({ post }) => {
     >
       <Flex justifyContent="space-between" alignItems="center">
         <Box>
+        {/* <Text fontSize="xs" color="gray.700" _dark={{ color: "pink.200" }}>
+            {new Date(post.created_at).toLocaleString().split(",")[0]} at{" "}
+            {new Date(post.created_at).toLocaleString().split(",")[1]}
+          </Text> */}
+          <PostDate createdAt={post.created_at} />
+
           <HStack py={2}>
             {post.user_id === user?.id ? (
               <Avatar
@@ -64,7 +71,7 @@ const Post = ({ post }) => {
             ) : (
               <Avatar size="xs" />
             )}
-
+            
             <Text color="gray.700" _dark={{ color: "pink.200" }} fontWeight="semibold">
               {post.author_username}
             </Text>
@@ -80,10 +87,11 @@ const Post = ({ post }) => {
                 _dark={{ bg: "gray.700" }}
                 p={2}
                 borderRadius="md"
-                mt={2}
-                mb={2}
+                
+                my={2}
                 fontSize="xs"
-                width="400px"
+                minWidth="250px"
+                maxWidth="250px"
                 shadow="sm"
              >
              <Text fontWeight="bold" mb={1}>
@@ -101,10 +109,7 @@ const Post = ({ post }) => {
               Admin
             </Text>
           )}
-          <Text fontSize="xs" color="gray.700" _dark={{ color: "pink.200" }}>
-            {new Date(post.created_at).toLocaleString().split(",")[0]} at{" "}
-            {new Date(post.created_at).toLocaleString().split(",")[1]}
-          </Text>
+          
         </Box>
         {/* <Button size="xs" variant="ghost" color="gray.700" _dark={{ color: "pink.200" }}>
           Follow

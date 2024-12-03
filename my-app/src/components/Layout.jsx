@@ -189,7 +189,7 @@ const Layout = () => {
         </HStack>
         {/* Row 2: Tabs Section */}
         <Box gridColumn="span 1"></Box>
-        <Box gridColumn="span 9" maxHeight="1210px" overflow="overlay" position="relative" top={3}
+        <Box gridColumn="span 10" maxHeight="1210px" overflow="overlay" position="relative" top={3}
              style={{
                
                 
@@ -197,7 +197,7 @@ const Layout = () => {
               }}
         >
             
-          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px' variant='plain' size='lg' my='20px'>
+          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px'  variant='plain' size='lg' my='20px' >
             
             <Tabs.List
               style={{
