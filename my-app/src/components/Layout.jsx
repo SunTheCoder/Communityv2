@@ -106,7 +106,7 @@ const Layout = () => {
   }, [dispatch]);
 
   return (
-    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" >
+    <Box _dark={{ bg: "gray.800" }} minHeight="100vh">
             
                 <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
                 
@@ -122,7 +122,7 @@ const Layout = () => {
                     orientation="vertical" 
                     height="100%" 
                     marginTop="50px"
-                    mx='52px'
+                    mx='78px'
                     _dark={{borderColor:"pink.600"}}
                     />
           {loading ? (
@@ -130,10 +130,12 @@ const Layout = () => {
             ) : error ? (
                 <Text color="red.500">{error}</Text>
             ) : (
+                <Box position="relative" left="13px">
                 <UserAvatar />
+                </Box>
             )}
         </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px">
           <HiOutlinePencilSquare
             size="20"
             cursor="pointer"
@@ -146,7 +148,7 @@ const Layout = () => {
             }
             />
         </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px">
           <IoNotificationsOutline
             size="20"
             cursor="pointer"
@@ -159,7 +161,7 @@ const Layout = () => {
             }
           />
         </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start">
+        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px">
           <HiMiniChatBubbleLeftEllipsis
             size="20"
             cursor="pointer"
@@ -190,11 +192,7 @@ const Layout = () => {
         {/* Row 2: Tabs Section */}
         <Box gridColumn="span 1"></Box>
         <Box gridColumn="span 10" maxHeight="1210px" overflow="overlay" position="relative" top={3}
-             style={{
-               
-                
-                "scrollbar-width": "none", // For Firefox
-              }}
+             
         >
             
           <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px'  variant='plain' size='lg' my='20px' >
@@ -253,10 +251,10 @@ const Layout = () => {
                 <Separator marginTop="11px"orientation="vertical" height="100%"  width="fit-content" _dark={{borderColor:"pink.600"}}/>
         </Box>
         <Box 
-            // py={40}
+            py={20}
             gridColumn="span 8"
             display="flex"
-            // justifyContent="center"
+            justifyContent="center"
             
 
           >
