@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, VStack, HStack, Button, Flex, defineStyle, Separator } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, Button, Flex, defineStyle, Separator, Image } from "@chakra-ui/react";
 import { Avatar } from "./ui/avatar";
 import { useSelector } from "react-redux";
 import { supabase } from "../App";
@@ -134,10 +134,10 @@ const Post = ({ post }) => {
           <Text fontSize="xs" mt={2}>
             {post.content}
           </Text>
-        </Box>
+        </Box >
         {post.image_url && (
-          <Box mt={4}>
-            <img
+          <Box mt={4} borderRadius= "8px" shadow="md">
+            <Image
               src={post.image_url}
               alt="Post Image"
               style={{ borderRadius: "8px", maxWidth: "100%" }}

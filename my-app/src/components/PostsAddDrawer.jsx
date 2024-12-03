@@ -110,7 +110,13 @@ const PostsAddDrawer = () => {
             </Button>
           </DrawerActionTrigger>
           <DrawerActionTrigger asChild>
-            <Button variant="solid" colorScheme="blue" onClick={handlePostSubmit}>
+            <Button 
+                variant="solid"                 
+                _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}
+                onClick={handlePostSubmit}
+                bg="green.500"
+                    
+                >
               Submit
             </Button>
           </DrawerActionTrigger>
