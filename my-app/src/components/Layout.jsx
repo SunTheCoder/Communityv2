@@ -10,6 +10,7 @@ import {
   HStack,
   Separator,
   Portal,
+  VStack
 } from "@chakra-ui/react";
 import { Toaster, toaster } from "./ui/toaster";
 import SignUp from "./SignUp";
@@ -22,6 +23,8 @@ import { login } from "../redux/userSlice";
 import { HiOutlinePencilSquare, HiMiniChatBubbleLeftEllipsis } from "react-icons/hi2";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { PiFlowerLight } from "react-icons/pi";
+import { Avatar, AvatarGroup } from "./ui/avatar";
+
 
 import SearchBar from "./SearchBar";
 import Map from "./Map";
@@ -29,6 +32,7 @@ import CommunityMap from "./CommunityMap";
 import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
 import CommunityFeed from "./CommunityFeed";
+import FriendAvatarGroup from "./FriendAvatarGroup";
 
 
 const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
@@ -105,12 +109,22 @@ const Layout = () => {
     <Box _dark={{ bg: "gray.800" }} minHeight="100vh" display="flex" flexDirection="column">
             
                 <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
+                
             
       {/* Grid Layout */}
       <SimpleGrid columns={20} spacing={4} p={3}>
         {/* Row 1: Avatar, Icons, Search Bar, and Logo */}
         {/* <Box gridColumn="span 1"></Box> */}
-        <Box gridColumn="span 1">
+        <Box gridColumn="span 1"  >
+            <FriendAvatarGroup />
+        <Separator 
+                    position='absolute' 
+                    orientation="vertical" 
+                    height="100%" 
+                    marginTop="50px"
+                    mx='52px'
+                    _dark={{borderColor:"pink.600"}}
+                    />
           {loading ? (
               <Spinner />
             ) : error ? (
@@ -177,26 +191,31 @@ const Layout = () => {
         <Box gridColumn="span 1"></Box>
         <Box gridColumn="span 9">
             
-          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px' >
+          <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px' variant='plain' size='lg' my='20px'>
+            
             <Tabs.List
               style={{
                 display: "flex",
             justifyContent: "center",
             
-            width: 'calc(105% + 60px)',
+            width: 'calc(100%)',
             position:"relative",
             left:"50%",
             transform:"translateX(-50%)",
             gap: "1rem",
             
+            
               }}
               _dark={{borderColor:"pink.600"}}
+              
+              
             >
               <Tabs.Trigger value="first">Feed</Tabs.Trigger>
-              <Tabs.Trigger value="second">Map</Tabs.Trigger>
+              {/* <Tabs.Trigger value="second">Map</Tabs.Trigger> */}
               <Tabs.Trigger value="third">Resource List</Tabs.Trigger>
               {/* <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
               <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger> */}
+              <Tabs.Indicator borderBottom='1px solid' borderColor='gray.300' _dark={{borderColor:"pink.600"}} bg="transparent" shadow='none'/>
             </Tabs.List>
 
             <Tabs.Content value="first">
@@ -222,8 +241,8 @@ const Layout = () => {
         
 
         </Box>
-        <Box display='flex' justifyContent='center'>
-                <Separator marginTop="11px"orientation="vertical" height="100%px"  width="fit-content" _dark={{borderColor:"pink.600"}}/>
+        <Box >
+                <Separator marginTop="11px"orientation="vertical" height="100%"  width="fit-content" _dark={{borderColor:"pink.600"}}/>
         </Box>
         <Box 
             // py={40}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Text, VStack, HStack, Button, Flex } from "@chakra-ui/react";
+import { Avatar } from './ui/avatar';
 
 const Post = ({ post }) => {
   return (
@@ -8,7 +9,11 @@ const Post = ({ post }) => {
     >
       <Flex justifyContent="space-between" alignItems="center">
         <Box>
-          <Text color="gray.700"_dark={{color:"pink.200"}} fontWeight="bold" >{post.author_username}</Text>
+            <HStack py={2}>
+            <Avatar></Avatar>
+           
+          <Text color="gray.700"_dark={{color:"pink.200"}} fontWeight="bold" >{post.author_username}</Text> 
+          </HStack>
           <Text fontSize="xs" color="gray.700"_dark={{color:"pink.200"}}>
             {new Date(post.created_at).toLocaleString().split(",")[0]} at{" "}
             {new Date(post.created_at).toLocaleString().split(",")[1]}
