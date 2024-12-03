@@ -193,7 +193,8 @@ const Layout = () => {
         <Box gridColumn="span 1"></Box>
         <Box gridColumn="span 10" maxHeight="1210px" overflow="overlay" position="relative" top="12px"
               borderLeft="1px solid"
-            borderColor="pink.600"
+            borderColor="gray.200"
+            _dark={{borderColor:"pink.600"}}
         >
             
           <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px'  variant='plain' size='lg' my='20px' >
@@ -257,7 +258,8 @@ const Layout = () => {
             display="flex"
             justifyContent="center"
             borderLeft="1px solid"
-            borderColor="pink.600"
+            borderColor="gray.200"
+            _dark={{borderColor:"pink.600"}}
             mt="12px"
 
           >
