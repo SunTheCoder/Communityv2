@@ -8,7 +8,7 @@ const FriendAvatarGroup = () => {
 
 
     return (
-        <VStack gap="5" position='absolute' top='80px' left='27px'>
+        <VStack gapY="5" position='absolute' top='80px'>
             <Avatar size="sm" name="Sage" src="https://placehold.co/100" />
             <Avatar size="sm" name="Sage" src="https://placehold.co/100" />
             <Avatar size="sm" name="Sage" src="https://placehold.co/100" />

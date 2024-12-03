@@ -106,31 +106,31 @@ const Layout = () => {
   }, [dispatch]);
 
   return (
-    <Box _dark={{ bg: "gray.800" }} minHeight="100vh">
+    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" >
             
                 <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
                 
             
       {/* Grid Layout */}
-      <SimpleGrid columns={20} spacing={4} p={3}>
+      <SimpleGrid columns={20} spacing={4} py="11px">
         {/* Row 1: Avatar, Icons, Search Bar, and Logo */}
         {/* <Box gridColumn="span 1"></Box> */}
-        <Box gridColumn="span 1"  >
+        <Box gridColumn="span 1"  display="flex" flexDirection="column" alignItems="center" >
             <FriendAvatarGroup />
-        <Separator 
+        {/* <Separator 
                     position='absolute' 
                     orientation="vertical" 
                     height="100%" 
                     marginTop="50px"
                     mx='78px'
                     _dark={{borderColor:"pink.600"}}
-                    />
+                    /> */}
           {loading ? (
               <Spinner />
             ) : error ? (
                 <Text color="red.500">{error}</Text>
             ) : (
-                <Box position="relative" left="13px">
+                <Box >
                 <UserAvatar />
                 </Box>
             )}
@@ -191,8 +191,9 @@ const Layout = () => {
         </HStack>
         {/* Row 2: Tabs Section */}
         <Box gridColumn="span 1"></Box>
-        <Box gridColumn="span 10" maxHeight="1210px" overflow="overlay" position="relative" top={3}
-             
+        <Box gridColumn="span 10" maxHeight="1210px" overflow="overlay" position="relative" top="12px"
+              borderLeft="1px solid"
+            borderColor="pink.600"
         >
             
           <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px'  variant='plain' size='lg' my='20px' >
@@ -224,7 +225,7 @@ const Layout = () => {
 
             <Tabs.Content value="first">
                 {/* <Text>Community Feed Placeholder</Text> */}
-                <Box display="flex" justifyContent="center">
+                <Box display="flex" justifyContent="center" >
                 <CommunityFeed/>
                 </Box>
             </Tabs.Content>
@@ -247,15 +248,17 @@ const Layout = () => {
         
 
         </Box>
-        <Box >
-                <Separator marginTop="11px"orientation="vertical" height="100%"  width="fit-content" _dark={{borderColor:"pink.600"}}/>
-        </Box>
+        
+                {/* <Separator marginTop="11px"orientation="vertical" height="100%"  position="absolute" left _dark={{borderColor:"pink.600"}}/> */}
+        
         <Box 
-            py={20}
-            gridColumn="span 8"
+            p={20}
+            gridColumn="span 9"
             display="flex"
             justifyContent="center"
-            
+            borderLeft="1px solid"
+            borderColor="pink.600"
+            mt="12px"
 
           >
                 {/* <Map /> */}

@@ -41,18 +41,19 @@ const ResourceMap = () => {
   return (
     <Flex
     
-      direction="column"
-      align="center"
-    //   justify="center"
+      direction="row"
+    //   align="center"
+    
+    justify="space-around"
       w="full"
       minH="100vh"
-      px={5}
+      
       py="35px"
     >
       <VStack spacing={4} mb={6}>
-      <Heading as="h2" size="lg" mb={1} textAlign="center">
+      {/* <Heading as="h2" size="lg" mb={1} textAlign="center">
         Community Resources Map
-      </Heading>
+      </Heading> */}
         {/* <Text>Explore available resources in your area.</Text> */}
       </VStack>
 
