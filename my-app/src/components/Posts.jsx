@@ -40,14 +40,15 @@ const Post = ({ post }) => {
 
   return (
     <Box
-      width="550px"
+      maxWidth="1200px"
       p={4}
       bg="white"
       borderRadius="md"
       boxShadow="sm"
       mb={4}
       _dark={{ bg: "gray.800" }}
-      _hover={{ transform: "scale(1.25)", border: "1px solid", borderColor: "gray.700" }}
+      
+      _hover={{ border: "1px solid", borderColor: "gray.700" }}
     >
       <Flex justifyContent="space-between" alignItems="center">
         <Box>

@@ -62,14 +62,16 @@ const PostReplyDrawer = ({ parentPostId }) => {
   };
 
   return (
-    <DrawerRoot placement="bottom">
+    <DrawerRoot placement="bottom" >
       <DrawerBackdrop />
       <DrawerTrigger asChild>
-        <Button variant="ghost" _hover={{ bg: "gray.300" }}>
+        <Button variant="ghost" >
           💬 Reply
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent
+      
+      >
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />

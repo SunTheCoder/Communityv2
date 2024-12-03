@@ -80,7 +80,10 @@ const CommunityFeed = () => {
   }, []);
 
   return (
-    <Box p={4}>
+    <Box 
+        p={4}
+        maxHeight="1000" overflow="auto" 
+         >
         
         <PostsAddDrawer/>
       <VStack spacing={4} align="stretch">

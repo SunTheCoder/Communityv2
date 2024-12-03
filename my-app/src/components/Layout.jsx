@@ -106,7 +106,7 @@ const Layout = () => {
   }, [dispatch]);
 
   return (
-    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" display="flex" flexDirection="column">
+    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" >
             
                 <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
                 
@@ -189,7 +189,13 @@ const Layout = () => {
         </HStack>
         {/* Row 2: Tabs Section */}
         <Box gridColumn="span 1"></Box>
-        <Box gridColumn="span 9">
+        <Box gridColumn="span 9" maxHeight="1210px" overflow="overlay" position="relative" top={3}
+             style={{
+               
+                
+                "scrollbar-width": "none", // For Firefox
+              }}
+        >
             
           <Tabs.Root value={value} onValueChange={(e) => setValue(e.value)} marginTop='12px' marginRight='50px' variant='plain' size='lg' my='20px'>
             
@@ -220,7 +226,9 @@ const Layout = () => {
 
             <Tabs.Content value="first">
                 {/* <Text>Community Feed Placeholder</Text> */}
+                <Box display="flex" justifyContent="center">
                 <CommunityFeed/>
+                </Box>
             </Tabs.Content>
             <Tabs.Content value="second">
                 <Text>Map Placeholder</Text>
