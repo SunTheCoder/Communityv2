@@ -24,24 +24,34 @@ const Post = ({ post }) => {
         <HStack py={2}>
         {post.user_id === user?.id ? (
             <Avatar
-            src={user?.avatarUrl || user?.username.slice(-1)}
-            alt={user?.username || "User avatar"}
+            size="xs"
+            src={user?.avatarUrl || "User avatar"}
+            alt={user?.username || "User username"}
             colorPalette="pink"
             css={ringCss}
-            zIndex="3"
+            
             />
         ) : (
-            <Avatar />
+            <Avatar 
+            size="xs"
+            />
         )}
+        
         
         <Text 
             color="gray.700" 
             _dark={{ color: "pink.200" }} 
-            fontWeight="bold"
+            fontWeight='semibold"'
         >
             {post.author_username}
         </Text>
         </HStack>
+          {/* Only show role if it is 'Admin' */}
+          {post.profiles?.role === "admin" && (
+            <Text fontSize="xs" color="red.500" fontWeight="bold">
+              Admin
+            </Text>
+          )}
 
           <Text fontSize="xs" color="gray.700"_dark={{color:"pink.200"}}>
             {new Date(post.created_at).toLocaleString().split(",")[0]} at{" "}

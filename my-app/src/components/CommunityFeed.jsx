@@ -24,7 +24,10 @@ const CommunityFeed = () => {
             posts_comments (id, content, user_id),
             posts_reactions (reaction_type, user_id),
             tagged_users (user_id),
-            tagged_resources (resource_id, resources (resource_name))
+            tagged_resources (resource_id, 
+            resources (resource_name)),
+            profiles (role) 
+
           `)
           .order("created_at", { ascending: false });
 
