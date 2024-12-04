@@ -48,7 +48,7 @@ const ResourceMap = () => {
       w="full"
       minH="100vh"
       
-      py="35px"
+      py="45px"
     >
       <VStack spacing={4} mb={6}>
       {/* <Heading as="h2" size="lg" mb={1} textAlign="center">

@@ -81,11 +81,12 @@ const CommunityFeed = () => {
 
   return (
     <Box 
-        p={4}
+        // p={4}
         maxHeight="1000" overflow="auto" 
          >
-        
-        <PostsAddDrawer/>
+        <Box pl="8px">
+            <PostsAddDrawer/>
+        </Box>
       <VStack spacing={4} align="stretch">
         {loading ? (
           <Text>Loading...</Text>

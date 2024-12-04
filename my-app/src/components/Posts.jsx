@@ -46,9 +46,9 @@ const Post = ({ post }) => {
       bg="white"
       borderRadius="md"
       boxShadow="sm"
+      m={1}
       mb={4}
       _dark={{ bg: "gray.800" }}
-      
       _hover={{ border: "1px solid", borderColor: "gray.700" }}
     >
       <Flex justifyContent="space-between" alignItems="center">
@@ -78,9 +78,9 @@ const Post = ({ post }) => {
 
             {parentPost && (
                 <Box
-               
+              
               >
-                <HStack>
+                <HStack >
              <Separator orientation="horizontal" size="sm" borderColor="pink.600" width="40px" />
              <Box
               bg="gray.50"
@@ -93,11 +93,23 @@ const Post = ({ post }) => {
                 minWidth="250px"
                 maxWidth="250px"
                 shadow="sm"
+                
              >
-             <Text fontWeight="bold" mb={1}>
-             @{parentPost.author_username}
-           </Text>
-           <Text truncate >{parentPost.content}</Text>
+            <HStack
+             fontWeight="" mb={1} truncate
+            >
+            <Box 
+                color="pink.600" 
+                fontWeight="semibold"
+            >
+                @{parentPost.author_username}:
+            </Box>
+            <Box 
+                color="gray.700" 
+            >
+                {parentPost.content}</Box>
+           </HStack>
+           
            </Box>
            </HStack>
            </Box>   

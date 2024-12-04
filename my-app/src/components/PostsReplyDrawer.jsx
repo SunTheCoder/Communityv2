@@ -70,7 +70,8 @@ const PostReplyDrawer = ({ parentPostId }) => {
         </Button>
       </DrawerTrigger>
       <DrawerContent
-      
+        // borderTopRadius="lg" overflow="hidden" p={4} width="400px"
+        roundedTop="md"
       >
         <Toaster />
         <DrawerCloseTrigger>
