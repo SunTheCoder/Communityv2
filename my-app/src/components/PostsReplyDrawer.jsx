@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Textarea } from "@chakra-ui/react";
 import {
   DrawerBackdrop,
@@ -16,9 +16,32 @@ import { Toaster, toaster } from "./ui/toaster";
 import { supabase } from "../App";
 import { useSelector } from "react-redux";
 
-const PostReplyDrawer = ({ parentPostId }) => {
+const PostReplyDrawer = ({ parentPostId, trigger }) => {
   const [replyContent, setReplyContent] = useState("");
+  const [parentPostCreator, setParentPostCreator] = useState(null); // Store parent post creator's name
   const { user } = useSelector((state) => state.user);
+
+  // Fetch the parent post creator
+  useEffect(() => {
+    const fetchParentPostCreator = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("posts")
+          .select("author_username")
+          .eq("id", parentPostId)
+          .single();
+
+        if (error) throw error;
+        setParentPostCreator(data.author_username);
+      } catch (error) {
+        console.error("Error fetching parent post creator:", error.message);
+      }
+    };
+
+    if (parentPostId) {
+      fetchParentPostCreator();
+    }
+  }, [parentPostId]);
 
   const handleReplySubmit = async () => {
     try {
@@ -62,22 +85,19 @@ const PostReplyDrawer = ({ parentPostId }) => {
   };
 
   return (
-    <DrawerRoot placement="bottom" >
+    <DrawerRoot placement="bottom">
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
-      <DrawerTrigger asChild>
-        <Button variant="ghost" >
-          💬 Reply
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent
-        // borderTopRadius="lg" overflow="hidden" p={4} width="400px"
-        roundedTop="md"
-      >
+      <DrawerContent roundedTop="md">
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
         </DrawerCloseTrigger>
-        <DrawerHeader>Reply to Post</DrawerHeader>
+        <DrawerHeader>
+          {parentPostCreator
+            ? `Reply to ${parentPostCreator}'s post`
+            : "Reply to Post"}
+        </DrawerHeader>
         <DrawerBody>
           <Textarea
             placeholder="Write your reply..."
@@ -88,26 +108,20 @@ const PostReplyDrawer = ({ parentPostId }) => {
           />
         </DrawerBody>
         <DrawerFooter justify="flex-end" gap={4}>
-            <DrawerActionTrigger asChild>
-              <Button
-                variant="ghost"
-                onClick={() => toaster.create({ title: "Canceled", type: "info" })}
-              >
-                Cancel
-              </Button>
-            </DrawerActionTrigger>
-        
           <DrawerActionTrigger asChild>
-          <Button 
-          variant="ghost"
-          onClick={() => 
-            handleReplySubmit()}
-          >
-            Submit
-          </Button>
-        </DrawerActionTrigger>
+            <Button
+              variant="ghost"
+              onClick={() => toaster.create({ title: "Canceled", type: "info" })}
+            >
+              Cancel
+            </Button>
+          </DrawerActionTrigger>
+          <DrawerActionTrigger asChild>
+            <Button variant="ghost" onClick={handleReplySubmit}>
+              Submit
+            </Button>
+          </DrawerActionTrigger>
         </DrawerFooter>
-       
       </DrawerContent>
     </DrawerRoot>
   );
