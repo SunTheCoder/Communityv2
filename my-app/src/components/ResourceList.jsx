@@ -122,10 +122,7 @@ const ResourceList = () => {
   const featuredResource = currentResources[0];
   const otherResources = currentResources;
 
-  const onDrawerClose = () => {
-    setSelectedRequest(null); // Clear the selected request
-    setDrawerOpen(false); // Close the drawer
-  };
+
   
   const handleCardClick = (resourceId) => {
     setSelectedResourceId(resourceId); // Set the selected resource ID
