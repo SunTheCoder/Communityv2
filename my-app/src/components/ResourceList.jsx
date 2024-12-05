@@ -136,6 +136,7 @@ const ResourceList = () => {
 
   return (
     <ResourceDetailsModal
+    resourceId={selectedResourceId}
     trigger={
     <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
       {/* <Heading as="h2" size="lg" mb={6} textAlign="center">

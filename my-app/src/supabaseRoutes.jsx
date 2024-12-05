@@ -1,6 +1,7 @@
 import { supabase } from "./App";
 
 export const fetchResourceById = async (resourceId) => {
+    console.log("Fetching resource with ID:", resourceId);
     try {
       const { data, error } = await supabase
         .from("resources") // Replace with your table name
