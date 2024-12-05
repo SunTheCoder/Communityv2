@@ -10,6 +10,7 @@ import {
   Image,
   Button,
   Card,
+  
 } from "@chakra-ui/react";
 import {
   PaginationItems,
@@ -132,6 +133,7 @@ const ResourceList = () => {
   };
 
   return (
+    <Box>
     <ResourceDetailsModal
     resourceId={selectedResourceId}
     trigger={
@@ -201,49 +203,52 @@ const ResourceList = () => {
             ))}
           </Grid>
 
-          {/* Add Resource Button */}
-          {user?.role === "admin" ? (
-            <Box py={10} textAlign="center">
-              <AddResourceDrawer 
-                initialData={selectedRequest}
-              />
-            </Box>
-          ) : user?.role === "user" ? (
-            <Box py={10} textAlign="center">
-              <RequestResourceDrawer />
-            </Box>
-          ) : (
-            <Box py={10} textAlign="center">
-              <p>You do not have access to this feature.</p>
-            </Box>
-          )}
-
-
-          {/* Pagination */}
-          <Box textAlign="center" p={3}>
-            <PaginationRoot
-              page={page}
-              count={resources.length}
-              pageSize={itemsPerPage}
-              onPageChange={(details) => setPage(details.page)}
-            >
-              <Box mt={4}>
-                <PaginationPrevTrigger />
-                <PaginationItems siblingCount={1} />
-                <PaginationNextTrigger />
-                <Box py={5}>
-                  <PaginationPageText />
-                </Box>
-              </Box>
-            </PaginationRoot>
-          </Box>
+         
         </>
       ) : (
         <Text>No resources available.</Text>
       )}
+      
     </Box>
     }
     />
+     {/* Add Resource Button */}
+     {user?.role === "admin" ? (
+      <Box py={10} textAlign="center">
+        <AddResourceDrawer 
+          initialData={selectedRequest}
+        />
+      </Box>
+    ) : user?.role === "user" ? (
+      <Box py={10} textAlign="center">
+        <RequestResourceDrawer />
+      </Box>
+    ) : (
+      <Box py={10} textAlign="center">
+        <p>You do not have access to this feature.</p>
+      </Box>
+    )}
+
+
+    {/* Pagination */}
+    <Box textAlign="center" p={3}>
+      <PaginationRoot
+        page={page}
+        count={resources.length}
+        pageSize={itemsPerPage}
+        onPageChange={(details) => setPage(details.page)}
+      >
+        <Box mt={4}>
+          <PaginationPrevTrigger />
+          <PaginationItems siblingCount={1} />
+          <PaginationNextTrigger />
+          <Box py={5}>
+            <PaginationPageText />
+          </Box>
+        </Box>
+      </PaginationRoot>
+    </Box>
+    </Box>
   );
 };
 

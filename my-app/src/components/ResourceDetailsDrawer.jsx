@@ -5,7 +5,11 @@ import {
   Button,
   Image,
   Heading,
-  Collapsible
+  Collapsible,
+  VStack,
+  Flex,
+  TooltipArrow,
+  Grid
 } from "@chakra-ui/react";
 import {
   DrawerBackdrop,
@@ -19,6 +23,7 @@ import {
   DrawerTrigger,
   
 } from "./ui/drawer";
+import { Tooltip } from "./ui/tooltip";
 import { DataListItem, DataListRoot } from "./ui/data-list";
 import React, { useState, useEffect } from "react";
 import { fetchResourceById } from "../supabaseRoutes";
@@ -48,7 +53,7 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
     <DrawerRoot placement="bottom" roundedTop size="full">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop/>
-      <DrawerContent roundedTop="md" width="47.6%" ml="6%" >
+      <DrawerContent roundedTop="md" width="47.6%" ml="6%"  border="1px solid" borderColor="gray.200" borderBottom="none" _dark={{borderColor:"pink.600"}}>
         <Box>
           <Text>
             {/* Resource Details: {resource?.resource_name || "Loading..."} */}
@@ -60,15 +65,43 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
         </DrawerHeader>
         <DrawerBody>
           {resource ? (
-            <Card.Root maxW="xl" overflow="hidden" boxShadow="lg" borderRadius="lg">
+            <Card.Root maxW="md" overflow="hidden" boxShadow="lg" borderRadius="lg">
               {/* Resource Image */}
               <Image
                 src={resource.image_url || "/no-image.png"}
                 alt={resource.resource_name || "Unnamed Resource"}
-                maxHeight="300px"
+                maxHeight="250px"
                 objectFit="cover"
                 width="100%"
               />
+
+{resource.resource_images && (
+    <Box p={3} >
+      <Grid
+        templateColumns={{
+          base: "repeat(2, 1fr)", // 2 columns for small screens
+          md: "repeat(3, 1fr)", // 3 columns for medium screens
+          lg: "repeat(4, 1fr)", // 4 columns for large screens
+        }}
+        display="flex"
+        gap={4} // Adjust the spacing between images
+        justifyContent="center" // Center the images horizontally
+      >
+        {/* Example Images */}
+        {resource.resource_images.map((image, index) => (
+          <Box key={index} borderWidth="1px" borderRadius="md" overflow="hidden">
+            <Image
+              src={image || "/no-image.png"} // Replace `image.url` with your actual image key
+              alt={image || "Resource Image"} // Replace `image.alt` with your actual alt text key
+              objectFit="cover"
+              width="100%"
+              maxHeight="200px"
+            />
+          </Box>
+        ))}
+      </Grid>
+    </Box>
+  )}
               {/* Card Body */}
               <Card.Body p={6}>
                 <Card.Title fontSize="2xl" fontWeight="bold" textAlign="center">
@@ -77,63 +110,58 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
                 <Card.Description fontSize="lg" mt={2} color="gray.600">
                   {resource.description || "No description available."}
                 </Card.Description>
+                
+          
                 <Box mt={4} >
+                  <Text fontSize="md" fontWeight="bold" my={2}>
+                    {resource.resource_type || "Unknown"}
+                  </Text>
                   
                   <Collapsible.Root unmountOnExit>
+                  <Tooltip content="Click for details.">
                   <Collapsible.Trigger >
                    <Heading size="lg" fontWeight="bold" color="gray.700" _hover={{ color: "gray.400", cursor:"pointer"}}>
-                     Address
+                     Details
                    </Heading>
             
                     </Collapsible.Trigger>
+                   </Tooltip>
   <Collapsible.Content >
-                  <Text fontSize="md" fontWeight="medium">
+                  <Flex direction="column" fontSize="md" fontWeight="medium">
                     {resource.street_address || "Unknown"} <br></br>
-                    {resource.city || "Unknown"} <br></br>
-                    {resource.state || "Unknown"} <br></br>
+                    {resource.city + ", " + resource.state || "Unknown"} <br></br>
                     {resource.zip_code || "Unknown"}
-                  </Text>
-                  </Collapsible.Content>
-                  </Collapsible.Root >
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>Type:</strong> {resource.resource_type || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>Created:</strong> {(resource.created_at) || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>Type:</strong> {(resource.resource_type) || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>Address:</strong> {(resource.street_address) || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>City:</strong> {(resource.city) || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>State:</strong> {(resource.state) || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>Zip Code:</strong> {(resource.zip_code) || "Unknown"}
-                  </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
+                  </Flex>  
+                   <Text fontSize="md" fontWeight="medium" mt={2}>
                     <strong>Longitude</strong> {(resource.longitude) || "Unknown"}
                   </Text> 
                   <Text fontSize="md" fontWeight="medium" mt={2}>
                     <strong>Latitude:</strong> {(resource.latitude) || "Unknown"}
                   </Text>
+                 
+              
                   <Text fontSize="md" fontWeight="medium" mt={2}>
                     <strong>Community Verified:</strong> {(resource.community_verified) || "Unknown"}
                   </Text>
-                  <Text fontSize="md" fontWeight="medium" mt={2}>
-                    <strong>Last Cleaned:</strong> {(resource.last_cleaned) || "Unknown"}
-                  </Text>
+                  </Collapsible.Content>
+                  </Collapsible.Root >
+
+               
+                
+
 
                   {/* New Accessibility Section */}
-        <Box mt={6} >
-          <Heading size="lg" fontWeight="bold" >
-            Accessibility
-          </Heading>
+                  <Collapsible.Root unmountOnExit>
+                  <Tooltip content="Click for details.">
+          <Collapsible.Trigger>
+            <Heading size="lg" fontWeight="bold" color="gray.700" _hover={{ color: "gray.400", cursor:"pointer"}} >
+              Accessibility
+            </Heading>
+          </Collapsible.Trigger>
+          </Tooltip>
+          <Collapsible.Content >
+        <Box mt={2} 
+        >
           <Text fontSize="md" mt={2}>
             <strong>Wheelchair Access:</strong>{" "}
             {resource.wheelchair_access ? "Yes" : "No"}
@@ -145,30 +173,45 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
             <strong>Pickup Truck Access:</strong>{" "}
             {resource.pickup_truck_access ? "Yes" : "No"}
           </Text>
-          <Text fontSize="md" mt={2}>
+          <Text fontSize="md" my={2}>
             <strong>Commercial Truck Access:</strong>{" "}
             {resource.commercial_truck_access ? "Yes" : "No"}
           </Text>
         </Box>
+        </Collapsible.Content>
+</Collapsible.Root>
+        <Collapsible.Root unmountOnExit>
         {/* New Maintenance Section */}
-        <Box mt={6}>
-          <Heading size="lg" fontWeight="bold">
-            Maintenance
-          </Heading>
+        <Tooltip content="Click for details.">
+        <Collapsible.Trigger >
+        
+         <Heading size="lg" fontWeight="bold" color="gray.700" _hover={{ color: "gray.400", cursor:"pointer"}}>
+           Maintenance
+         </Heading>
+        </Collapsible.Trigger>
+          </Tooltip>
+            <Collapsible.Content >
+        <Box mt={2}>
           <Text fontSize="md" mt={2}>
             <strong>Street Lights:</strong>{" "}
             {resource.has_street_lights ? "Yes" : "No"}
           </Text>
-          <Text fontSize="md" mt={2}>
-            <strong>Last Cleaned:</strong>{" "}
-            {resource.last_cleaned
-              ? new Date(resource.last_cleaned).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              : "Unknown"}
-          </Text>
+            
+          {resource.resource_type === "Community Fridge" && (
+            <Box>
+              <Text fontSize="md" mt={2}>
+                <strong>Last Cleaned:</strong>{" "}
+                {resource.last_cleaned
+                  ? new Date(resource.last_cleaned).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "Unknown"}
+              </Text>
+            </Box>
+          )}
+
           <Text fontSize="md" mt={2}>
             <strong>Needs Maintenance:</strong>{" "}
             {resource.needs_maintenance ? "Yes" : "No"}
@@ -184,6 +227,9 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
               : "Unknown"}
           </Text>
         </Box>
+        </Collapsible.Content>
+        
+        </Collapsible.Root >
 
                   
 
