@@ -13,6 +13,8 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+
+
 function App() {
   return (
     <Provider store={store}>

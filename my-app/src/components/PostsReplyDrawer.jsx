@@ -88,7 +88,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
     <DrawerRoot placement="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
-      <DrawerContent roundedTop="md">
+      <DrawerContent roundedTop="md" width="47.6%" ml="6%">
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   Box,
@@ -21,7 +21,7 @@ import {
 import { supabase } from "../App";
 import AddResourceDrawer from "./AddResourceDrawer";
 import RequestResourceDrawer from "./RequestResourceDrawer";
-
+import ResourceDetailsModal from "./ResourceDetailsDrawer";
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]);
@@ -32,9 +32,12 @@ const ResourceList = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const [drawerOpen, setDrawerOpen] = useState(false); // State to control the drawer
   const [selectedRequest, setSelectedRequest] = useState(null); // To store the selected request
+  const [selectedResourceId, setSelectedResourceId] = useState(null); // Track selected resource ID for modal
+
 
   const [itemsPerPage, setItemsPerPage] = useState(9); // Initial items per page
 
+  const drawerRef = useRef(); // Ref for the drawer trigger
 
 
 
@@ -123,8 +126,17 @@ const ResourceList = () => {
     setSelectedRequest(null); // Clear the selected request
     setDrawerOpen(false); // Close the drawer
   };
+  
+  const handleCardClick = (resourceId) => {
+    setSelectedResourceId(resourceId); // Set the selected resource ID
+    if (drawerRef.current) {
+      drawerRef.current.click(); // Trigger the drawer programmatically
+    }
+  };
 
   return (
+    <ResourceDetailsModal
+    trigger={
     <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
       {/* <Heading as="h2" size="lg" mb={6} textAlign="center">
         Resource List
@@ -136,57 +148,7 @@ const ResourceList = () => {
         <Text color="red.500">{errorMessage}</Text>
       ) : resources.length > 0 ? (
         <>
-          {/* Featured Resource */}
-          {/* {featuredResource && (
-            <Card.Root
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              shadow="lg"
-              bg="gray.100"
-              _dark={{ bg: "gray.700" }}
-              mb={8}
-              textAlign="start"
-              maxW="500px"
-              mx="auto"
-            >
-              <Image
-                src={featuredResource.image_url || "/no-image.png"}
-                alt={featuredResource.resource_name || "Unnamed Resource"}
-                height="200px"
-                objectFit="cover"
-              />
-              <Card.Body gap={4}>
-                <Card.Title>
-                  Featured: {featuredResource.resource_name || "Unnamed Resource"}
-                </Card.Title>
-                <Card.Description>
-                  {featuredResource.description || "No description available."}
-                </Card.Description>
-                <Text>
-                  <strong>Location:</strong> {featuredResource.city || "Unknown"}
-                </Text>
-                <Text>
-                  <strong>Resource Type:</strong>{" "}
-                  {featuredResource.resource_type || "Unknown"}
-                </Text>
-                {/* <Text>
-                  <strong>Address:</strong>{" "}
-                  {featuredResource.street_address || "Unknown"}
-                </Text> */}
-                {/* <Text>
-                  <strong>Created At:</strong>{" "}
-                  {new Date(featuredResource.created_at).toLocaleString()}
-                </Text> */}
-                {/* {featuredResource.created_by_id && (
-                  <Text>
-                    <strong>Created By:</strong>{" "}
-                    {profiles[featuredResource.created_by_id] || "Unknown User"}
-                  </Text>
-                )}
-              </Card.Body>
-            </Card.Root>
-          )} */} 
+         
 
           {/* Other Resources */}
           <Grid
@@ -211,6 +173,8 @@ const ResourceList = () => {
                 bg="gray.100"
                 _dark={{ bg: "gray.800" }}
                 _hover={{ transform: "scale(1.02)", border: "1px solid", borderColor: "gray.700", cursor: "pointer" }}
+                onClick={() => handleCardClick(resource.id)} // Open drawer for the clicked resource
+
 
               >
                 <Image
@@ -233,19 +197,7 @@ const ResourceList = () => {
                     <strong>Resource Type:</strong>{" "}
                     {resource.resource_type || "Unknown"}
                   </Text>
-                  {/* <Text>
-                    <strong>Address:</strong> {resource.street_address || "Unknown"}
-                  </Text> */}
-                  {/* <Text>
-                    <strong>Created At:</strong>{" "}
-                    {new Date(resource.created_at).toLocaleString()}
-                  </Text> */}
-                  {/* {resource.created_by_id && (
-                    <Text fontSize="sm">
-                      <strong>Created By:</strong>{" "}
-                      {profiles[resource.created_by_id] || "Unknown User"}
-                    </Text>
-                  )} */}
+                 
                 </Card.Body>
               </Card.Root>
             ))}
@@ -292,6 +244,8 @@ const ResourceList = () => {
         <Text>No resources available.</Text>
       )}
     </Box>
+    }
+    />
   );
 };
 
