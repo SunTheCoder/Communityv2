@@ -53,7 +53,7 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
     <DrawerRoot placement="bottom" roundedTop size="full">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop/>
-      <DrawerContent roundedTop="md" width="47.6%" ml="6%"  border="2px solid" borderColor="gray.200" borderBottom="none" _dark={{borderColor:"pink.600"}}>
+      <DrawerContent roundedTop="md" width="47.6%" height="99%" ml="6%"  border="2px solid" borderColor="gray.200" borderBottom="none" _dark={{borderColor:"pink.600"}}>
         <Box>
           <Text>
             {/* Resource Details: {resource?.resource_name || "Loading..."} */}
