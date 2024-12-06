@@ -9,11 +9,14 @@ import {
   Separator,
   Image,
   Stack,
-  Button
+  Button,
+  Icon
 } from "@chakra-ui/react";
 import { Avatar } from "./ui/avatar";
 import { StatLabel, StatRoot, StatValueText } from "./ui/stat";
 import { ProgressBar, ProgressRoot } from "./ui/progress"
+import { BsHandThumbsUpFill } from "react-icons/bs";
+
 
 import { useSelector } from "react-redux";
 import { supabase } from "../App";
@@ -215,7 +218,12 @@ const Post = ({ post }) => {
           <Button variant="ghost" height="100%" onClick={handleLike}>
                   <StatRoot>
                       <HStack mx="30px" fontSize="12px">
-                          <Text >Likes</Text>
+                          {/* <Text >Likes</Text> */}
+                          <Icon
+                            size="xs"
+                          >
+                              <BsHandThumbsUpFill />
+                          </Icon>
                           <Text >{likesCount}</Text>
                       </HStack>
                   </StatRoot>
