@@ -80,7 +80,7 @@ const Post = ({ post }) => {
       trigger={
         <Box
           maxWidth="100%"
-          
+          p={4}
         //   bg="white"
           borderRadius="md"
         //   boxShadow="sm"
@@ -89,6 +89,7 @@ const Post = ({ post }) => {
         //   _dark={{ bg: "gray.800" }}
         //   _hover={{ border: "1px solid", borderColor: "gray.700" }}
           cursor="pointer"
+          _active={{ bg: "gray.100" }}
           
         >
          
