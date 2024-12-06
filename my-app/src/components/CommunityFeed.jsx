@@ -178,11 +178,11 @@ const CommunityFeed = () => {
             {groupedPosts.map(([date, posts]) => (
               <Box key={date}>
                 <HStack>
-                <Separator my={4} />
-                <Text fontWeight="bold" fontSize="xs" w="100%" textAlign="center">
+                <Separator my={4} _dark={{borderColor: "pink.600"}}/>
+                <Text fontWeight="bold" fontSize="xs" w="100%" color="pink.400" textAlign="center">
                   {date}
                 </Text>
-                <Separator my={4} />
+                <Separator my={4} _dark={{borderColor: "pink.600"}}/>
                 </HStack>
 
                 {posts.map((post) => (
