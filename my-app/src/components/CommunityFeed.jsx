@@ -180,7 +180,7 @@ const CommunityFeed = () => {
                 <HStack>
                 <Separator my={4} _dark={{borderColor: "pink.600"}}/>
                 <Text fontWeight="bold" fontSize="xs" w="100%" color="pink.400" textAlign="center">
-                  {date}
+                  {date.slice(0, 10) + ", " + date.slice(11)}
                 </Text>
                 <Separator my={4} _dark={{borderColor: "pink.600"}}/>
                 </HStack>
