@@ -72,9 +72,9 @@ const PostsAddDrawer = () => {
       <DrawerBackdrop />
       <Tooltip  content="Add Post" positioning={{ placement: "right" }}>
       <DrawerTrigger asChild>
-        <Button variant="plain" py="10px" position="relative" left="1px">
+        <Button variant="plain" py="10px" position="relative" left="1px" borderRadius="md" size="xs" _hover={{bg:"pink.100", shadow:"md"}}>
           {/* + Add Post */}
-          <CiCirclePlus />
+          Add Post <CiCirclePlus />
 
         </Button>
       </DrawerTrigger>
