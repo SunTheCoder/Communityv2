@@ -88,7 +88,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
     <DrawerRoot placement="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
-      <DrawerContent roundedTop="md" width="46.6%" ml="6%">
+      <DrawerContent roundedTop="md" width="46.6%" ml="6%" border="2px solid" borderColor="gray.200" borderBottom="none" bg="gray.200" _dark={{borderColor:"pink.600", bg:"gray.900"}}>
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
@@ -103,6 +103,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             placeholder="Write your reply..."
             resize="none"
             value={replyContent}
+            
             onChange={(e) => setReplyContent(e.target.value)}
             autoFocus
           />
@@ -112,12 +113,15 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             <Button
               variant="ghost"
               onClick={() => toaster.create({ title: "Canceled", type: "info" })}
+              bg="gray.400"
+              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
             >
               Cancel
             </Button>
           </DrawerActionTrigger>
           <DrawerActionTrigger asChild>
-            <Button variant="ghost" onClick={handleReplySubmit}>
+            <Button variant="ghost" onClick={handleReplySubmit}  bg="green.500"
+                _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}>
               Submit
             </Button>
           </DrawerActionTrigger>

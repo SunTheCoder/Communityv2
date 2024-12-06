@@ -89,7 +89,7 @@ const Post = ({ post }) => {
         //   _dark={{ bg: "gray.800" }}
         //   _hover={{ border: "1px solid", borderColor: "gray.700" }}
           cursor="pointer"
-          _active={{ bg: "gray.100" }}
+          _active={{ bg: "gray.100"}}
           
         >
          

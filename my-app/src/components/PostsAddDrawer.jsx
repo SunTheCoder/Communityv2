@@ -79,7 +79,7 @@ const PostsAddDrawer = () => {
         </Button>
       </DrawerTrigger>
         </Tooltip>
-      <DrawerContent>
+      <DrawerContent roundedTop="md" width="46.6%" ml="6%" border="2px solid" borderColor="gray.200" borderBottom="none" bg="gray.200" _dark={{borderColor:"pink.600", bg:"gray.900"}}>
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
@@ -105,6 +105,8 @@ const PostsAddDrawer = () => {
             <Button
               variant="ghost"
               onClick={() => toaster.create({ title: "Canceled", type: "info" })}
+              bg="gray.400"
+              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
             >
               Cancel
             </Button>
