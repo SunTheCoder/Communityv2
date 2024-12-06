@@ -103,10 +103,10 @@ const Post = ({ post }) => {
                             border="2px solid"
                             borderBottom="none"
                             borderRight="none"
-                            height="30px"
+                            height="40px"
                             width="50px"
                             borderColor="pink.600"
-                            mb={-7}
+                            mb={-10}
                             ml={3.5}
                             >
                         </Box>
