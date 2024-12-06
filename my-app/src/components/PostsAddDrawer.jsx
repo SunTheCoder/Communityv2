@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Textarea, Input } from "@chakra-ui/react";
+import { Button, Textarea, Input, InputAddon, Group } from "@chakra-ui/react";
 import {
   DrawerBackdrop,
   DrawerBody,
@@ -91,14 +91,18 @@ const PostsAddDrawer = () => {
             resize="none"
             value={postContent}
             onChange={(e) => setPostContent(e.target.value)}
+            bg="gray.100"
             autoFocus
           />
+          <Group attached>
+          <InputAddon bg="gray.100" color="gray.400">https://</InputAddon>
           <Input
-            mt={4}
+            // mt={4}
             placeholder="Optional: Add an image URL"
             value={imageUrl}
             onChange={(e) => setImageUrl(e.target.value)}
-          />
+            bg="gray.100"
+          /></Group>
         </DrawerBody>
         <DrawerFooter justify="flex-end" gap={4}>
           <DrawerActionTrigger asChild>

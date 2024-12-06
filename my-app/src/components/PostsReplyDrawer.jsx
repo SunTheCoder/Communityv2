@@ -103,7 +103,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             placeholder="Write your reply..."
             resize="none"
             value={replyContent}
-            
+            bg="gray.100"
             onChange={(e) => setReplyContent(e.target.value)}
             autoFocus
           />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../App";
-import { Box, Text, VStack, Separator, Button, HStack } from "@chakra-ui/react";
+import { Box, Text, VStack, Separator, Button, HStack, Circle } from "@chakra-ui/react";
 import Post from "./Posts"; // Import the Post component
 import PostsAddDrawer from "./PostsAddDrawer";
 
@@ -167,9 +167,9 @@ const CommunityFeed = () => {
 
   return (
     <Box maxHeight="1000px" overflow="auto" mt="43px" width="100%">
-      <Box pl="8px">
+      <Circle>
         <PostsAddDrawer />
-      </Box>
+      </Circle>
       <VStack spacing={4} align="stretch" maxHeight="75.9vh" mx="20px">
         {loading ? (
           <Text>Loading...</Text>
