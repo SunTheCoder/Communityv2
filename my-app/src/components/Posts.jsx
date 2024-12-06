@@ -85,7 +85,7 @@ const Post = ({ post }) => {
           borderRadius="md"
         //   boxShadow="sm"
           ml={2.5}
-          mb={4}
+          // mb={4}
         //   _dark={{ bg: "gray.800" }}
         //   _hover={{ border: "1px solid", borderColor: "gray.700" }}
           cursor="pointer"
@@ -238,7 +238,7 @@ const Post = ({ post }) => {
             </Box>
          
             {post.image_url && (
-              <Box  borderRadius="8px" shadow="md" maxWidth= "150px" ml="47px" mt={2}>
+              <Box  borderRadius="8px" shadow="md" maxWidth= "150px" ml="47px" mt={2} mb={4}>
                 <Image
                   src={post.image_url}
                   alt="Post Image"
