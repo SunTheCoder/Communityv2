@@ -163,7 +163,7 @@ const Post = ({ post }) => {
              
               
             >
-              
+              <HStack>
                 <Text
                   size="xs"
                   color="gray.700"
@@ -176,7 +176,7 @@ const Post = ({ post }) => {
                 </Text>
                 <Box mx={2}>
                   <PostDate createdAt={post.created_at} />
-                  </Box>
+                  </Box></HStack>
                 {post.profiles?.role === "admin" && (
                 <Text fontSize="xs" color="red.500" fontWeight="bold" m={2}>
                   Admin
@@ -219,11 +219,12 @@ const Post = ({ post }) => {
                   <StatRoot>
                       <HStack mx="30px" fontSize="12px">
                           {/* <Text >Likes</Text> */}
-                          <Icon
+                          {/* <Icon
                             size="xs"
-                          >
-                              <BsHandThumbsUpFill />
-                          </Icon>
+                          > */}
+                                   <Box as={BsHandThumbsUpFill} color="pink" height="13px" />
+
+                          {/* </Icon> */}
                           <Text >{likesCount}</Text>
                       </HStack>
                   </StatRoot>
