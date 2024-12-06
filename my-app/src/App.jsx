@@ -22,7 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SplashPage />} />
           <Route path="/main" element={<MainPage />} />
-          <Route path="*" element={<Navigate to="/" />} /> {/* Redirect undefined routes */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
     </Provider>

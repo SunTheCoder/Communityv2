@@ -20,6 +20,7 @@ const CommunityFeed = () => {
             content,
             image_url,
             created_at,
+            likes_count,
             user_id,
             author_username,
             parent_post_id,
@@ -83,11 +84,14 @@ const CommunityFeed = () => {
     <Box 
         // p={4}
         maxHeight="1000" overflow="auto" 
+        
+        mt="43px"
+        width="100%"
          >
         <Box pl="8px">
             <PostsAddDrawer/>
         </Box>
-      <VStack spacing={4} align="stretch">
+      <VStack spacing={4} align="stretch"  maxHeight="75.9vh"  mx="20px">
         {loading ? (
           <Text>Loading...</Text>
         ) : (

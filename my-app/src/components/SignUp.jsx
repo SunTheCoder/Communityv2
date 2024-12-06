@@ -13,13 +13,14 @@ import { RiArrowRightLine } from "react-icons/ri";
 import { Toaster, toaster } from "./ui/toaster";
 import { login, logout } from "../redux/userSlice";
 import { supabase } from "../App";
+import AddResourceDrawer from "./AddResourceDrawer";
 
 // Supabase configuration
 // const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 // const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
 // export const supabase = createClient(supabaseUrl, supabaseKey);
 
-const SignUp = () => {
+const SignUp = ({navigate}) => {
   const [isSignUp, setIsSignUp] = useState(false); // Toggle between SignUp/Login
   const [isLoading, setIsLoading] = useState(false);
   const user = useSelector((state) => state.user); // Fetch user from Redux store
@@ -73,10 +74,13 @@ const SignUp = () => {
         })
       );
 
+      navigate("/main");
+
       toaster.create({
         description: "Sign Up Successful! Check your email for verification.",
         type: "success",
       });
+
     } catch (error) {
       toaster.create({
         description: error.message,
@@ -126,6 +130,8 @@ const SignUp = () => {
           avatarUrl: profile.avatar_url,
         })
       );
+
+      navigate("/main");
 
       toaster.create({
         description: "Login Successful! Welcome back.",

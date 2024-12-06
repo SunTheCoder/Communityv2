@@ -27,7 +27,9 @@ import { Tooltip } from "./ui/tooltip";
 import { DataListItem, DataListRoot } from "./ui/data-list";
 import React, { useState, useEffect } from "react";
 import { fetchResourceById } from "../supabaseRoutes";
-
+import AddResourceDrawer from "./AddResourceDrawer";
+// import ResourceChatDrawer from "./ResourceChatDrawer";
+import ResourceFeed from "./ResourceFeed";
 const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
   const [resource, setResource] = useState(null);
 
@@ -50,73 +52,82 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
   }, [resourceId]);
 
   return (
-    <DrawerRoot placement="bottom" roundedTop size="full">
+    <DrawerRoot placement="bottom"  roundedTop size="full" >
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop/>
-      <DrawerContent roundedTop="md" width="47.6%" height="99%" ml="6%"  border="2px solid" borderColor="gray.200" borderBottom="none" _dark={{borderColor:"pink.600"}}>
+      <DrawerContent   roundedTop="md" width="47.6%" height="99%" ml="6%"  border="2px solid" borderColor="gray.200" borderBottom="none" bg="gray.200" _dark={{borderColor:"pink.600", bg:"gray.900"}}>
         <Box>
           <Text>
             {/* Resource Details: {resource?.resource_name || "Loading..."} */}
+          
+
           </Text>
         </Box>
         <DrawerCloseTrigger />
         <DrawerHeader>
           <DrawerTitle textAlign="center">Resource Details</DrawerTitle>
         </DrawerHeader>
-        <DrawerBody>
-          {resource ? (
-            <Card.Root maxW="md" overflow="hidden" boxShadow="lg" borderRadius="lg">
-              {/* Resource Image */}
-              <Image
-                src={resource.image_url || "/no-image.png"}
-                alt={resource.resource_name || "Unnamed Resource"}
-                maxHeight="250px"
-                objectFit="cover"
-                width="100%"
-              />
+        <DrawerBody display="flex" justifyContent="center" bg="gray.200" _dark={{ bg: "gray.900" }}>
+  <Grid
+    templateColumns={{ base: "1fr", md: "1fr 1fr" }} // Single column on small screens, two columns on larger screens
+    gap={6} // Space between the columns
+    width="100%" // Ensures the grid takes up the full drawer width
+    height="100%" // Ensures the grid stretches to fill the drawer height
+    alignItems="start" // Align items to the top of each grid cell
+  >
+    {/* Card Section */}
+    <Box>
+      {resource ? (
+        <Card.Root maxW="md" overflow="hidden" shadow="lg" borderRadius="lg">
+          {/* Resource Image */}
+          <Image
+            src={resource.image_url || "/no-image.png"}
+            alt={resource.resource_name || "Unnamed Resource"}
+            maxHeight="250px"
+            objectFit="cover"
+            width="100%"
+          />
 
-{resource.resource_images && (
-    <Box p={3} >
-      <Grid
-        templateColumns={{
-          base: "repeat(2, 1fr)", // 2 columns for small screens
-          md: "repeat(3, 1fr)", // 3 columns for medium screens
-          lg: "repeat(4, 1fr)", // 4 columns for large screens
-        }}
-        display="flex"
-        gap={4} // Adjust the spacing between images
-        justifyContent="center" // Center the images horizontally
-      >
-        {/* Example Images */}
-        {resource.resource_images.map((image, index) => (
-          <Box key={index} borderWidth="1px" borderRadius="md" overflow="hidden">
-            <Image
-              src={image || "/no-image.png"} // Replace `image.url` with your actual image key
-              alt={image || "Resource Image"} // Replace `image.alt` with your actual alt text key
-              objectFit="cover"
-              width="100%"
-              maxHeight="200px"
-            />
-          </Box>
-        ))}
-      </Grid>
-    </Box>
-  )}
-              {/* Card Body */}
-              <Card.Body p={6}>
-                <Card.Title fontSize="2xl" fontWeight="bold" textAlign="center">
-                  {resource.resource_name || "Unnamed Resource"}
-                </Card.Title>
-                <Card.Description fontSize="lg" mt={2} color="gray.600">
-                  {resource.description || "No description available."}
-                </Card.Description>
-                
-          
-                <Box mt={4} >
-                  <Text fontSize="md" fontWeight="bold" my={2}>
-                    {resource.resource_type || "Unknown"}
-                  </Text>
-                  
+          {resource.resource_images && (
+            <Box p={3}>
+              <Grid
+                templateColumns={{
+                  base: "repeat(2, 1fr)", // 2 columns for small screens
+                  md: "repeat(3, 1fr)", // 3 columns for medium screens
+                  lg: "repeat(4, 1fr)", // 4 columns for large screens
+                }}
+                gap={4} // Adjust the spacing between images
+                justifyContent="center" // Center the images horizontally
+              >
+                {/* Example Images */}
+                {resource.resource_images.map((image, index) => (
+                  <Box key={index} borderWidth="1px" borderRadius="md" overflow="hidden">
+                    <Image
+                      src={image || "/no-image.png"} // Replace `image.url` with your actual image key
+                      alt={image || "Resource Image"} // Replace `image.alt` with your actual alt text key
+                      objectFit="cover"
+                      width="100%"
+                      maxHeight="200px"
+                    />
+                  </Box>
+                ))}
+              </Grid>
+            </Box>
+          )}
+          {/* Card Body */}
+          <Card.Body p={6}>
+            <Card.Title fontSize="2xl" fontWeight="bold" textAlign="center">
+              {resource.resource_name || "Unnamed Resource"}
+            </Card.Title>
+            <Card.Description fontSize="lg" mt={2} color="gray.600">
+              {resource.description || "No description available."}
+            </Card.Description>
+
+            <Box mt={4}>
+              <Text fontSize="md" fontWeight="bold" my={2}>
+                {resource.resource_type || "Unknown"}
+              </Text>
+
                   <Collapsible.Root unmountOnExit>
                   <Tooltip content="Click for details.">
                   <Collapsible.Trigger >
@@ -236,25 +247,26 @@ const ResourceDetailsDrawer = ({ resourceId, trigger }) => {
                   
 
 
-                </Box>
-              </Card.Body>
-              {/* Card Footer */}
-              <Card.Footer p={4} borderTop="1px solid" borderColor="gray.200">
-               
+                 </Box>
+          </Card.Body>
+          <Card.Footer p={4} borderTop="1px solid" borderColor="gray.200"></Card.Footer>
+        </Card.Root>
+      ) : (
+        <Text>Loading resource details...</Text>
+      )}
+    </Box>
 
-
-
-
-              </Card.Footer>
-            </Card.Root>
-          ) : (
-            <Text>Loading resource details...</Text>
-          )}
-        </DrawerBody>
+    {/* Resource Feed Section */}
+    <Box overflow="auto">
+      <ResourceFeed resourceId={resourceId} />
+    </Box>
+  </Grid>
+</DrawerBody>
         <DrawerFooter>
-          <Text color="gray.500" fontSize="sm">
+          {/* <Text color="gray.500" fontSize="sm">
             Close the drawer to return to the list.
-          </Text>
+          </Text> */}
+
         </DrawerFooter>
       </DrawerContent>
     </DrawerRoot>

@@ -37,7 +37,7 @@ const SplashPage = () => {
         <Text fontSize="2xl" fontWeight="bold">
           Welcome to the Community Map
         </Text>
-        <SignUp/>
+        <SignUp navigate={navigate}/>
         <Box>
           <Button 
             variant="outline" 
