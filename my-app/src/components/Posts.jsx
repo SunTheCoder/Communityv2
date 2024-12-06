@@ -169,7 +169,7 @@ const Post = ({ post }) => {
                   color="gray.700"
                   _dark={{ color: "pink.200" }}
                   fontWeight="semibold"
-                  mx={2}
+                  mx="7px"
                 >
                   {post.author_username}
                   
@@ -178,7 +178,7 @@ const Post = ({ post }) => {
                   <PostDate createdAt={post.created_at} />
                   </Box></HStack>
                 {post.profiles?.role === "admin" && (
-                <Text fontSize="xs" color="red.500" fontWeight="bold" m={2}>
+                <Text fontSize="xs" color="red.500" fontWeight="bold" m="7px">
                   Admin
                 </Text>
               )}
@@ -215,7 +215,7 @@ const Post = ({ post }) => {
             
           </HStack>
 
-          <Button variant="plain" height="100%" onClick={handleLike}>
+          <Button variant="ghost" height="100%" onClick={handleLike} w={0} ml="40px">
                   <StatRoot>
                       <HStack mx="30px" fontSize="12px">
                           {/* <Text >Likes</Text> */}
