@@ -215,7 +215,7 @@ const Post = ({ post }) => {
             
           </HStack>
 
-          <Button variant="ghost" height="100%" onClick={handleLike}>
+          <Button variant="plain" height="100%" onClick={handleLike}>
                   <StatRoot>
                       <HStack mx="30px" fontSize="12px">
                           {/* <Text >Likes</Text> */}
