@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../App";
-import { Box, Text, VStack, Separator, Button, HStack, Circle } from "@chakra-ui/react";
+import { Box, Text, VStack, Separator, Button, HStack, Circle, Center } from "@chakra-ui/react";
 import Post from "./Posts"; // Import the Post component
 import PostsAddDrawer from "./PostsAddDrawer";
+import AddPostInput from "./AddPostInput";
 
 const CommunityFeed = () => {
   const [posts, setPosts] = useState([]); // All fetched posts
@@ -160,13 +161,14 @@ const CommunityFeed = () => {
       acc[date].push(post);
       return acc;
     }, {});
-    return Object.entries(grouped).sort((a, b) => new Date(b[0]) - new Date(a[0])); // Sort dates descending
+    return Object.entries(grouped).sort((a, b) => new Date(b[0]) + new Date(a[0])).reverse(); // Sort dates descending
   };
 
   const groupedPosts = groupPostsByDate(posts);
 
   return (
     <Box maxHeight="1000px" overflow="auto" mt="43px" width="100%">
+      <AddPostInput/>
       <Circle>
         <PostsAddDrawer />
       </Circle>
@@ -196,9 +198,11 @@ const CommunityFeed = () => {
                 {loadingMore ? (
                   <Text>Loading more...</Text>
                 ) : (
-                  <Button onClick={handleLoadMore} colorScheme="pink" mt={4}>
+                  <Center>
+                  <Button onClick={handleLoadMore} bg="pink.300" mt={4} size="xs">
                     Load More
                   </Button>
+                  </Center>
                 )}
               </Box>
             )}
