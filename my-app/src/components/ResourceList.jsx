@@ -14,6 +14,8 @@ import {
   Input,
   createListCollection
 } from "@chakra-ui/react";
+import States from "../states"
+import Types from "../resourceTypes"
 import {
   SelectContent,
   SelectItem,
@@ -155,6 +157,7 @@ const ResourceList = () => {
       { label: "Library", value: "Library" },
       { label: "Queer Meet Group", value: "Queer Meet Group" },
       { label: "Trans Support Group", value: "Trans Support Group" },
+      { label: "LGBTQ+ Support Group", value: "LGBTQ+ Support Group" },
 
     ]
 
@@ -201,8 +204,8 @@ const paginatedResources = filteredResources.slice(
 );
 
   return (
-    <Box>
-      <Box display="flex"  justifyContent="space-evenly" gap={4} m={6}>
+    <Box mt="46.3px">
+      <Box display="flex"  justifyContent="space-evenly" gap={4}  m={6}>
       <SelectRoot
   collection={resourceTypes}
   value={filterType}
@@ -213,7 +216,7 @@ const paginatedResources = filteredResources.slice(
     <SelectValueText placeholder="Filter by Type" />
   </SelectTrigger>
   <SelectContent>
-    {resourceTypes.items.map((type) => (
+    {Types.items.map((type) => (
       <SelectItem item={type} key={type.value}>
         {type.label}
       </SelectItem>
@@ -231,7 +234,7 @@ const paginatedResources = filteredResources.slice(
     <SelectValueText placeholder="Filter by State" />
   </SelectTrigger>
   <SelectContent>
-    {states.items.map((state) => (
+    {States.items.map((state) => (
       <SelectItem item={state} key={state.value}>
         {state.label}
       </SelectItem>
