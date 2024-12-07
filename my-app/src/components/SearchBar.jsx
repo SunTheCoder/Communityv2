@@ -58,11 +58,13 @@ const SearchBar = ({ resources }) => {
         onOpenChange={(open) => setDrawerOpen(false)} // Chakra will handle `open` changes
         size="lg"
         placement="end"
+        
       >
         <DrawerBackdrop />
         <DrawerContent
             mt="3.75%"
             borderTopLeftRadius="md"
+            border="2px solid" borderColor="gray.200" borderBottom="none" bg="gray.200" _dark={{borderColor:"pink.600", bg:"gray.900"}}
         >
           <DrawerHeader>
             <DrawerTitle>Search Results</DrawerTitle>
