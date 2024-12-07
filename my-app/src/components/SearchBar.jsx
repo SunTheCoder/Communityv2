@@ -61,7 +61,7 @@ const SearchBar = ({ resources }) => {
       >
         <DrawerBackdrop />
         <DrawerContent
-            mt="5.2%"
+            mt="3.75%"
             borderTopLeftRadius="md"
         >
           <DrawerHeader>
