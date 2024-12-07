@@ -161,8 +161,16 @@ const CommunityFeed = () => {
       acc[date].push(post);
       return acc;
     }, {});
-    return Object.entries(grouped).sort((a, b) => new Date(b[0]) + new Date(a[0])).reverse(); // Sort dates descending
+  
+    // Sort each date group by `created_at` descending
+    Object.keys(grouped).forEach((date) => {
+      grouped[date].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    });
+  
+    // Convert to array and sort dates descending
+    return Object.entries(grouped).sort((a, b) => new Date(b[0]) - new Date(a[0]));
   };
+  
 
   const groupedPosts = groupPostsByDate(posts);
 

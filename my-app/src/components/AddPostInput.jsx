@@ -5,6 +5,7 @@ import { Toaster, toaster } from "./ui/toaster";
 import { supabase } from "../App";
 import { useSelector } from "react-redux";
 import { InputGroup } from "./ui/input-group";
+import { CiCirclePlus } from "react-icons/ci";
 
 const PostsAddForm = () => {
   const { user } = useSelector((state) => state.user);
@@ -55,7 +56,7 @@ const PostsAddForm = () => {
     <Box
       as="form"
       onSubmit={handleSubmit(onSubmit)} // Use form's onSubmit handler
-      pb={2}
+      p={1}
       px={8}
     //   border="1px solid"
     //   borderColor="gray.200"
@@ -119,9 +120,12 @@ const PostsAddForm = () => {
             borderRadius="md"
             shadow="md"
             size="xs"
-            >
-            Submit
-            </Button>
+            
+              variant="plain" py="10px" position="relative" left="1px" _hover={{bg:"pink.100", shadow:"md"}}>
+          {/* + Add Post */}
+          Add Post <CiCirclePlus />
+
+        </Button>
         </Circle>
       </VStack>
     </Box>

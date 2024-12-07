@@ -70,6 +70,7 @@ const ResourceMap = () => {
           overflow="hidden"
           borderWidth="1px"
           boxShadow="lg"
+          mt={1}
         >
           <MapContainer
             center={[37.54812, -77.44675]}

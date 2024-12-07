@@ -81,6 +81,7 @@ const Post = ({ post }) => {
         <Box
           maxWidth="100%"
           p={4}
+          
         //   bg="white"
           borderRadius="md"
         //   boxShadow="sm"
@@ -223,7 +224,7 @@ const Post = ({ post }) => {
                           {/* <Icon
                             size="xs"
                           > */}
-                                   <Box as={BsHandThumbsUpFill} color="pink" height="13px" />
+                                   <Box as={BsHandThumbsUpFill} color="pink.300" height="13px" />
 
                           {/* </Icon> */}
                           <Text >{likesCount}</Text>
