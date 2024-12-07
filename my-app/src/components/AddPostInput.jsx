@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Box, Input, Button, VStack, Text, Circle } from "@chakra-ui/react";
+import { Box, Input, Button, VStack, Text, Circle, Group } from "@chakra-ui/react";
 import { Toaster, toaster } from "./ui/toaster";
 import { supabase } from "../App";
 import { useSelector } from "react-redux";
 import { InputGroup } from "./ui/input-group";
 import { CiCirclePlus } from "react-icons/ci";
 
-const PostsAddForm = () => {
+const AddPostInput = () => {
   const { user } = useSelector((state) => state.user);
 
   const {
@@ -67,7 +67,7 @@ const PostsAddForm = () => {
       <Toaster />
       <VStack spacing={4} align="stretch">
        
-    <InputGroup>
+    <Group attached>
         {/* Post Content Input */}
         <Input
           placeholder="Write your post content..."
@@ -77,14 +77,30 @@ const PostsAddForm = () => {
           })}
           
           
-
+          borderRightRadius="none"
           shadow="sm"
           _focus={{ borderColor: "pink.500", bg:"pink.50" }}
-          _dark={{bg:"gray.500"}}
+          _dark={{bg:"gray.500", borderColor: "pink.600" }}
 
           autoFocus
         />
-            </InputGroup>
+
+<Button
+            type="submit"
+            bg="pink.300"
+            isLoading={isSubmitting} // Show loading spinner on submit
+            borderRadius="md"
+            borderLeftRadius="none"
+            shadow="md"
+            size="md"
+            color= "gray.800"
+            fontSize="xs"
+              variant="plain" py="10px" position="relative" left="1px" _hover={{bg:"pink.100", shadow:"md"}}>
+          {/* + Add Post */}
+          Add Post <CiCirclePlus />
+
+        </Button>
+            </Group>
         {errors.content && (
           <Text fontSize="sm" color="red.500">
             {errors.content.message}
@@ -132,4 +148,4 @@ const PostsAddForm = () => {
   );
 };
 
-export default PostsAddForm;
+export default AddPostInput;

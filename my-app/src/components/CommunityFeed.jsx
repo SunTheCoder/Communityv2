@@ -177,9 +177,9 @@ const CommunityFeed = () => {
   return (
     <Box maxHeight="1000px" overflow="auto" mt="43px" width="100%">
       <AddPostInput/>
-      <Circle>
+      {/* <Circle>
         <PostsAddDrawer />
-      </Circle>
+      </Circle> */}
       <VStack spacing={4} align="stretch" maxHeight="75.9vh" mx="20px">
         {loading ? (
           <Text>Loading...</Text>
