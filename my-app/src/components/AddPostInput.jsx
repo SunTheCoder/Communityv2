@@ -83,12 +83,12 @@ const AddPostInput = () => {
           _focus={{ borderColor: "pink.500", bg:"pink.50" }}
           _dark={{bg:"gray.500", borderColor: "pink.600" }}
           
-          autoFocus
+        //   autoFocus
         />
 
 <Button
             type="submit"
-            bg="pink.300"
+            bg="pink.200"
             isLoading={isSubmitting} // Show loading spinner on submit
             borderRadius="md"
             borderLeftRadius="none"
@@ -96,7 +96,7 @@ const AddPostInput = () => {
             size="md"
             color= "gray.800"
             fontSize="xs"
-            mr={4}
+            // mr={4}
               variant="plain" py="10px" position="relative" left="1px" _hover={{bg:"pink.100", shadow:"md"}}>
           {/* + Add Post */}
           Add Post <CiCirclePlus />

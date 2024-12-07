@@ -11,7 +11,16 @@ import {
   Button,
   Card,
   
+  Input,
+  createListCollection
 } from "@chakra-ui/react";
+import {
+  SelectContent,
+  SelectItem,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "./ui/select";
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -26,6 +35,7 @@ import ResourceDetailsModal from "./ResourceDetailsDrawer";
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]);
+  
   const [profiles, setProfiles] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +45,9 @@ const ResourceList = () => {
   const [selectedRequest, setSelectedRequest] = useState(null); // To store the selected request
   const [selectedResourceId, setSelectedResourceId] = useState(null); // Track selected resource ID for modal
 
-
+  const [filterType, setFilterType] = useState(""); // Filter by resource type
+  const [filterState, setFilterState] = useState(""); // Filter by state
+  const [filterCity, setFilterCity] = useState(""); // Filter by city
   const [itemsPerPage, setItemsPerPage] = useState(9); // Initial items per page
 
   const drawerRef = useRef(); // Ref for the drawer trigger
@@ -123,6 +135,30 @@ const ResourceList = () => {
   const featuredResource = currentResources[0];
   const otherResources = currentResources;
 
+  const states = createListCollection({
+    items: [
+      {label: "Virginia", value: "VA" },
+      { label: "New York", value: "NY" },
+      { label: "California", value: "CA" },
+      { label: "Florida", value: "FL" },
+      { label: "Texas", value: "TX" },
+      { label: "Maryland", value: "MD" },
+
+    ]
+
+  })
+  const resourceTypes = createListCollection({
+    items: [
+      {label: "Community Fridge", value: "Community Fridge" },
+      { label: "Trauma Recovery", value: "Trauma Recovery" },
+      { label: "Gym", value: "Gym" },
+      { label: "Library", value: "Library" },
+      { label: "Queer Meet Group", value: "Queer Meet Group" },
+      { label: "Trans Support Group", value: "Trans Support Group" },
+
+    ]
+
+  })
 
   
   const handleCardClick = (resourceId) => {
@@ -132,8 +168,86 @@ const ResourceList = () => {
     }
   };
 
+  const handleTypeFilter = () => {
+    
+  }
+  
+  // Filter logic for resources based on selected state
+  const filteredResources = resources.filter((resource) => {
+    // Check for state filter
+    if (filterState && filterState.length > 0) {
+      const selectedState = filterState.join(""); // Convert array ['VA'] to string 'VA'
+      if (resource.state !== selectedState) {
+        return false; // Exclude resource if state doesn't match
+      }
+    }
+  
+    // Check for type filter
+    if (filterType && filterType.length > 0) {
+      const selectedType = filterType.join(""); // Convert array ['Community Fridge'] to string
+      if (resource.resource_type !== selectedType) {
+        return false; // Exclude resource if type doesn't match
+      }
+    }
+  
+    return true; // Include resource if it passes all filters
+  });
+  
+
+// Paginate the filtered resources
+const paginatedResources = filteredResources.slice(
+  startIndex,
+  startIndex + itemsPerPage
+);
+
   return (
     <Box>
+      <Box display="flex"  justifyContent="space-evenly" gap={4} m={6}>
+      <SelectRoot
+  collection={resourceTypes}
+  value={filterType}
+  onValueChange={(selectedItem) => setFilterType([selectedItem.value])} // Wrap in array
+  width="320px"
+>
+  <SelectTrigger>
+    <SelectValueText placeholder="Filter by Type" />
+  </SelectTrigger>
+  <SelectContent>
+    {resourceTypes.items.map((type) => (
+      <SelectItem item={type} key={type.value}>
+        {type.label}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</SelectRoot>
+
+        <SelectRoot
+  collection={states}
+  value={filterState}
+  onValueChange={(selectedItem) => setFilterState([selectedItem.value])} // Wrap in array
+  width="320px"
+>
+  <SelectTrigger>
+    <SelectValueText placeholder="Filter by State" />
+  </SelectTrigger>
+  <SelectContent>
+    {states.items.map((state) => (
+      <SelectItem item={state} key={state.value}>
+        {state.label}
+      </SelectItem>
+    ))}
+  </SelectContent>
+</SelectRoot>
+
+      <Input
+  placeholder="Filter by City"
+  value={filterCity}
+  onChange={(e) => setFilterCity(e.target.value)}
+  maxWidth="200px"
+/>
+      </Box>
+
+
     <ResourceDetailsModal
     resourceId={selectedResourceId}
     trigger={
@@ -160,48 +274,48 @@ const ResourceList = () => {
             }}
             gap={6}
           >
-            {otherResources.map((resource) => (
-              <Card.Root
-                maxHeight="250px"
-                maxWidth="180px"
-                size="xs"
-                key={resource.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                shadow="md"
-                bg="gray.100"
-                _dark={{ bg: "gray.800" }}
-                _hover={{ transform: "scale(1.02)", border: "1px solid", borderColor: "gray.700", cursor: "pointer" }}
-                onClick={() => handleCardClick(resource.id)} // Open drawer for the clicked resource
+            {paginatedResources.map((resource) => (
+  <Card.Root
+    maxHeight="250px"
+    maxWidth="180px"
+    size="xs"
+    key={resource.id}
+    borderWidth="1px"
+    borderRadius="lg"
+    overflow="hidden"
+    shadow="md"
+    bg="gray.100"
+    _dark={{ bg: "gray.800" }}
+    _hover={{
+      transform: "scale(1.02)",
+      border: "1px solid",
+      borderColor: "gray.700",
+      cursor: "pointer",
+    }}
+    onClick={() => handleCardClick(resource.id)} // Open drawer for the clicked resource
+  >
+    <Image
+      src={resource.image_url || "/no-image.png"}
+      alt={resource.resource_name || "Unnamed Resource"}
+      height="200px"
+      objectFit="cover"
+    />
+    <Card.Body gap={2} p={2}>
+      <Card.Title>{resource.resource_name || "Unnamed Resource"}</Card.Title>
+      <Text fontSize="sm">
+        <strong>City:</strong> {resource.city || "Unknown"}
+      </Text>
+      <Text fontSize="sm">
+        <strong>Resource Type:</strong> {resource.resource_type || "Unknown"}
+      </Text>
+    </Card.Body>
+  </Card.Root>
+))}
 
 
-              >
-                <Image
-                  src={resource.image_url || "/no-image.png"}
-                  alt={resource.resource_name || "Unnamed Resource"}
-                  height="200px"
-                  objectFit="cover"
-                />
-                <Card.Body gap={2} p={2}>
-                  <Card.Title>
-                    {resource.resource_name || "Unnamed Resource"}
-                  </Card.Title>
-                  {/* <Card.Description>
-                    {resource.description.split(" ").slice(0,16).join(" ") + "..." || "No description available."}
-                  </Card.Description> */}
-                  <Text fontSize="sm">
-                    <strong>City:</strong> {resource.city || "Unknown"}
-                  </Text>
-                  <Text fontSize="sm">
-                    <strong>Resource Type:</strong>{" "}
-                    {resource.resource_type || "Unknown"}
-                  </Text>
-                 
-                </Card.Body>
-              </Card.Root>
-            ))}
           </Grid>
+          
+
 
          
         </>
