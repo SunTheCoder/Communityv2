@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 import SignUp from "../SignUp";
 import { ColorModeButton } from "../ui/color-mode";
+import { Blockquote } from "../ui/blockquote";
 
 const SplashPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // Add your login logic here
     console.log("Login clicked");
     navigate("/main"); // Navigate to main page after login
   };
@@ -19,39 +19,55 @@ const SplashPage = () => {
   };
 
   return (
-    <Box
-      
-      _dark={{ bg: "gray.800" }}>
-      <ColorModeButton/>
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-    
-      _dark={{ bg: "gray.800" }}
+    <Box minHeight="100vh" _dark={{ bg: "gray.800" }}>
+      <ColorModeButton />
+      <Grid
+        templateColumns={{ base: "1fr", md: "1fr 1fr" }} // Single column on smaller screens, 2 columns on medium+
+        minHeight="100vh"
+        gap={4}
       >
-        
-      
-      <Stack spacing={6} textAlign="center">
-        <Text fontSize="2xl" fontWeight="bold">
-          Welcome to the Community Map
-        </Text>
-        <SignUp navigate={navigate}/>
-        <Box>
-          <Button 
-            variant="outline" 
-            size='md' 
-            onClick={enterAsGuest} 
-            my={8} 
-            // bg="gray.400"
-            _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+        {/* Left Column - SignUp */}
+        <GridItem
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bg="gray.100"
+          _dark={{ bg: "gray.700" }}
+          p={6}
+        >
+          <Box textAlign="center" maxWidth="400px" w="100%">
+            <Text fontSize="2xl" fontWeight="bold" mb={4}>
+              Welcome to the Community Map
+            </Text>
+            <SignUp navigate={navigate} />
+            <Button
+              variant="outline"
+              size="md"
+              onClick={enterAsGuest}
+              mt={8}
+              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
             >
-            Enter as Guest
-          </Button>
-        </Box>
-      </Stack>
-    </Box>
+              Enter as Guest
+            </Button>
+          </Box>
+        </GridItem>
+
+        {/* Right Column - Quote */}
+        <GridItem
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bg="gray.50"
+          _dark={{ bg: "gray.900" }}
+          p={6}
+        >
+          <Blockquote showDash cite="Malidoma Patrice Somé">
+            If anyone thinks he is something when he is nothing, he deceives
+            himself. Each one should test his own actions. Then he can take
+            pride in himself, without comparing himself to anyone else.
+          </Blockquote>
+        </GridItem>
+      </Grid>
     </Box>
   );
 };
