@@ -128,21 +128,7 @@ const AddPostInput = () => {
         )}
 
         {/* Submit Button */}
-        <Circle>
-            <Button
-            type="submit"
-            bg="pink.300"
-            isLoading={isSubmitting} // Show loading spinner on submit
-            borderRadius="md"
-            shadow="md"
-            size="xs"
-            
-              variant="plain" py="10px" position="relative" left="1px" _hover={{bg:"pink.100", shadow:"md"}}>
-          {/* + Add Post */}
-          Add Post <CiCirclePlus />
-
-        </Button>
-        </Circle>
+       
       </VStack>
     </Box>
   );
