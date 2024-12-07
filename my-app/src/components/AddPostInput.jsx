@@ -87,21 +87,25 @@ const AddPostInput = () => {
         />
 
 <Button
-            type="submit"
-            bg="pink.200"
-            isLoading={isSubmitting} // Show loading spinner on submit
-            borderRadius="md"
-            borderLeftRadius="none"
-            shadow="md"
-            size="md"
-            color= "gray.800"
-            fontSize="xs"
-            // mr={4}
-              variant="plain" py="10px" position="relative" left="1px" _hover={{bg:"pink.100", shadow:"md"}}>
-          {/* + Add Post */}
-          Add Post <CiCirclePlus />
+  type="submit"
+  bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" // Very light pink to lavender
+  
+  isLoading={isSubmitting} // Show loading spinner on submit
+  borderRadius="md"
+  borderLeftRadius="none"
+  shadow="md"
+  size="md"
+  color="gray.800"
+  fontSize="xs"
+  variant="plain"
+  py="10px"
+  position="relative"
+  left="1px"
+  
+>
+  Add Post <CiCirclePlus />
+</Button>
 
-        </Button>
             </Group>
         {errors.content && (
           <Text fontSize="sm" color="red.500">
