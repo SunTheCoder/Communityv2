@@ -175,8 +175,8 @@ const CommunityFeed = () => {
   const groupedPosts = groupPostsByDate(posts);
 
   return (
-    <Box maxHeight="1000px" overflow="auto" mt="43px" width="100%">
-      <AddPostInput/>
+    <Box maxHeight="1000px" overflow="auto" mt="23px" width="100%">
+      {/* <AddPostInput/> */}
       {/* <Circle>
         <PostsAddDrawer />
       </Circle> */}

@@ -26,6 +26,7 @@ import { PiFlowerLight } from "react-icons/pi";
 import { Avatar, AvatarGroup } from "./ui/avatar";
 
 
+
 import SearchBar from "./SearchBar";
 import Map from "./Map";
 import CommunityMap from "./CommunityMap";
@@ -33,6 +34,7 @@ import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
 import CommunityFeed from "./CommunityFeed";
 import FriendAvatarGroup from "./FriendAvatarGroup";
+import AddPostInput from "./AddPostInput";
 
 
 const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
@@ -226,7 +228,9 @@ const Layout = () => {
 
             <Tabs.Content value="first">
                 {/* <Text>Community Feed Placeholder</Text> */}
+                        <AddPostInput/>
                 <Box display="flex" justifyContent="center" >
+
                 <CommunityFeed/>
                 </Box>
             </Tabs.Content>

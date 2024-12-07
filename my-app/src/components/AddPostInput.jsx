@@ -56,8 +56,9 @@ const AddPostInput = () => {
     <Box
       as="form"
       onSubmit={handleSubmit(onSubmit)} // Use form's onSubmit handler
-      p={1}
+      pt={1}
       px={8}
+      mt={45}
     //   border="1px solid"
     //   borderColor="gray.200"
       borderRadius="md"
@@ -81,7 +82,7 @@ const AddPostInput = () => {
           shadow="sm"
           _focus={{ borderColor: "pink.500", bg:"pink.50" }}
           _dark={{bg:"gray.500", borderColor: "pink.600" }}
-
+          
           autoFocus
         />
 
@@ -95,6 +96,7 @@ const AddPostInput = () => {
             size="md"
             color= "gray.800"
             fontSize="xs"
+            mr={4}
               variant="plain" py="10px" position="relative" left="1px" _hover={{bg:"pink.100", shadow:"md"}}>
           {/* + Add Post */}
           Add Post <CiCirclePlus />
@@ -108,7 +110,7 @@ const AddPostInput = () => {
         )}
 
         {/* Image URL Input */}
-        <Input
+        {/* <Input
           placeholder="Optional: Add an image URL"
           {...register("imageUrl", {
             pattern: {
@@ -120,7 +122,7 @@ const AddPostInput = () => {
           
           _focus={{ borderColor: "pink.500", shadow: "pink.500", bg:"pink.50"}}
           _dark={{bg:"gray.500"}}
-        />
+        /> */}
         {errors.imageUrl && (
           <Text fontSize="sm" color="red.500">
             {errors.imageUrl.message}
