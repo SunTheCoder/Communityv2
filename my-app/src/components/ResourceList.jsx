@@ -137,32 +137,6 @@ const ResourceList = () => {
   const featuredResource = currentResources[0];
   const otherResources = currentResources;
 
-  const states = createListCollection({
-    items: [
-      {label: "Virginia", value: "VA" },
-      { label: "New York", value: "NY" },
-      { label: "California", value: "CA" },
-      { label: "Florida", value: "FL" },
-      { label: "Texas", value: "TX" },
-      { label: "Maryland", value: "MD" },
-
-    ]
-
-  })
-  const resourceTypes = createListCollection({
-    items: [
-      {label: "Community Fridge", value: "Community Fridge" },
-      { label: "Trauma Recovery", value: "Trauma Recovery" },
-      { label: "Gym", value: "Gym" },
-      { label: "Library", value: "Library" },
-      { label: "Queer Meet Group", value: "Queer Meet Group" },
-      { label: "Trans Support Group", value: "Trans Support Group" },
-      { label: "LGBTQ+ Support Group", value: "LGBTQ+ Support Group" },
-
-    ]
-
-  })
-
   
   const handleCardClick = (resourceId) => {
     setSelectedResourceId(resourceId); // Set the selected resource ID
@@ -207,7 +181,7 @@ const paginatedResources = filteredResources.slice(
     <Box mt="46.3px">
       <Box display="flex"  justifyContent="space-evenly" gap={4}  m={6}>
       <SelectRoot
-  collection={resourceTypes}
+  collection={Types}
   value={filterType}
   onValueChange={(selectedItem) => setFilterType([selectedItem.value])} // Wrap in array
   width="320px"
@@ -225,7 +199,7 @@ const paginatedResources = filteredResources.slice(
 </SelectRoot>
 
         <SelectRoot
-  collection={states}
+  collection={States}
   value={filterState}
   onValueChange={(selectedItem) => setFilterState([selectedItem.value])} // Wrap in array
   width="320px"

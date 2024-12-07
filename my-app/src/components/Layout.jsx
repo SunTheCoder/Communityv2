@@ -58,12 +58,15 @@ const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
     }
   };
 
+  
 const Layout = () => {
   const [value, setValue] = useState("first");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const { user, isLoggedIn } = useSelector((state) => state.user);
+  const [resources, setResources] = useState([]);
+
 
   // Fetch the logged-in user's profile
   useEffect(() => {
@@ -104,8 +107,53 @@ const Layout = () => {
       }
     };
 
+    const fetchResources = async () => {
+      setLoading(true);
+      try {
+        const { data: resourcesData, error: resourcesError } = await supabase
+          .from("resources")
+          .select("*");
+
+        if (resourcesError) throw new Error(resourcesError.message);
+
+        setResources(resourcesData || []);
+
+        // const profileIds = [
+        //   ...new Set(
+        //     resourcesData
+        //       .map((resource) => resource.created_by_id)
+        //       .filter((id) => id && id !== "null")
+        //   ),
+        // ];
+
+        // if (profileIds.length > 0) {
+        //   const { data: profilesData, error: profilesError } = await supabase
+        //     .from("profiles")
+        //     .select("id, username")
+        //     .in("id", profileIds);
+
+        //   if (profilesError) throw new Error(profilesError.message);
+
+        //   const profileMap = profilesData.reduce((acc, profile) => {
+        //     acc[profile.id] = profile.username;
+        //     return acc;
+        //   }, {});
+        //   setProfiles(profileMap);
+        // }
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+        setErrorMessage("Unable to fetch resources. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResources();
+
     fetchUserProfile();
   }, [dispatch]);
+
+
 
   return (
     <Box _dark={{ bg: "gray.800" }} minHeight="100vh" >
@@ -179,7 +227,7 @@ const Layout = () => {
         <Box gridColumn="span 12"></Box>
         <HStack gridColumn="span 4">
             <Box width="240px" paddingRight="15px">
-            <SearchBar />
+            <SearchBar resources={resources} />
             </Box>
             <Box  textAlign="center" px="15px">
             <Heading as="h1" size="3xl" >
