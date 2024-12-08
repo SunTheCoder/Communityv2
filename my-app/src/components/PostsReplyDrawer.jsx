@@ -120,8 +120,13 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             </Button>
           </DrawerActionTrigger>
           <DrawerActionTrigger asChild>
-            <Button variant="ghost" onClick={handleReplySubmit}  bg="green.500"
-                _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}>
+            <Button variant="ghost" onClick={handleReplySubmit}  bg="radial-gradient(circle, #FFE4E1, #E6E6FA)"
+                _hover={{ bg:"radial-gradient(circle, #E0FFFF, #E6E6FA)"
+, _dark: { bg: "gray.600" } }}
+                border="1px solid"
+                borderColor="pink.300"
+                >
+                  
               Submit
             </Button>
           </DrawerActionTrigger>
