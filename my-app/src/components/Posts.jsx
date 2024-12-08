@@ -128,15 +128,22 @@ const Post = ({ post }) => {
                         maxWidth="215px"
                         mx={1}
                         bg="purple.100"
-
+                        
                         width="100%"
                         shadow="sm"
                       >
                         <Stack fontWeight="" gap={0}>
-                          <Box color="pink.600" fontWeight="semibold">
+                          <Box 
+                              color="pink.600" 
+                              fontWeight="semibold"
+                              >
                             @{parentPost.author_username}
                           </Box>
-                          <Box truncate color="gray.700" _dark={{color: "pink.200"}} mx={3}>{parentPost.content}</Box>
+                          <Box truncate 
+                            color="gray.700" 
+                            _dark={{color: "pink.200"}} 
+                            mx={3}>{parentPost.content}
+                            </Box>
                         </Stack>
                       </Box>
                   
@@ -185,7 +192,8 @@ const Post = ({ post }) => {
                 </Text>
               )}
                 {parentPost ? (
-              <Text bg="pink.100"
+              <Text bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
+              
                         _dark={{ bg: "gray.600" }}
                         p={2}
                         borderRadius="md"
@@ -198,7 +206,9 @@ const Post = ({ post }) => {
                 {post.content}
               </Text>) :
               (<Text
-                bg="purple.100"
+                // bg="purple.100"
+                bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
+                          
                 _dark={{ bg: "gray.700" }}
                 p={2}
                 borderRadius="md"
