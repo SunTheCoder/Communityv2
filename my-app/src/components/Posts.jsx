@@ -127,8 +127,9 @@ const Post = ({ post }) => {
                         minWidth="0px"
                         maxWidth="215px"
                         mx={1}
-                        bg="purple.100"
-                        
+                        // bg="purple.100"
+                        bg="radial-gradient(circle, #E0FFFF, #E6E6FA)" // Cool gradient for replies
+
                         width="100%"
                         shadow="sm"
                       >
