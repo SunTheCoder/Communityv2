@@ -88,12 +88,12 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
     <DrawerRoot placement="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
-      <DrawerContent roundedTop="md" width="46.6%" ml="6%" border="2px solid" borderColor="gray.200" borderBottom="none" bg="gray.200" _dark={{borderColor:"pink.600", bg:"gray.900"}}>
+      <DrawerContent roundedTop="md" width="46.6%" ml="6%" border="2px solid" borderColor="pink.300" borderBottom="none" bg="radial-gradient(circle, #FFE4E1, #F6E6FA)" _dark={{borderColor:"pink.600", bg:"gray.900"}}>
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
         </DrawerCloseTrigger>
-        <DrawerHeader>
+        <DrawerHeader fontWeight="semibold" color="gray.800">
           {parentPostCreator
             ? `Reply to ${parentPostCreator}'s post`
             : "Reply to Post"}
@@ -105,9 +105,10 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             value={replyContent}
             bg="gray.100"
             onChange={(e) => setReplyContent(e.target.value)}
-            autoFocus
+            // autoFocus
+            _focus={{outlineColor: "pink.300", outlineOffset: "3px", outlineWidth: "2px", border: "none"}}
           />
-        </DrawerBody>
+        </DrawerBody >
         <DrawerFooter justify="flex-end" gap={4}>
           <DrawerActionTrigger asChild>
             <Button
@@ -115,7 +116,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
               onClick={() => toaster.create({ title: "Canceled", type: "info" })}
               bg="gray.100"
               _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
-              shadow="xs"
+              shadow="sm"
               size="xs"
               
               >
@@ -128,7 +129,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
                 _dark= {{ bg: "gray.600" } }
                 // border="1px solid"
                 // borderColor="pink.300"
-                shadow="xs"
+                shadow="sm"
                 size="xs"
                 >
                   
