@@ -89,6 +89,7 @@ const AddPostInput = () => {
 <Button
   type="submit"
   bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" // Very light pink to lavender
+  _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)", color: "pink.200"}}
   
   isLoading={isSubmitting} // Show loading spinner on submit
   borderRadius="md"

@@ -119,7 +119,7 @@ const Post = ({ post }) => {
                       /> */}
                       <Box direction="column" align="flex-start" spacing={2}
                        
-                        _dark={{ bg: "gray.700"  }}
+                       _dark={{bg:"radial-gradient(circle, #4A708B, #2C2A35)"}}
                         p={2}
                         borderRadius="md"
                         my={2}
@@ -129,11 +129,13 @@ const Post = ({ post }) => {
                         mx={1}
                         // bg="purple.100"
                         bg="radial-gradient(circle, #E0FFFF, #E6E6FA)" // Cool gradient for replies
+            
 
                         width="100%"
                         shadow="sm"
                       >
-                        <Stack fontWeight="" gap={0}>
+                        <Stack fontWeight="" gap={0} 
+>
                           <Box 
                               color="pink.600" 
                               fontWeight="semibold"
@@ -194,8 +196,9 @@ const Post = ({ post }) => {
               )}
                 {parentPost ? (
               <Text bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
-              
-                        _dark={{ bg: "gray.600" }}
+                    
+                        _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}
+
                         p={2}
                         borderRadius="md"
                         my={2}
@@ -209,8 +212,10 @@ const Post = ({ post }) => {
               (<Text
                 // bg="purple.100"
                 bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
+                _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}
+
                           
-                _dark={{ bg: "gray.700" }}
+                // _dark={{ bg: "gray.700" }}
                 p={2}
                 borderRadius="md"
                 my={2}

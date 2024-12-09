@@ -88,12 +88,27 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
     <DrawerRoot placement="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
-      <DrawerContent roundedTop="md" width="46.6%" ml="6%" border="2px solid" borderColor="pink.300" borderBottom="none" bg="radial-gradient(circle, #FFE4E1, #F6E6FA)" _dark={{borderColor:"pink.600", bg:"gray.900"}}>
+      <DrawerContent 
+          roundedTop="md" 
+          width="46.6%" ml="6%" 
+          border="2px solid" 
+          borderColor="pink.300" 
+          borderBottom="none" 
+          bg="radial-gradient(circle, #FFE4E1, #F6E6FA)" 
+          _dark={{borderColor:"pink.600", 
+            bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}
+            >
         <Toaster />
-        <DrawerCloseTrigger>
-          <CloseButton />
-        </DrawerCloseTrigger>
-        <DrawerHeader fontWeight="semibold" color="gray.800">
+        <DrawerCloseTrigger 
+        />
+          {/* <CloseButton />
+        </DrawerCloseTrigger> */}
+        <DrawerHeader 
+            fontWeight="semibold" 
+            color="gray.800"
+            _dark={{color:"pink.200"}}
+            
+            >
           {parentPostCreator
             ? `Reply to ${parentPostCreator}'s post`
             : "Reply to Post"}
@@ -119,6 +134,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
               _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
               shadow="sm"
               size="xs"
+              
               
               >
               Cancel
