@@ -90,7 +90,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
       <DrawerBackdrop />
       <DrawerContent 
           roundedTop="md" 
-          width="47.6%" ml="6%" 
+          width="48%" ml="6%" 
           border="2px solid" 
           borderColor="pink.300" 
           borderBottom="none" 
@@ -111,7 +111,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             
             >
           {parentPostCreator
-            ? `Reply to ${parentPostCreator}'s post`
+            ? `Reply to ${parentPostCreator}`
             : "Reply to Post"}
         </DrawerHeader>
         <DrawerBody>
@@ -124,6 +124,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             // autoFocus
             shadow="xs"
             _focus={{outlineColor: "pink.300", outlineOffset: "3px", outlineWidth: "2px", border: "none", shadow: "xs" }}
+            _dark={{outlineColor: "pink.300", color:"pink.900", bg: "gray.200"  }}
           />
         </DrawerBody >
         <DrawerFooter justify="flex-end" gap={4}>
@@ -135,6 +136,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
               _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
               shadow="sm"
               size="xs"
+              _dark={{bg: "gray.500", color: "pink.200"  }}
               
               
               >
@@ -144,11 +146,12 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
           <DrawerActionTrigger asChild>
             <Button variant="ghost" onClick={handleReplySubmit}  bg="radial-gradient(circle, #FFE4E1, #E6E6FA)"
                 _hover={{ bg:"radial-gradient(circle, #E0FFFF, #E6E6FA)"}}
-                _dark= {{ bg: "gray.600" } }
+                _dark= {{ bg:"radial-gradient(circle, #8B4A62, #2C2A35)", _hover:{bg:"radial-gradient(circle, #4A708B, #2C2A35)", color: "pink.200"  } } }
                 // border="1px solid"
                 // borderColor="pink.300"
                 shadow="sm"
                 size="xs"
+
                 >
                   
               Submit

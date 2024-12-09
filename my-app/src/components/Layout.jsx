@@ -156,7 +156,9 @@ const Layout = () => {
 
 
   return (
-    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" >
+    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" 
+      
+    >
             
                 <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
                 
@@ -235,7 +237,9 @@ const Layout = () => {
 
             </Heading>
             </Box>
-        <Box  >
+        <Box  
+        
+        >
           <ColorModeButton />
         </Box>
         </HStack>

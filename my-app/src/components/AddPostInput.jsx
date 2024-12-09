@@ -81,7 +81,7 @@ const AddPostInput = () => {
           borderRightRadius="none"
           shadow="sm"
           _focus={{ borderColor: "pink.500", bg:"pink.50" }}
-          _dark={{bg:"gray.500", borderColor: "pink.600" }}
+          _dark={{bg:"gray.200", borderColor: "pink.600", color: "pink.900" }}
           
         //   autoFocus
         />

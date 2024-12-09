@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { supabase } from "../App"
 import { Field } from "./ui/field";
 import { Toaster, toaster } from "./ui/toaster"; // Import the toaster
+import { Tooltip } from "./ui/tooltip";
+import { CiCirclePlus } from "react-icons/ci";
+
 
 import { 
   SelectContent, 
@@ -237,15 +240,21 @@ const RequestResourceDrawer = () => {
   return (
     <DrawerRoot size="sm">
       <DrawerBackdrop />
+      <Tooltip content="A Request to add a resource will be sent to an Admin with the details you provide.">
+
       <DrawerTrigger asChild>
         <Button
-          bg="gray.400"
-          _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+          bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" // Very light pink to lavender
+          _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)", color: "pink.200"}}
+          // _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
           variant="solid"
+          shadow="sm"
+          color="pink.900"
         >
-          Request Resource <RiArrowRightLine />
+          Request Resource <CiCirclePlus />
         </Button>
       </DrawerTrigger>
+      </Tooltip>
       <DrawerContent borderLeftRadius="lg" overflow="hidden" p={4} width="full">
         <Toaster />
         <DrawerCloseTrigger>
