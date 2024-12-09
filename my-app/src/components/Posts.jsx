@@ -87,7 +87,7 @@ const Post = ({ post }) => {
         //   boxShadow="sm"
           ml={2.5}
           // mb={4}
-        //   _dark={{ bg: "gray.800" }}
+          _dark={{ _active: { bg:"gray.600", shadow: "md" }} }
         //   _hover={{ border: "1px solid", borderColor: "gray.700" }}
           cursor="pointer"
           _active={{ bg: "gray.100", shadow: "md" }}

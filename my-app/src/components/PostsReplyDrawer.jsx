@@ -90,12 +90,13 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
       <DrawerBackdrop />
       <DrawerContent 
           roundedTop="md" 
-          width="46.6%" ml="6%" 
+          width="47.6%" ml="6%" 
           border="2px solid" 
           borderColor="pink.300" 
           borderBottom="none" 
           bg="radial-gradient(circle, #FFE4E1, #F6E6FA)" 
-          _dark={{borderColor:"pink.600", 
+          _dark={{
+            borderColor:"pink.600", 
             bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}
             >
         <Toaster />
