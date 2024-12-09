@@ -113,18 +113,23 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             <Button
               variant="ghost"
               onClick={() => toaster.create({ title: "Canceled", type: "info" })}
-              bg="gray.400"
+              bg="gray.100"
               _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
-            >
+              shadow="xs"
+              size="xs"
+              
+              >
               Cancel
             </Button>
           </DrawerActionTrigger>
           <DrawerActionTrigger asChild>
             <Button variant="ghost" onClick={handleReplySubmit}  bg="radial-gradient(circle, #FFE4E1, #E6E6FA)"
-                _hover={{ bg:"radial-gradient(circle, #E0FFFF, #E6E6FA)"
-, _dark: { bg: "gray.600" } }}
-                border="1px solid"
-                borderColor="pink.300"
+                _hover={{ bg:"radial-gradient(circle, #E0FFFF, #E6E6FA)"}}
+                _dark= {{ bg: "gray.600" } }
+                // border="1px solid"
+                // borderColor="pink.300"
+                shadow="xs"
+                size="xs"
                 >
                   
               Submit
