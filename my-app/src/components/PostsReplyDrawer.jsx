@@ -106,7 +106,8 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
             bg="gray.100"
             onChange={(e) => setReplyContent(e.target.value)}
             // autoFocus
-            _focus={{outlineColor: "pink.300", outlineOffset: "3px", outlineWidth: "2px", border: "none"}}
+            shadow="xs"
+            _focus={{outlineColor: "pink.300", outlineOffset: "3px", outlineWidth: "2px", border: "none", shadow: "xs" }}
           />
         </DrawerBody >
         <DrawerFooter justify="flex-end" gap={4}>
