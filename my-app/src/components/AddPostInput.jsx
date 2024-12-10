@@ -94,7 +94,7 @@ const AddPostInput = () => {
   isLoading={isSubmitting} // Show loading spinner on submit
   borderRadius="md"
   borderLeftRadius="none"
-  shadow="md"
+  shadow="sm"
   size="md"
   color="gray.800"
   fontSize="xs"

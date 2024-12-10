@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../App";
 import { Box, Text, VStack } from "@chakra-ui/react";
-import Post from "./Posts"; // Import the Post component
-import PostsAddDrawer from "./PostsAddDrawer";
 import ResourcePostsAddDrawer from "./ResourcePostsAddDrawer";
 import ResourcePost from "./ResourcePosts";
 
