@@ -26,6 +26,7 @@ const ResourceFeed = ({ resourceId }) => {
             user_id,
             author_username,
             resource_id,
+            likes_count,
             parent_post_id,
             profiles (role)
           `)
