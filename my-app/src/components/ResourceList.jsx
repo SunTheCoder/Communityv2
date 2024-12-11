@@ -185,7 +185,10 @@ const paginatedResources = filteredResources.slice(
   value={filterType}
   onValueChange={(selectedItem) => setFilterType([selectedItem.value])} // Wrap in array
   maxWidth="320px"
-  
+  // border="1px solid"
+  // borderColor="gray.300"
+  borderRadius="sm"
+  shadow="sm"
 >
   <SelectTrigger>
     <SelectValueText placeholder="Filter by Type" />
@@ -204,6 +207,8 @@ const paginatedResources = filteredResources.slice(
   value={filterState}
   onValueChange={(selectedItem) => setFilterState([selectedItem.value])} // Wrap in array
   width="320px"
+   borderRadius="sm"
+  shadow="sm"
 >
   <SelectTrigger>
     <SelectValueText placeholder="Filter by State" />
@@ -222,6 +227,9 @@ const paginatedResources = filteredResources.slice(
   value={filterCity}
   onChange={(e) => setFilterCity(e.target.value)}
   maxWidth="200px"
+  _hover={{cursor: "text"}}
+   borderRadius="sm"
+  shadow="sm"
 />
       </Box>
 
