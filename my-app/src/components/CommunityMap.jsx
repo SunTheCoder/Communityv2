@@ -69,7 +69,7 @@ const ResourceMap = () => {
           borderRadius="md"
           overflow="hidden"
           borderWidth="1px"
-          boxShadow="lg"
+          shadow="sm"
           mt={1}
         >
           <MapContainer

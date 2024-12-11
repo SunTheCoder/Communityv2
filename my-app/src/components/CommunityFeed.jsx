@@ -188,11 +188,11 @@ const CommunityFeed = () => {
             {groupedPosts.map(([date, posts]) => (
               <Box key={date}>
                 <HStack>
-                <Separator my={4} _dark={{borderColor: "pink.600"}}/>
-                <Text fontWeight="bold" fontSize="xs" w="100%" color="pink.400" textAlign="center">
+                <Separator my={4} borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
+                <Text fontWeight="bold" fontSize="xs" w="100%" color="pink.500" textAlign="center">
                   {date.slice(0, 10) + ", " + date.slice(11)}
                 </Text>
-                <Separator my={4} _dark={{borderColor: "pink.600"}}/>
+                <Separator my={4} borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
                 </HStack>
 
                 {posts.map((post) => (

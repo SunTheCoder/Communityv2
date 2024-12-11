@@ -156,11 +156,15 @@ const Layout = () => {
 
 
   return (
-    <Box _dark={{ bg: "gray.800" }} minHeight="100vh" 
+    <Box 
+    
+    bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
+
+    _dark={{ bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}} minHeight="100vh" 
       
     >
             
-                <Separator position='absolute' top='62px' _dark={{borderColor:"pink.600"}}/>
+                <Separator position='absolute' top='62px' borderColor="pink.300" _dark={{borderColor:"pink.600"}}/>
                 
             
       {/* Grid Layout */}
@@ -193,8 +197,8 @@ const Layout = () => {
             cursor="pointer"
             onClick={() =>
                 toaster.create({
-                    title: "Join our community!",
-                    description: "Contribute to the community map!",
+                    title: "Add Post",
+                    description: "Feature under development!",
                     type: "info",
                 })
             }
@@ -207,7 +211,7 @@ const Layout = () => {
             onClick={() =>
               toaster.create({
                 title: "Community Map Updates!",
-                description: "Check out the latest updates!",
+                description: "Feature under development!",
                 type: "info",
               })
             }
@@ -219,8 +223,8 @@ const Layout = () => {
             cursor="pointer"
             onClick={() =>
               toaster.create({
-                title: "Chat Feature",
-                description: "Start a conversation in the community!",
+                title: "Direct Messages",
+                description: "Feature under development!",
                 type: "info",
               })
             }
@@ -247,7 +251,7 @@ const Layout = () => {
         <Box gridColumn="span 1"></Box>
         <Box gridColumn="span 10" maxHeight="1210px" overflow="overlay" position="relative" top="12px"
               borderLeft="1px solid"
-            borderColor="gray.200"
+            borderColor="pink.300"
             _dark={{borderColor:"pink.600"}}
         >
             
@@ -275,10 +279,10 @@ const Layout = () => {
               <Tabs.Trigger value="third">Resource List</Tabs.Trigger>
               {/* <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
               <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger> */}
-              <Tabs.Indicator borderBottom='1px solid' borderColor='gray.300' _dark={{borderColor:"pink.600"}} bg="transparent" shadow='none'/>
+              <Tabs.Indicator borderBottom='1px solid' borderColor='pink.300' _dark={{borderColor:"pink.600"}} bg="transparent" shadow='none'/>
             </Tabs.List>
 
-            <Tabs.Content value="first">
+            <Tabs.Content value="first" >
                 {/* <Text>Community Feed Placeholder</Text> */}
                         <AddPostInput/>
                 <Box display="flex" justifyContent="center" >
@@ -314,7 +318,7 @@ const Layout = () => {
             display="flex"
             justifyContent="center"
             borderLeft="1px solid"
-            borderColor="gray.200"
+            borderColor="pink.300"
             _dark={{borderColor:"pink.600"}}
             mt="12px"
 

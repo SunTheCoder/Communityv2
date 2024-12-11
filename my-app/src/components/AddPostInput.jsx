@@ -56,9 +56,10 @@ const AddPostInput = () => {
     <Box
       as="form"
       onSubmit={handleSubmit(onSubmit)} // Use form's onSubmit handler
-      pt={1}
-      px={8}
-      mt={45}
+      // pt={1}
+      mx={8}
+      mt="48px"
+      
     //   border="1px solid"
     //   borderColor="gray.200"
       borderRadius="md"

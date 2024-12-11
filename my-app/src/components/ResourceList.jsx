@@ -10,7 +10,7 @@ import {
   Image,
   Button,
   Card,
-  
+  Flex,
   Input,
   createListCollection
 } from "@chakra-ui/react";
@@ -178,13 +178,14 @@ const paginatedResources = filteredResources.slice(
 );
 
   return (
-    <Box mt="46.3px">
-      <Box display="flex"  justifyContent="space-evenly" gap={4}  m={6}>
+    <Flex mt="46.3px" direction="column">
+      <Box display="flex"  justifyContent="center" gap={8}  m={6}>
       <SelectRoot
   collection={Types}
   value={filterType}
   onValueChange={(selectedItem) => setFilterType([selectedItem.value])} // Wrap in array
-  width="320px"
+  maxWidth="320px"
+  
 >
   <SelectTrigger>
     <SelectValueText placeholder="Filter by Type" />
@@ -260,16 +261,17 @@ const paginatedResources = filteredResources.slice(
     borderWidth="1px"
     borderRadius="lg"
     overflow="hidden"
-    shadow="md"
+    shadow="sm"
     bg="gray.100"
-    _dark={{ bg: "gray.800" }}
+    _dark={{ bg: "gray.700" }}
     _hover={{
       transform: "scale(1.02)",
       border: "1px solid",
-      borderColor: "gray.700",
+      borderColor: "gray.400",
       cursor: "pointer",
     }}
     onClick={() => handleCardClick(resource.id)} // Open drawer for the clicked resource
+    
   >
     <Image
       src={resource.image_url || "/no-image.png"}
@@ -280,10 +282,10 @@ const paginatedResources = filteredResources.slice(
     <Card.Body gap={2} p={2}>
       <Card.Title>{resource.resource_name || "Unnamed Resource"}</Card.Title>
       <Text fontSize="sm">
-        <strong>City:</strong> {resource.city || "Unknown"}
+        {resource.city || "Unknown"}
       </Text>
       <Text fontSize="sm">
-        <strong>Resource Type:</strong> {resource.resource_type || "Unknown"}
+       {resource.resource_type || "Unknown"}
       </Text>
     </Card.Body>
   </Card.Root>
@@ -339,7 +341,7 @@ const paginatedResources = filteredResources.slice(
         </Box>
       </PaginationRoot>
     </Box>
-    </Box>
+    </Flex>
   );
 };
 
