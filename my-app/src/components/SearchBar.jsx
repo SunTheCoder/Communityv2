@@ -37,7 +37,10 @@ const SearchBar = ({ resources }) => {
   return (
     <>
       {/* Search Input */}
-      <Field maxWidth="250px">
+      <Field 
+        maxWidth="250px" 
+          borderRadius="sm"
+        shadow="sm">
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
