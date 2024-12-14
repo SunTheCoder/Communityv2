@@ -19,21 +19,28 @@ const SplashPage = () => {
   };
 
   return (
-    <Box minHeight="100vh" _dark={{ bg: "gray.800" }}>
+    <Box minHeight="100vh" 
+    bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
+                    
+    _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}>
       <ColorModeButton />
       <Grid
         templateColumns={{ base: "1fr", md: "1fr 1fr" }} // Single column on smaller screens, 2 columns on medium+
         minHeight="100vh"
         gap={4}
+        
       >
         {/* Left Column - SignUp */}
         <GridItem
           display="flex"
           justifyContent="center"
           alignItems="center"
-          bg="gray.100"
-          _dark={{ bg: "gray.700" }}
+         
+          
           p={6}
+          bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
+
+    _dark={{ bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}
         >
           <Box textAlign="center" maxWidth="400px" w="100%">
             <Text fontSize="2xl" fontWeight="bold" mb={4}>
@@ -41,11 +48,15 @@ const SplashPage = () => {
             </Text>
             <SignUp navigate={navigate} />
             <Button
-              variant="outline"
+              variant="solid"
               size="md"
               onClick={enterAsGuest}
               mt={8}
-              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+              bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" // Very light pink to lavender
+              _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)", color: "pink.200"}}
+              _hover={{bg: "radial-gradient(circle, #F4C4C2, #C8C8E0)", _dark: { bg: "gray.600" } }}
+              shadow="sm"
+              color="gray.600"
             >
               Enter as Guest
             </Button>
