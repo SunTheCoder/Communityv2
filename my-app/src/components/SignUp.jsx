@@ -263,8 +263,7 @@ const SignUp = ({navigate}) => {
             type="submit"
             isLoading={isLoading}
             loadingText="Submitting..."
-            bg="green.500"
-            _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}
+            login
           >
             {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
           </Button>

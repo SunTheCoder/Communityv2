@@ -84,7 +84,8 @@ const UserAvatar = () => {
             <MenuItem
               value="logout"
               onClick={handleLogout}
-              _hover={{ bg: "red.400", _dark: { bg: "red.500" } }}
+              borderRadius="sm"
+              _hover={{ bg: "radial-gradient(circle, #FFD1D1, #FFC4C4)", _dark: { bg: "radial-gradient(circle, #8B0000, #2C1C1C)" } }}
               _focus={{ bg: "gray.200", _dark: { bg: "red.500" } }}
             >
               Logout
@@ -116,8 +117,9 @@ const UserAvatar = () => {
             <MenuItem
               value="login"
               onClick={() => setIsDrawerOpen(true)} // Open the drawer on click
-              _hover={{ bg: "green.400", _dark: { bg: "green.500" } }}
-              _focus={{ bg: "gray.200", _dark: { bg: "green.500" } }}
+              borderRadius="sm"
+              _hover={{ bg: "radial-gradient(circle, #FFE4E1, #D0F5D6)", _dark: { bg: "radial-gradient(circle, #8B4A62, #1E392A)" } }}
+              // _focus={{ bg: "gray.200", _dark: { bg: "green.500" } }}
             >
               Login
             </MenuItem>
