@@ -238,7 +238,10 @@ const RequestResourceDrawer = () => {
   
 
   return (
-    <DrawerRoot size="sm">
+    <DrawerRoot 
+      size="sm"
+      
+      >
       <DrawerBackdrop />
       <Tooltip content="A Request to add a resource will be sent to an Admin with the details you provide.">
 
@@ -253,13 +256,21 @@ const RequestResourceDrawer = () => {
         </Button>
       </DrawerTrigger>
       </Tooltip>
-      <DrawerContent borderLeftRadius="lg" overflow="hidden" p={4} width="full">
+      <DrawerContent 
+        borderLeftRadius="lg" 
+        overflow="hidden" 
+        p={4} 
+        width="full"
+        bg="radial-gradient(circle, #FFE4E1, #E6E6FA)"
+        >
         <Toaster />
         <DrawerCloseTrigger>
           <CloseButton />
         </DrawerCloseTrigger>
         <DrawerHeader>
-          <DrawerTitle>Request Resource</DrawerTitle>
+          <DrawerTitle
+            textAlign="center"
+          >Request Resource</DrawerTitle>
         </DrawerHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <DrawerBody>
@@ -421,8 +432,8 @@ const RequestResourceDrawer = () => {
           <DrawerFooter justifyContent="flex-end" gap={4}>
             <DrawerActionTrigger>
                 <Button
+                logout
                 type="button"
-                variant="outline"
                 onClick={() =>
                     toaster.create({ title: "Canceled", type: "info" })
                 }
@@ -432,14 +443,13 @@ const RequestResourceDrawer = () => {
             </DrawerActionTrigger>
             <DrawerActionTrigger asChild>
                 <Button
+                login
                 type="submit"
-                variant="solid"
-                bg="gray.400"
-                _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+                
                 >
                 Submit <RiArrowRightLine />
                 </Button>
-            </DrawerActionTrigger>
+            </DrawerActionTrigger>    
           </DrawerFooter>
         </form>
         {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
