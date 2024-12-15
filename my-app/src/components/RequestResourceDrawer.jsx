@@ -38,6 +38,7 @@ import {
     FileUploadTrigger,
   } from "./ui/file-upload"
 import { geocodeAddress } from "./Layout";
+import InputCustom from "./InputCustom";
 
 // Resource Types Collection
 const resourceTypes = createListCollection({
@@ -378,7 +379,7 @@ const RequestResourceDrawer = () => {
                       })}
                     />
                   </Field>
-                  <Field
+                  {/* <Field
                     label="City"
                     invalid={!!errors.city}
                     errorText={errors.city?.message}
@@ -388,7 +389,15 @@ const RequestResourceDrawer = () => {
                       placeholder="ex. New York"
                       {...register("city", { required: "City is required" })}
                     />
-                  </Field>
+                  </Field> */}
+                  <InputCustom
+                    label="City"
+                    placeholder=""
+                    name="city"
+                    isRequired  
+                    {...register("city", { required: "City is required" })}
+                    errorText={errors.city?.message}
+                  />
                   <Field
                     label="State"
                     invalid={!!errors.state}

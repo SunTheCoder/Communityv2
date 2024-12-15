@@ -11,12 +11,12 @@ const floatingStyles = defineStyle({
   pointerEvents: "none",
   transition: "all 0.2s ease",
   _peerPlaceholderShown: {
-    color: "gray.400",
+    color: "pink.400",
     top: "2.5",
     insetStart: "3",
   },
   _peerFocusVisible: {
-    color: "blue.500",
+    color: "pink.700",
     top: "-3",
     insetStart: "2",
   },
@@ -24,7 +24,7 @@ const floatingStyles = defineStyle({
 
 const InputCustom = forwardRef(({ label, name, placeholder, isRequired, errorText, ...props }, ref) => {
   return (
-    <Field.Root invalid={!!errorText} errorText={errorText} required={isRequired}>
+    <Field.Root invalid={!!errorText} errorText={errorText} required={isRequired} mt={2}>
       <Box position="relative">
         <Input
           ref={ref}
@@ -32,6 +32,7 @@ const InputCustom = forwardRef(({ label, name, placeholder, isRequired, errorTex
           placeholder={placeholder || ""}
           name={name}
           {...props}
+          _focus={{outlineColor: "pink.400", borderColor: "pink.400" }}
         />
         <Field.Label css={floatingStyles}>{label}</Field.Label>
       </Box>
