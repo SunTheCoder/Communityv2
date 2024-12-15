@@ -254,8 +254,7 @@ const SignUp = ({navigate}) => {
           <Button 
               variant="solid" 
               onClick={() => setIsSignUp(!isSignUp)}
-              bg="gray.400"
-              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+              signup
               >
             {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
           </Button>

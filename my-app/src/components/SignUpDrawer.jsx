@@ -236,8 +236,7 @@ const SignUpDrawer = ({ open, onClose }) => {
           <Button 
               variant="solid" 
               onClick={() => setIsSignUp(!isSignUp)}
-              bg="gray.400"
-              _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+              signup
               >
             {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
           </Button>
@@ -246,8 +245,7 @@ const SignUpDrawer = ({ open, onClose }) => {
                 type="submit"
                 isLoading={isLoading}
                 loadingText="Submitting..."
-                bg="green.500"
-                _hover={{ bg: "green.600", _dark: { bg: "gray.600" } }}
+                login
             >
                 {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
             </Button>

@@ -30,14 +30,14 @@ const buttonRecipe = defineConfig({
             maxWidth: "200px",
             boxShadow: "sm",
             fontSize: "xs",
-            bg: "radial-gradient(circle, #FFE4E1, #D0F5D6)", // Light pink to light green
+            bg: "radial-gradient(circle, #FFF6F5, #D0F5D6)", // Light pink to light green
             color: "pink.800", // Default text color
             _dark: {
               bg: "radial-gradient(circle, #8B4A62, #1E392A)", // Dark pink to dark green
               color: "pink.200", // Dark mode text color
             },
             _hover: {
-              bg: "radial-gradient(circle, #F4C4C2, #B8E6BE)", // Hover: light pink to soft green
+              bg: "radial-gradient(circle, #FCECEC, #B8E6BE)", // Hover: light pink to soft green
               _dark: {
                 bg: "radial-gradient(circle, #732f4f, #183E28)", // Hover: Dark pink to darker green
               },
@@ -61,6 +61,27 @@ const buttonRecipe = defineConfig({
               bg: "radial-gradient(circle, #FFB3B3, #FF9999)", // Hover: Lighter red gradient
               _dark: {
                 bg: "radial-gradient(circle, #6E0000, #1A0F0F)", // Hover: Darker red gradient
+              },
+            },
+          },
+          
+    },
+    signup: {
+        true: {
+            borderRadius: "sm",
+            maxWidth: "200px",
+            boxShadow: "sm",
+            fontSize: "xs",
+            bg: "radial-gradient(circle, #E5E5E5, #CFCFCF)", // Light gray gradient
+            color: "gray.800", // Default text color
+            _dark: {
+              bg: "radial-gradient(circle, #3C3C3C, #1F1F1F)", // Dark gray gradient
+              color: "gray.200", // Dark mode text color
+            },
+            _hover: {
+              bg: "radial-gradient(circle, #D5D5D5, #BFBFBF)", // Hover: Slightly darker light gray gradient
+              _dark: {
+                bg: "radial-gradient(circle, #2E2E2E, #181818)", // Hover: Slightly darker dark gray gradient
               },
             },
           },
