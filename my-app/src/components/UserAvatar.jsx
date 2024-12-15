@@ -118,7 +118,7 @@ const UserAvatar = () => {
               value="login"
               onClick={() => setIsDrawerOpen(true)} // Open the drawer on click
               borderRadius="sm"
-              _hover={{ bg: "radial-gradient(circle, #FFE4E1, #D0F5D6)", _dark: { bg: "radial-gradient(circle, #8B4A62, #1E392A)" } }}
+              _hover={{ bg: "radial-gradient(circle, #FFF6F5, #D0F5D6)", _dark: { bg: "radial-gradient(circle, #8B4A62, #1E392A)" } }}
               // _focus={{ bg: "gray.200", _dark: { bg: "green.500" } }}
             >
               Login
