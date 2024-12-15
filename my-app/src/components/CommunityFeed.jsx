@@ -207,7 +207,12 @@ const CommunityFeed = () => {
                   <Text>Loading more...</Text>
                 ) : (
                   <Center>
-                  <Button onClick={handleLoadMore} bg="pink.300" mt={4} size="xs">
+                  <Button 
+                    firstFlow 
+                    onClick={handleLoadMore} 
+                    my={4} 
+                    size="xs"
+                    >
                     Load More
                   </Button>
                   </Center>

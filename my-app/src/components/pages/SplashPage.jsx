@@ -79,7 +79,13 @@ const SplashPage = () => {
           </Blockquote>
         </GridItem>
       </Grid>
+      <Box>
+        <Button
+        firstFlow
+        >Recipe Test</Button>
+      </Box>
     </Box>
+    
   );
 };
 

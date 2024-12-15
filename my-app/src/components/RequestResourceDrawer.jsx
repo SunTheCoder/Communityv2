@@ -244,12 +244,10 @@ const RequestResourceDrawer = () => {
 
       <DrawerTrigger asChild>
         <Button
-          bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" // Very light pink to lavender
-          _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)", color: "pink.200"}}
-          // _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
+          
+          firstFlow
           variant="solid"
-          shadow="sm"
-          color="pink.900"
+          
         >
           Request Resource <CiCirclePlus />
         </Button>
