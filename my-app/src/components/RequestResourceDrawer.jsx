@@ -263,6 +263,7 @@ const RequestResourceDrawer = () => {
         p={4} 
         width="full"
         bg="radial-gradient(circle, #FFE4E1, #E6E6FA)"
+        _dark={{bg: "radial-gradient(circle, #8B4A62, #2C2A35)"}}
         >
         <Toaster />
         <DrawerCloseTrigger>
