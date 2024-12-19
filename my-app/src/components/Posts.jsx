@@ -16,7 +16,7 @@ import { Avatar } from "./ui/avatar";
 import { StatLabel, StatRoot, StatValueText } from "./ui/stat";
 import { ProgressBar, ProgressRoot } from "./ui/progress"
 import { BsHandThumbsUpFill } from "react-icons/bs";
-
+import LikeButton from "./LikeButton";
 
 import { useSelector } from "react-redux";
 import { supabase } from "../App";
@@ -75,12 +75,14 @@ const Post = ({ post }) => {
 
 
   return (
+    <Box>
     <PostReplyDrawer
       parentPostId={post.id}
       trigger={
         <Box
           maxWidth="100%"
           p={4}
+          pb={7}
           
         //   bg="white"
           borderRadius="md"
@@ -233,20 +235,7 @@ const Post = ({ post }) => {
             
           </HStack>
 
-          <Button variant="ghost" height="100%" onClick={handleLike} w={0} ml="40px">
-                  <StatRoot>
-                      <HStack mx="30px" fontSize="12px">
-                          {/* <Text >Likes</Text> */}
-                          {/* <Icon
-                            size="xs"
-                          > */}
-                                   <Box as={BsHandThumbsUpFill} color="pink.300" height="13px" />
-
-                          {/* </Icon> */}
-                          <Text >{likesCount}</Text>
-                      </HStack>
-                  </StatRoot>
-          </Button>
+         
 
 
                 
@@ -254,15 +243,16 @@ const Post = ({ post }) => {
 
            
             </Box>
-         
+           
             {post.image_url && (
-              <Box  borderRadius="8px" shadow="md" maxWidth= "150px" ml="47px" mt={2} mb={4}>
+              <Flex  borderRadius="8px" shadow="md" maxWidth= "150px" ml="47px" mt={2} mb={4}>
                 <Image
                   src={post.image_url}
                   alt="Post Image"
                   style={{ borderRadius: "8px",  }}
                 />
-              </Box>
+                
+              </Flex>
             )}
                 
 
@@ -280,7 +270,14 @@ const Post = ({ post }) => {
           )}
         </Box>
       }
+      
     />
+    <LikeButton
+    postId={post.id}
+    initialLikes={post.likes_count}
+    userId={user?.id}
+  />
+  </Box>
   );
 };
 
