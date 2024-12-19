@@ -23,13 +23,19 @@ const SplashPage = () => {
     bg="radial-gradient(circle, #FFE4E1, #E6E6FA)" 
                     
     _dark={{bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}>
-      <ColorModeButton />
+      
       <Grid
         templateColumns={{ base: "1fr", md: "1fr 1fr" }} // Single column on smaller screens, 2 columns on medium+
         minHeight="100vh"
         gap={4}
         
       >
+        <ColorModeButton 
+        position="absolute"
+        left="15px"
+        top="15px"
+        
+        />
         {/* Left Column - SignUp */}
         <GridItem
           display="flex"
@@ -72,10 +78,10 @@ const SplashPage = () => {
           _dark={{ bg: "gray.900" }}
           p={6}
         >
-          <Blockquote showDash cite="Malidoma Patrice Somé">
-            If anyone thinks he is something when he is nothing, he deceives
-            himself. Each one should test his own actions. Then he can take
-            pride in himself, without comparing himself to anyone else.
+          <Blockquote showDash cite="Fannie Lou Hamer" size="lg">
+          <Text fontSize="5xl">
+          There is one thing you have got to learn about our movement. Three people are better than no people.
+            </Text>
           </Blockquote>
         </GridItem>
       </Grid>
