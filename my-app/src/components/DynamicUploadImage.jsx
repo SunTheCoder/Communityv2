@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Input, VStack, Image } from "@chakra-ui/react";
+import { Box, Button, Input, VStack, Image, HStack } from "@chakra-ui/react";
 import { AiOutlineUpload } from "react-icons/ai";
 
 const DynamicUploadImage = ({ onFileSelect, clearPreview }) => {
@@ -33,16 +33,25 @@ const DynamicUploadImage = ({ onFileSelect, clearPreview }) => {
       </Button>
 
       {previewUrl && (
-        <Box position="absolute" maxWidth="fit-content">
-          <Image
-            src={previewUrl}
-            alt="Uploaded"
-            maxWidth="50px"
-            borderRadius="md"
-            boxShadow="sm"
-          />
-        </Box>
-      )}
+  <Box
+    position="absolute"
+    maxWidth="fit-content"
+    display="flex"
+    alignItems="center"
+    justifyContent="center"
+    height="100%" // Ensure the box fills its parent's height
+    width="100%" // Optional: Center horizontally as well
+  >
+    <Image
+      src={previewUrl}
+      alt="Uploaded"
+      maxWidth="50px"
+      borderRadius="md"
+      boxShadow="sm"
+    />
+  </Box>
+)}
+
     </VStack>
   );
 };
