@@ -22,7 +22,7 @@ const DynamicUploadImage = ({ onFileSelect, clearPreview }) => {
 
   return (
     <VStack spacing={4} align="center" width="full">
-      <Button as="label" p={0} variant="plain" size="sm" color="pink.800">
+      <Button as="label" p={0} variant="plain" size="sm" >
         <AiOutlineUpload />
         <Input
           type="file"
