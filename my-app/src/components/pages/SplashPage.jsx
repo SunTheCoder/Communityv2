@@ -78,7 +78,7 @@ const SplashPage = () => {
           _dark={{ bg: "gray.900" }}
           p={6}
         >
-          <Blockquote showDash cite="Fannie Lou Hamer" size="lg">
+          <Blockquote showDash cite="Fannie Lou Hamer" justify="center">
           <Text fontSize="5xl">
           There is one thing you have got to learn about our movement. Three people are better than no people.
             </Text>
@@ -90,4 +90,4 @@ const SplashPage = () => {
   );
 };
 
-export default SplashPage;
+export default SplashPage; 
