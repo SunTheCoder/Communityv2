@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Input, VStack, Image } from "@chakra-ui/react";
 import { AiOutlineUpload } from "react-icons/ai";
 
-const DynamicUploadImage = ({ onFileSelect }) => {
+const DynamicUploadImage = ({ onFileSelect, clearPreview }) => {
   const [previewUrl, setPreviewUrl] = useState(null); // For image preview
 
   const handleFileChange = (event) => {
@@ -12,6 +12,13 @@ const DynamicUploadImage = ({ onFileSelect }) => {
       onFileSelect(file); // Pass the file back to the parent component
     }
   };
+
+  // Clear the preview URL if the parent clears the preview
+  useEffect(() => {
+    if (clearPreview) {
+      setPreviewUrl(null);
+    }
+  }, [clearPreview]);
 
   return (
     <VStack spacing={4} align="center" width="full">
@@ -26,19 +33,13 @@ const DynamicUploadImage = ({ onFileSelect }) => {
       </Button>
 
       {previewUrl && (
-        <Box
-        position="absolute"
-        maxWidth='fit-content'
-        
-
-        >
+        <Box position="absolute" maxWidth="fit-content">
           <Image
             src={previewUrl}
             alt="Uploaded"
             maxWidth="50px"
             borderRadius="md"
             boxShadow="sm"
-            
           />
         </Box>
       )}

@@ -17,7 +17,10 @@ import { getPublicUrl } from "../supabaseRoutes/storage/getPublicUrl";
 const AddPostInput = () => {
   const { user } = useSelector((state) => state.user);
   // const [imageUrl, setUploadedImageUrl] = useState("");
+
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
+  const [clearPreview, setClearPreview] = useState(false); // For clearing preview
+
   const [imageUrl, setImageUrl] = useState(null); // Store uploaded image URL
   
 
@@ -28,9 +31,9 @@ const AddPostInput = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const handleUploadComplete = (url) => {
-    setUploadedImageUrl(""); // Clear the old URL
-    setUploadedImageUrl(url); // Set the new URL
+  const handleUploadComplete = () => {
+    setClearPreview(true); // Trigger clearing of preview in DynamicUploadImage
+    setTimeout(() => setClearPreview(false), 0); // Reset the clearPreview flag
   };
 
   const onSubmit = async (data) => {
@@ -49,7 +52,7 @@ const AddPostInput = () => {
 
       const postPayload = {
         content: data.content.trim(),
-        image_url: uploadedImageUrl, // Use uploaded image URL
+        image_url: uploadedImageUrl,
         author_username: user.username,
         user_id: user.id,
       };
@@ -59,9 +62,9 @@ const AddPostInput = () => {
 
       toaster.create({ description: "Post created successfully!", type: "success" });
 
-      reset(); // Clear the form
-      setSelectedFile(null); // Clear the selected file
-      setImageUrl(null); // Clear the image URL
+      reset();
+      setSelectedFile(null);
+      handleUploadComplete(); // Clear preview after successful post submission
     } catch (error) {
       console.error("Error creating post:", error.message);
       toaster.create({ title: "Error Creating Post", description: error.message, type: "error" });
@@ -115,8 +118,7 @@ const AddPostInput = () => {
           
         >
           {/* Dynamic Image Upload */}
-          <DynamicUploadImage onFileSelect={setSelectedFile} />
-         {/* <AiOutlineUpload/> */}
+          <DynamicUploadImage onFileSelect={setSelectedFile} clearPreview={clearPreview} />         {/* <AiOutlineUpload/> */}
           <Input
             type="file"
             {...register("image")}
