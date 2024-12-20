@@ -173,7 +173,7 @@ const Layout = () => {
       <SimpleGrid columns={20} spacing={4} py="11px">
         {/* Row 1: Avatar, Icons, Search Bar, and Logo */}
         {/* <Box gridColumn="span 1"></Box> */}
-        <Box gridColumn="span 1"  display="flex" flexDirection="column" alignItems="center" >
+        <Box gridColumn="span 1"  display="flex" flexDirection="column" alignItems="center" cursor="pointer">
             <FriendAvatarGroup />
         {/* <Separator 
                     position='absolute' 
@@ -181,6 +181,7 @@ const Layout = () => {
                     height="100%" 
                     marginTop="50px"
                     mx='78px'
+                    
                     _dark={{borderColor:"pink.600"}}
                     /> */}
           {loading ? (
