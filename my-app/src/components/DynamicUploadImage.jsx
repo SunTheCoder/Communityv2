@@ -1,102 +1,31 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Input,
-  Image,
-  VStack,
-  Flex,
-} from "@chakra-ui/react";
-import { Toaster, toaster } from "./ui/toaster";
-import { uploadImage } from "../supabaseRoutes/storage/uploadImage";
-import { getPublicUrl } from "../supabaseRoutes/storage/getPublicUrl";
+import { Box, Button, Input, VStack, Image } from "@chakra-ui/react";
 import { AiOutlineUpload } from "react-icons/ai";
-import { Tooltip } from "./ui/tooltip"
 
+const DynamicUploadImage = ({ onFileSelect }) => {
+  const [previewUrl, setPreviewUrl] = useState(null); // For image preview
 
-const DynamicUploadImage = ({ uploadType, onUploadComplete }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
-  const [isUploading, setIsUploading] = useState(false); // Track upload status
-
-  const handleFileChange = async (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    setSelectedFile(file);
-    setIsUploading(true);
-    try {
-      // Validate uploadType
-      if (!uploadType) {
-        throw new Error("No uploadType specified");
-      }
-
-      // Upload image
-      const filePath = await uploadImage(file, "images", uploadType);
-      if (filePath) {
-        const url = getPublicUrl(filePath, "images");
-        setImageUrl(url);
-
-        if (onUploadComplete) {
-          onUploadComplete(url);
-        }
-
-        toaster.create({
-          title: "Upload successful",
-          description: "Your image has been uploaded.",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    } catch (error) {
-      console.error("Upload error:", error);
-      toaster.create({
-        title: "Upload failed",
-        description: error.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    } finally {
-      setIsUploading(false);
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setPreviewUrl(URL.createObjectURL(file)); // Generate a local preview URL
+      onFileSelect(file); // Pass the file back to the parent component
     }
-  }
-};
+  };
 
   return (
     <VStack spacing={4} align="center" width="full">
-      <Toaster />
-
-      {/* Unified Upload Button */}
-      <Tooltip 
-        content="Select and upload an image"
-        contentProps={{ css: { "--tooltip-bg": "gray" } }}
-
-        >
-      <Button
-        as="label"
-        p={0}
-        variant="plain"
-        size="sm"
-        isLoading={isUploading} // Show spinner during upload
-        
-        
-        
-      >
-        {/* {imageUrl ? "Replace Image" : "Select & Upload Image"} */}
+      <Button as="label" p={0} variant="plain" size="sm" color="pink.800">
         <AiOutlineUpload />
-
         <Input
           type="file"
           onChange={handleFileChange}
           accept="image/*"
-          display="none" // Hide the input, trigger it via the button
+          display="none"
         />
       </Button>
-      </Tooltip>
 
-      {/* Display Uploaded Image */}
-      {imageUrl && (
+      {previewUrl && (
         <Box
         position="absolute"
         maxWidth='fit-content'
@@ -104,7 +33,7 @@ const DynamicUploadImage = ({ uploadType, onUploadComplete }) => {
 
         >
           <Image
-            src={imageUrl}
+            src={previewUrl}
             alt="Uploaded"
             maxWidth="50px"
             borderRadius="md"

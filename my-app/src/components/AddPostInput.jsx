@@ -9,11 +9,16 @@ import { CiCirclePlus } from "react-icons/ci";
 import { AiOutlineUpload } from "react-icons/ai";
 import DynamicUploadImage from "./DynamicUploadImage";
 import { useState } from "react";
+import { uploadImage } from "../supabaseRoutes/storage/uploadImage";
+import { getPublicUrl } from "../supabaseRoutes/storage/getPublicUrl";
+
 
 
 const AddPostInput = () => {
   const { user } = useSelector((state) => state.user);
-  const [imageUrl, setUploadedImageUrl] = useState("");
+  // const [imageUrl, setUploadedImageUrl] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
+  const [imageUrl, setImageUrl] = useState(null); // Store uploaded image URL
   
 
   const {
@@ -34,35 +39,32 @@ const AddPostInput = () => {
         throw new Error("User not logged in. Please log in to create a post.");
       }
 
-      // Use the imageUrl state here
+      let uploadedImageUrl = null;
+      if (selectedFile) {
+        // Upload the image
+        const filePath = await uploadImage(selectedFile, "images", "community_feed_images");
+        if (!filePath) throw new Error("Failed to upload image.");
+        uploadedImageUrl = getPublicUrl(filePath, "images");
+      }
+
       const postPayload = {
         content: data.content.trim(),
-        image_url: imageUrl || null, // Use uploaded image URL
+        image_url: uploadedImageUrl, // Use uploaded image URL
         author_username: user.username,
         user_id: user.id,
       };
 
-      console.log("Post Payload:", postPayload); // Debugging log
-
-
       const { error } = await supabase.from("posts").insert([postPayload]);
-
       if (error) throw error;
 
-      toaster.create({
-        description: "Post created successfully!",
-        type: "success",
-      });
+      toaster.create({ description: "Post created successfully!", type: "success" });
 
-      reset(); // Clear the form after successful submission
-      setUploadedImageUrl(""); // Clear uploaded image URL
+      reset(); // Clear the form
+      setSelectedFile(null); // Clear the selected file
+      setImageUrl(null); // Clear the image URL
     } catch (error) {
       console.error("Error creating post:", error.message);
-      toaster.create({
-        title: "Error Creating Post",
-        description: error.message,
-        type: "error",
-      });
+      toaster.create({ title: "Error Creating Post", description: error.message, type: "error" });
     }
   };
 
@@ -113,10 +115,7 @@ const AddPostInput = () => {
           
         >
           {/* Dynamic Image Upload */}
-        <DynamicUploadImage
-          uploadType="community_feed_images" // Specify the folder for post images
-          onUploadComplete={handleUploadComplete} // Pass the helper function
-                  />
+          <DynamicUploadImage onFileSelect={setSelectedFile} />
          {/* <AiOutlineUpload/> */}
           <Input
             type="file"
