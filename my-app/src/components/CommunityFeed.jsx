@@ -35,7 +35,7 @@ const CommunityFeed = () => {
           profiles (role)
         `)
         .order("created_at", { descending: true })
-        .limit(25); // Fetch the first 25 posts
+        .limit(100); // Fetch the first 25 posts
 
       if (error) throw error;
 
@@ -103,7 +103,11 @@ const CommunityFeed = () => {
           console.log("Change received:", payload);
 
           if (payload.eventType === "INSERT") {
-            setPosts((prevPosts) => [payload.new, ...prevPosts]); // Add new post at the top
+            setPosts((prevPosts) => {
+              const exists = prevPosts.some((post) => post.id === payload.new.id);
+              return exists ? prevPosts : [payload.new, ...prevPosts];
+            });
+          
           } else if (payload.eventType === "UPDATE") {
             setPosts((prevPosts) =>
               prevPosts.map((post) =>

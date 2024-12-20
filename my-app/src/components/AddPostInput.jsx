@@ -1,14 +1,20 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Box, Input, Button, VStack, Text, Circle, Group } from "@chakra-ui/react";
+import { Box, Input, Button, VStack, Text, Circle, Group, Icon } from "@chakra-ui/react";
 import { Toaster, toaster } from "./ui/toaster";
 import { supabase } from "../App";
 import { useSelector } from "react-redux";
 import { InputGroup } from "./ui/input-group";
 import { CiCirclePlus } from "react-icons/ci";
+import { AiOutlineUpload } from "react-icons/ai";
+import DynamicUploadImage from "./DynamicUploadImage";
+import { useState } from "react";
+
 
 const AddPostInput = () => {
   const { user } = useSelector((state) => state.user);
+  const [imageUrl, setUploadedImageUrl] = useState("");
+  
 
   const {
     register,
@@ -17,22 +23,29 @@ const AddPostInput = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const handleUploadComplete = (url) => {
+    setUploadedImageUrl(""); // Clear the old URL
+    setUploadedImageUrl(url); // Set the new URL
+  };
+
   const onSubmit = async (data) => {
     try {
       if (!user) {
         throw new Error("User not logged in. Please log in to create a post.");
       }
 
-      const { content, imageUrl } = data;
+      // Use the imageUrl state here
+      const postPayload = {
+        content: data.content.trim(),
+        image_url: imageUrl || null, // Use uploaded image URL
+        author_username: user.username,
+        user_id: user.id,
+      };
 
-      const { error } = await supabase.from("posts").insert([
-        {
-          content: content.trim(),
-          image_url: imageUrl || null,
-          author_username: user.username,
-          user_id: user.id,
-        },
-      ]);
+      console.log("Post Payload:", postPayload); // Debugging log
+
+
+      const { error } = await supabase.from("posts").insert([postPayload]);
 
       if (error) throw error;
 
@@ -42,6 +55,7 @@ const AddPostInput = () => {
       });
 
       reset(); // Clear the form after successful submission
+      setUploadedImageUrl(""); // Clear uploaded image URL
     } catch (error) {
       console.error("Error creating post:", error.message);
       toaster.create({
@@ -86,6 +100,31 @@ const AddPostInput = () => {
           
         //   autoFocus
         />
+        
+          {/* File Input for Image with Icon */}
+        <Button
+          firstFlow
+          as="label" // Label to trigger file input
+          cursor="pointer"
+          size="md"
+          width="50px"
+          variant="ghost"
+
+          
+        >
+          {/* Dynamic Image Upload */}
+        <DynamicUploadImage
+          uploadType="community_feed_images" // Specify the folder for post images
+          onUploadComplete={handleUploadComplete} // Pass the helper function
+                  />
+         {/* <AiOutlineUpload/> */}
+          <Input
+            type="file"
+            {...register("image")}
+            accept="image/*"
+            display="none" // Hidden input triggered by button
+          />
+        </Button>
 
 <Button
   type="submit"
@@ -105,6 +144,8 @@ const AddPostInput = () => {
   Add Post <CiCirclePlus />
 </Button>
 
+
+
             </Group>
         {errors.content && (
           <Text fontSize="sm" color="red.500">
@@ -112,25 +153,13 @@ const AddPostInput = () => {
           </Text>
         )}
 
-        {/* Image URL Input */}
-        {/* <Input
-          placeholder="Optional: Add an image URL"
-          {...register("imageUrl", {
-            pattern: {
-              value: /^https?:\/\/.+$/,
-              message: "Enter a valid URL",
-            },
-          })}
-          shadow="sm"
-          
-          _focus={{ borderColor: "pink.500", shadow: "pink.500", bg:"pink.50"}}
-          _dark={{bg:"gray.500"}}
-        /> */}
         {errors.imageUrl && (
           <Text fontSize="sm" color="red.500">
             {errors.imageUrl.message}
           </Text>
         )}
+        {/* File Input for Image */}
+       
 
         {/* Submit Button */}
        
