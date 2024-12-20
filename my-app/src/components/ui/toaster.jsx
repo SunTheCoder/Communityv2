@@ -31,10 +31,11 @@ import {
 } from '@chakra-ui/react'
 
 export const toaster = createToaster({
-  placement: 'bottom-end',
+  placement: 'bottom-center',
   pauseOnPageIdle: true,
   overlap: true,
   max: 3,
+  // offset: {right: "200px"},
 })
 
 export const Toaster = () => {

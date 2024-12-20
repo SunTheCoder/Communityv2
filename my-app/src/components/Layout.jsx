@@ -20,7 +20,7 @@ import { supabase } from "../App";
 import UserAvatar from "./UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userSlice";
-import { HiOutlinePencilSquare, HiMiniChatBubbleLeftEllipsis } from "react-icons/hi2";
+import { HiOutlinePencilSquare, HiOutlineChatBubbleLeftEllipsis } from "react-icons/hi2";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { PiFlowerLight } from "react-icons/pi";
 import { Avatar, AvatarGroup } from "./ui/avatar";
@@ -35,6 +35,8 @@ import AdminDashboard from "./AdminDashboard";
 import CommunityFeed from "./CommunityFeed";
 import FriendAvatarGroup from "./FriendAvatarGroup";
 import AddPostInput from "./AddPostInput";
+import { IoWalletOutline } from "react-icons/io5";
+
 
 
 const GEOCODE_API_KEY = import.meta.env.VITE_OPEN_CAGE_API_KEY;
@@ -67,7 +69,7 @@ const Layout = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const [resources, setResources] = useState([]);
 
-
+  
   // Fetch the logged-in user's profile
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -191,46 +193,61 @@ const Layout = () => {
                 </Box>
             )}
         </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px">
+        <Box gridColumn="span 8" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px" gap="50px">
           <HiOutlinePencilSquare
             size="20"
             cursor="pointer"
             onClick={() =>
                 toaster.create({
                     title: "Add Post",
-                    description: "Feature under development!",
+                    description: "Enables a shortcut to add to a post to the community feed. Feature under development!",
                     type: "info",
                 })
             }
             />
-        </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px">
+        
+        
           <IoNotificationsOutline
             size="20"
             cursor="pointer"
             onClick={() =>
               toaster.create({
                 title: "Community Map Updates!",
-                description: "Feature under development!",
+                description: "Enables feedback to show when updates are happening within the community in real-time. Feature under development!",
                 type: "info",
               })
             }
           />
-        </Box>
-        <Box gridColumn="span 1" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px">
-          <HiMiniChatBubbleLeftEllipsis
+      
+        
+      <HiOutlineChatBubbleLeftEllipsis 
+
             size="20"
             cursor="pointer"
             onClick={() =>
               toaster.create({
                 title: "Direct Messages",
-                description: "Feature under development!",
+                description: "Enables user to user direct communication. Feature under development!",
+                type: "info",
+              })
+            }
+          />
+        <IoWalletOutline 
+
+            size="20"
+            cursor="pointer"
+            onClick={() =>
+              toaster.create({
+                title: "Create Wallet",
+                description: "Enables an individual to securely invest in community specific projects/entities. Feature under development!",
                 type: "info",
               })
             }
           />
         </Box>
-        <Box gridColumn="span 12"></Box>
+        
+        
+        <Box gridColumn="span 7"></Box>
         <HStack gridColumn="span 4">
             <Box width="240px" paddingRight="15px">
             <SearchBar resources={resources} />
