@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Text, VStack } from "@chakra-ui/react";
 import SignUp from "../SignUp";
 import { ColorModeButton } from "../ui/color-mode";
 import { Blockquote } from "../ui/blockquote";
@@ -49,8 +49,14 @@ const SplashPage = () => {
     _dark={{ bg:"radial-gradient(circle, #8B4A62, #2C2A35)"}}
         >
           <Box textAlign="center" maxWidth="400px" w="100%">
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>
-              Welcome to the Community Map
+            <Text fontSize="2xl" fontWeight="bold" >
+              Welcome to 
+            </Text>
+            <Text
+              fontSize="5xl"
+              fontWeight="bold" mb={4}
+            >
+              CareMap
             </Text>
             <SignUp navigate={navigate} />
             <Button
@@ -78,11 +84,15 @@ const SplashPage = () => {
           _dark={{ bg: "gray.900" }}
           p={6}
         >
-          <Blockquote showDash cite="Fannie Lou Hamer" justify="center">
+          <VStack  justify="center">
           <Text fontSize="5xl">
-          There is one thing you have got to learn about our movement. Three people are better than no people.
+          {/* There is one thing you have got to learn about our movement. Three people are better than no people. */}
+          Mapping Care,
             </Text>
-          </Blockquote>
+            <Text fontSize="5xl">
+              Building Connections
+            </Text>
+          </VStack>
         </GridItem>
       </Grid>
     </Box>

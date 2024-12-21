@@ -27,6 +27,7 @@ import { Avatar, AvatarGroup } from "./ui/avatar";
 
 
 
+
 import SearchBar from "./SearchBar";
 import Map from "./Map";
 import CommunityMap from "./CommunityMap";
@@ -36,6 +37,8 @@ import CommunityFeed from "./CommunityFeed";
 import FriendAvatarGroup from "./FriendAvatarGroup";
 import AddPostInput from "./AddPostInput";
 import { IoWalletOutline } from "react-icons/io5";
+import WalletCard from "./WalletCard";
+import WalletMenu from "./WalletMenu";
 
 
 
@@ -233,7 +236,7 @@ const Layout = () => {
               })
             }
           />
-        <IoWalletOutline 
+        {/* <IoWalletOutline 
 
             size="20"
             cursor="pointer"
@@ -244,7 +247,8 @@ const Layout = () => {
                 type: "info",
               })
             }
-          />
+          /> */}
+          <WalletMenu/>
         </Box>
         
         
@@ -342,6 +346,7 @@ const Layout = () => {
 
           >
                 {/* <Map /> */}
+          
                 <CommunityMap/>
           </Box>
       </SimpleGrid>
