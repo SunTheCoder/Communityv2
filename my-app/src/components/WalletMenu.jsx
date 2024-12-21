@@ -126,7 +126,7 @@ const WalletMenu = () => {
 
   return (
     <Box>
-      <MenuRoot>
+      <MenuRoot positioning={{ placement: "right-start" }}>
         <MenuTrigger p={2} borderRadius="4xl" _hover={{bg:"pink.300"}} _dark={{_hover:{bg:"pink.700"}}}>
           
             <IoWalletOutline aria-label="Wallet Menu" size="20" cursor="pointer" />
