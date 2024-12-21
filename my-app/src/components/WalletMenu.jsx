@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from "./ui/menu";
-import { IconButton, Text, VStack, Box } from "@chakra-ui/react";
+import { IconButton, Text, VStack, Box, Icon } from "@chakra-ui/react";
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import { supabase } from "../App";
 import WalletInteraction from "./WalletInteraction"; // Import wallet interaction component
+import WalletInteractionPopover from "./WalletInteraction"; // Import wallet interaction component
 
 const WalletMenu = () => {
   const [defaultAccount, setDefaultAccount] = useState(null);
@@ -126,10 +127,10 @@ const WalletMenu = () => {
   return (
     <Box>
       <MenuRoot>
-        <MenuTrigger>
-          <IconButton aria-label="Wallet Menu" colorScheme="teal" variant="outline">
-            <IoWalletOutline size="20" cursor="pointer" />
-          </IconButton>
+        <MenuTrigger p={2} borderRadius="4xl" _hover={{bg:"pink.300"}} _dark={{_hover:{bg:"pink.700"}}}>
+          
+            <IoWalletOutline aria-label="Wallet Menu" size="20" cursor="pointer" />
+          
         </MenuTrigger>
         <MenuContent>
           {!hasWallet && <MenuItem onClick={connectWalletHandler}>Connect Wallet</MenuItem>}
@@ -142,7 +143,7 @@ const WalletMenu = () => {
               </Text>
             </MenuItem>
           )}
-          <MenuItem>
+          <MenuItem closeOnSelect={false}>
           {/* Wallet Interaction Component */}
       {defaultAccount && <WalletInteraction walletAddress={defaultAccount} />}
           </MenuItem>

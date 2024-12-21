@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Box, VStack, Text, Input, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import BuyETHButton from "./BuyEthButton";
+// import BuyETHEmbedded from "./BuyEthEmbedded";
 
 const WalletInteraction = ({ walletAddress }) => {
   const [recipient, setRecipient] = useState("");
@@ -70,6 +72,10 @@ const WalletInteraction = ({ walletAddress }) => {
           <strong>Balance:</strong> {balance !== null ? `${balance} ETH` : "Loading..."}
         </Text>
 
+        {/* Buy ETH Button */}
+        <BuyETHButton walletAddress={walletAddress} />
+        {/* <BuyETHEmbedded walletAddress={walletAddress} /> */}
+
         <Text fontWeight="bold">Send ETH</Text>
         <Input
           placeholder="Recipient Address"
@@ -81,7 +87,7 @@ const WalletInteraction = ({ walletAddress }) => {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-        <Button colorScheme="teal" onClick={sendTransaction}>
+        <Button firstFlow onClick={sendTransaction}>
           Send Transaction
         </Button>
 
