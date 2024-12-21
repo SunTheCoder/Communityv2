@@ -14,18 +14,45 @@ import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
 import { useSelector } from "react-redux";
+import { supabase } from "../../App";
+import CryptoJS from "crypto-js";
+
+
+
+
+
+const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
+
+if (!encryptionKey) {
+  console.error("Encryption key not set in environment variables.");
+}
 
 const WalletDrawer = ({ walletAddress }) => {
-  const userName = useSelector((state) => state.user?.user?.username || null);  
+  const userName = useSelector((state) => state.user?.user?.username || null);
+  const userId = useSelector((state) => state.user?.user?.id || null);
+  const userRole = useSelector((state) => state.user?.user?.role || null); // Check if user is admin
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [transactionHash, setTransactionHash] = useState(null);
   const [balance, setBalance] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const [communityZipCode, setCommunityZipCode] = useState("");
   const formattedUsername = userName?.slice(0, 1).toUpperCase().concat(userName.slice(1).toLowerCase());
 
-
+  const encryptPrivateKey = (privateKey, encryptionKey) => {
+    const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
+    const encrypted = CryptoJS.AES.encrypt(privateKey, CryptoJS.enc.Utf8.parse(encryptionKey), {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7,
+    });
+  
+    return {
+      encryptedData: encrypted.toString(),
+      iv: iv.toString(CryptoJS.enc.Hex), // Convert IV to a storable format
+    };
+  };
   // Fetch wallet balance when walletAddress changes
   useEffect(() => {
     const fetchBalance = async () => {
@@ -45,11 +72,140 @@ const WalletDrawer = ({ walletAddress }) => {
     fetchBalance();
   }, [walletAddress]);
 
+  // Connect Wallet
+  const connectWalletHandler = async () => {
+    try {
+      if (!window.ethereum) throw new Error("MetaMask is not installed.");
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const connectedWalletAddress = accounts[0];
+
+      const { error } = await supabase
+        .from("wallets")
+        .upsert({ wallet_address: connectedWalletAddress, user_id: userId }, { onConflict: "wallet_address" });
+
+      if (error) throw new Error("Failed to save wallet to Supabase");
+
+      alert(`Wallet connected: ${connectedWalletAddress}`);
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+      setErrorMessage(error.message);
+    }
+  };
+
+  // Create Personal Wallet
+  const createWalletHandler = async () => {
+    try {
+      // Step 1: Fetch the user's profile to get the zip code
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("zip_code")
+        .eq("id", userId) // Assuming `userId` is the user's ID
+        .single();
+  
+      if (profileError || !profileData) {
+        throw new Error("Failed to fetch user profile or zip code.");
+      }
+      const userZipCode = profileData.zip_code;
+      console.log("User's zip code:", userZipCode);
+  
+      // Step 2: Fetch the zip_code_id from the zip_codes table
+      const { data: zipCodeData, error: zipCodeError } = await supabase
+        .from("zip_codes")
+        .select("id")
+        .eq("postal_code", userZipCode) // Assuming postal_code is the zip code column
+        .single();
+  
+      if (zipCodeError || !zipCodeData) {
+        throw new Error("Failed to fetch zip_code_id for the provided zip code.");
+      }
+      const zipCodeId = zipCodeData.id;
+      console.log("Zip Code ID:", zipCodeId);
+  
+      // Step 3: Create a new wallet
+      const wallet = ethers.Wallet.createRandom();
+      const walletAddress = wallet.address;
+      const privateKey = wallet.privateKey;
+  
+      // Step 4: Insert the wallet into the database
+      const { error: walletError } = await supabase
+        .from("wallets")
+        .insert({
+          wallet_address: walletAddress,
+          user_id: userId,
+          zip_code_id: zipCodeId, // Add the zip_code_id to the wallet entry
+        });
+  
+      if (walletError) {
+        throw new Error("Failed to save wallet to Supabase");
+      }
+  
+      alert(`🎉 New Wallet Created!\nAddress: ${walletAddress}\nPrivate Key: ${privateKey}`);
+    } catch (error) {
+      console.error("Error creating wallet:", error);
+      setErrorMessage(error.message);
+    }
+  };
+  
+
+  // Create Community Wallet (Admin Only)
+  const createCommunityWalletHandler = async () => {
+    try {
+      if (!communityZipCode) throw new Error("Please enter a zip code for the community.");
+      
+      // Fetch the zip_code_id for the provided zip code
+      const { data: zipData, error: zipFetchError } = await supabase
+        .from("zip_codes")
+        .select("id")
+        .eq("postal_code", communityZipCode)
+        .single();
+  
+      if (zipFetchError || !zipData) {
+        console.error("Zip code fetch error:", zipFetchError);
+        throw new Error("Invalid zip code. Please provide a valid community zip code.");
+      }
+  
+      const zipCodeId = zipData.id;
+  
+      // Create a new wallet
+      const wallet = ethers.Wallet.createRandom();
+      const walletAddress = wallet.address;
+      const privateKey = wallet.privateKey;
+  
+      // Encrypt the private key
+      const { encryptedData, iv } = encryptPrivateKey(privateKey, import.meta.env.VITE_ENCRYPTION_KEY);
+  
+      // Save the new wallet to the wallets table
+      const { data: walletData, error: walletError } = await supabase
+        .from("wallets")
+        .insert({
+          wallet_address: walletAddress,
+          wallet_type: "zip_code",
+          zip_code_id: zipCodeId,
+          encrypted_private_key: encryptedData,
+          iv,
+        })
+        .select()
+        .single();
+  
+      if (walletError) {
+        console.error("Wallet creation error:", walletError);
+        throw new Error("Failed to create community wallet.");
+      }
+  
+      alert(`🎉 Community Wallet Created for ${communityZipCode}\nAddress: ${walletAddress}`);
+    } catch (error) {
+      console.error("Error creating community wallet:", error);
+      setErrorMessage(error.message);
+    }
+  };
+  
+  
+  
+
   // Send ETH Transaction
   const sendTransaction = async () => {
     try {
       if (!window.ethereum) throw new Error("MetaMask is not installed.");
-
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
@@ -96,40 +252,51 @@ const WalletDrawer = ({ walletAddress }) => {
         <Separator />
         <DrawerBody >
           <VStack spacing={4} align="stretch">
-          <Collapsible.Root unmountOnExit>
-  <Collapsible.Trigger >
-        <Text cursor="pointer" _hover={{color:"pink.600"}}>
-          <strong>Wallet Address</strong> 
-        </Text>
-  </Collapsible.Trigger >
-  <Collapsible.Content >
-        <Text >
-        {walletAddress}
-          
-        </Text>
-  </Collapsible.Content>
-</Collapsible.Root>
+            {/* Wallet Connection & Creation */}
+            <Button firstFlow onClick={connectWalletHandler}>Connect Wallet</Button>
+            <Button firstFlow onClick={createWalletHandler}>Create Personal Wallet</Button>
+
+            {/* Admin: Community Wallet Creation */}
+            {userRole === "admin" && (
+              <>
+                <Text fontWeight="bold">Create Community Wallet</Text>
+                <Input
+                  placeholder="Enter Community Zip Code"
+                  value={communityZipCode}
+                  onChange={(e) => setCommunityZipCode(e.target.value)}
+                />
+                <Button firstFlow onClick={createCommunityWalletHandler}>Create Community Wallet</Button>
+              </>
+            )}
+
+            {/* Wallet Balance */}
+            <Collapsible.Root unmountOnExit>
+              <Collapsible.Trigger >
+                <Text cursor="pointer" _hover={{color:"pink.600"}}>
+                  <strong>Wallet Address</strong> 
+                </Text>
+              </Collapsible.Trigger >
+              <Collapsible.Content >
+                <Text >
+                  {walletAddress}
+                </Text>
+              </Collapsible.Content>
+            </Collapsible.Root>
             <Text>
               <strong>Balance:</strong>{" "}
               {balance !== null ? `${balance} ETH` : <Spinner size="sm" />}
             </Text>
+
+            {/* Buy ETH & Send ETH */}
             <Text fontWeight="bold">Buy ETH</Text>
             <BuyETHButton walletAddress={walletAddress} />
             <Text fontWeight="bold">Send ETH</Text>
             <Input
-            
-            shadow="sm"
-            _focus={{ borderColor: "pink.500", bg:"pink.50" }}
-            _dark={{bg:"gray.200", borderColor: "pink.600", color: "pink.900" }}
               placeholder="Recipient Address"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
             />
             <Input
-            
-            shadow="sm"
-            _focus={{ borderColor: "pink.500", bg:"pink.50" }}
-            _dark={{bg:"gray.200", borderColor: "pink.600", color: "pink.900" }}
               placeholder="Amount in ETH"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
@@ -158,3 +325,13 @@ const WalletDrawer = ({ walletAddress }) => {
 };
 
 export default WalletDrawer;
+
+
+// const decryptPrivateKey = (encryptedData, iv, encryptionKey) => {
+//     const decipher = crypto.createDecipheriv("aes-256-cbc", encryptionKey, Buffer.from(iv, "hex"));
+    
+//     let decrypted = decipher.update(encryptedData, "hex", "utf8");
+//     decrypted += decipher.final("utf8");
+  
+//     return decrypted;
+//   };
