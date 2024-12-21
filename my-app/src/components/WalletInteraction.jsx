@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { Box, VStack, Text, Input, Button, Collapsible } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import BuyETHButton from "./BuyEthButton";
-// import BuyETHEmbedded from "./BuyEthEmbedded";
+import BuyETHEmbedded from "./BuyEthEmbedded";
 
 const WalletInteraction = ({ walletAddress }) => {
   const [recipient, setRecipient] = useState("");
