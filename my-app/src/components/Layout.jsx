@@ -112,6 +112,7 @@ const Layout = () => {
            .from("wallets")
            .select("wallet_address")
            .eq("user_id", profileData.id)
+           .eq("wallet_type", "user") // Filter for personal wallets
            .single();
 
          if (walletError && walletError.code !== "PGRST116")
