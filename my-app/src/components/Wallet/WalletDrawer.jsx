@@ -9,7 +9,7 @@ import {
   DrawerTrigger,
   DrawerCloseTrigger,
 } from "../ui/drawer";
-import { Button, VStack, Text, Input, Spinner, Box, Collapsible } from "@chakra-ui/react";
+import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator } from "@chakra-ui/react";
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
@@ -68,8 +68,11 @@ const WalletDrawer = ({ walletAddress }) => {
   return (
     <DrawerRoot placement="right">
       <DrawerBackdrop />
-      <DrawerTrigger asChild>
-        <IoWalletOutline cursor="pointer" size="19px"/>
+      <DrawerTrigger 
+        asChild
+        p={2} borderRadius="4xl" _hover={{bg:"pink.300"}} _dark={{_hover:{bg:"pink.700"}}}
+        >
+        <IoWalletOutline cursor="pointer" size="35px"/>
       </DrawerTrigger>
       <DrawerContent
         borderRightRadius="lg"
@@ -90,6 +93,7 @@ const WalletDrawer = ({ walletAddress }) => {
           {formattedUsername}'s Ethereum Wallet
         </Text>
         </DrawerHeader>
+        <Separator />
         <DrawerBody >
           <VStack spacing={4} align="stretch">
           <Collapsible.Root unmountOnExit>
@@ -109,14 +113,23 @@ const WalletDrawer = ({ walletAddress }) => {
               <strong>Balance:</strong>{" "}
               {balance !== null ? `${balance} ETH` : <Spinner size="sm" />}
             </Text>
+            <Text fontWeight="bold">Buy ETH</Text>
             <BuyETHButton walletAddress={walletAddress} />
             <Text fontWeight="bold">Send ETH</Text>
             <Input
+            
+            shadow="sm"
+            _focus={{ borderColor: "pink.500", bg:"pink.50" }}
+            _dark={{bg:"gray.200", borderColor: "pink.600", color: "pink.900" }}
               placeholder="Recipient Address"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
             />
             <Input
+            
+            shadow="sm"
+            _focus={{ borderColor: "pink.500", bg:"pink.50" }}
+            _dark={{bg:"gray.200", borderColor: "pink.600", color: "pink.900" }}
               placeholder="Amount in ETH"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
