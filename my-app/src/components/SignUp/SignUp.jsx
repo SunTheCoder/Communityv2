@@ -3,17 +3,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
 import { Box, Stack, Card, Input, Text } from "@chakra-ui/react";
-import { Button } from "./ui/button";
-import { Field } from "./ui/field";
+import { Button } from "../ui/button";
+import { Field } from "../ui/field";
 import {
   PasswordInput,
   PasswordStrengthMeter,
-} from "./ui/password-Input";
+} from "../ui/password-Input";
 import { RiArrowRightLine } from "react-icons/ri";
-import { Toaster, toaster } from "./ui/toaster";
-import { login, logout } from "../redux/userSlice";
-import { supabase } from "../App";
-import AddResourceDrawer from "./AddResourceDrawer";
+import { Toaster, toaster } from "../ui/toaster";
+import { login, logout } from "../../redux/userSlice";
+import { supabase } from "../../App";
+import AddResourceDrawer from "../AddResourceDrawer";
 
 // Supabase configuration
 // const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;

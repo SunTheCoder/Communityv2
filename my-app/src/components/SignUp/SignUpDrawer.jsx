@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
 import { Box, Stack, Card, Input, Text } from "@chakra-ui/react";
-import { Button } from "./ui/button";
-import { Field } from "./ui/field";
-import { PasswordInput, PasswordStrengthMeter } from "./ui/password-Input";
+import { Button } from "../ui/button";
+import { Field } from "../ui/field";
+import { PasswordInput, PasswordStrengthMeter } from "../ui/password-Input";
 import { RiArrowRightLine } from "react-icons/ri";
-import { Toaster, toaster } from "./ui/toaster";
-import { login } from "../redux/userSlice";
+import { Toaster, toaster } from "../ui/toaster";
+import { login } from "../../redux/userSlice";
 import {
   DrawerBackdrop,
   DrawerBody,
@@ -19,8 +19,8 @@ import {
   DrawerHeader,
   DrawerRoot,
   DrawerTitle,
-} from "./ui/drawer";
-import { supabase } from "../App";
+} from "../ui/drawer";
+import { supabase } from "../../App";
 
 
 // Supabase configuration

@@ -16,7 +16,7 @@ import { Avatar } from "./ui/avatar";
 import { useSelector } from "react-redux";
 import { supabase } from "../App";
 import ResourcePostReplyDrawer from "./ResourcePostReplyDrawer";
-import PostDate from "./PostDate";
+import PostDate from "./Posts/PostDate";
 import { StatLabel, StatRoot, StatValueText } from "./ui/stat";
 import { BsHandThumbsUpFill } from "react-icons/bs";
 import { addLikeToResourceFeed } from "../supabaseRoutes";

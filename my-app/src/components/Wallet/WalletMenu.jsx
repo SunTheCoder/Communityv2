@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from "./ui/menu";
+import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from "../ui/menu";
 import { IconButton, Text, VStack, Box, Icon } from "@chakra-ui/react";
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
-import { supabase } from "../App";
+import { supabase } from "../../App";
 import WalletInteraction from "./WalletInteraction"; // Import wallet interaction component
 import WalletInteractionPopover from "./WalletInteraction"; // Import wallet interaction component
 
@@ -149,7 +149,7 @@ const WalletMenu = () => {
           </MenuItem>
         </MenuContent>
       </MenuRoot>
-
+            
       
     </Box>
   );

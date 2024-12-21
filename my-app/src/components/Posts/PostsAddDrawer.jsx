@@ -10,11 +10,11 @@ import {
   DrawerHeader,
   DrawerRoot,
   DrawerTrigger,
-} from "./ui/drawer";
-import { Tooltip } from "./ui/tooltip";
-import { CloseButton } from "./ui/close-button";
-import { Toaster, toaster } from "./ui/toaster";
-import { supabase } from "../App";
+} from "../ui/drawer";
+import { Tooltip } from "../ui/tooltip";
+import { CloseButton } from "../ui/close-button";
+import { Toaster, toaster } from "../ui/toaster";
+import { supabase } from "../../App";
 import { useSelector } from "react-redux";
 import { CiCirclePlus } from "react-icons/ci";
 

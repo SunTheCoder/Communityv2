@@ -13,7 +13,7 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { Toaster, toaster } from "./ui/toaster";
-import SignUp from "./SignUp";
+import SignUp from "./SignUp/SignUp";
 import ResourceList from "./ResourceList";
 import { ColorModeButton } from "./ui/color-mode";
 import { supabase } from "../App";
@@ -29,16 +29,17 @@ import { Avatar, AvatarGroup } from "./ui/avatar";
 
 
 import SearchBar from "./SearchBar";
-import Map from "./Map";
-import CommunityMap from "./CommunityMap";
+import Map from "./Map/Map";
+import CommunityMap from "./Map/CommunityMap";
 import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
-import CommunityFeed from "./CommunityFeed";
+import CommunityFeed from "./CommunityFeed/CommunityFeed";
 import FriendAvatarGroup from "./FriendAvatarGroup";
-import AddPostInput from "./AddPostInput";
+import AddPostInput from "./CommunityFeed/AddPostInput";
 import { IoWalletOutline } from "react-icons/io5";
-import WalletCard from "./WalletCard";
-import WalletMenu from "./WalletMenu";
+import WalletCard from "./Wallet/WalletCard";
+import WalletMenu from "./Wallet/WalletMenu";
+import WalletDrawer from "./Wallet/WalletDrawer";
 
 
 
@@ -68,6 +69,8 @@ const Layout = () => {
   const [value, setValue] = useState("first");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [walletAddress, setWalletAddress] = useState(null); // Track the wallet address
+
   const dispatch = useDispatch();
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const [resources, setResources] = useState([]);
@@ -103,10 +106,22 @@ const Layout = () => {
               role: profileData.role,
             })
           );
+
+           // Fetch wallet address
+           const { data: walletData, error: walletError } = await supabase
+           .from("wallets")
+           .select("wallet_address")
+           .eq("user_id", profileData.id)
+           .single();
+
+         if (walletError && walletError.code !== "PGRST116")
+           throw new Error(walletError.message);
+
+         setWalletAddress(walletData?.wallet_address || null);
         }
       } catch (error) {
-        console.error("Error fetching user profile:", error.message);
-        setError("Failed to load user profile.");
+        console.error("Error fetching user profile or wallet:", error.message);
+        setError("Failed to load user profile or wallet.");
       } finally {
         setLoading(false);
       }
@@ -248,7 +263,8 @@ const Layout = () => {
               })
             }
           /> */}
-          <WalletMenu/>
+          {/* <WalletMenu/> */}
+          <WalletDrawer walletAddress={walletAddress} />
         </Box>
         
         

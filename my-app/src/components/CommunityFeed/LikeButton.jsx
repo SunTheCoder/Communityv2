@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, HStack, Box, Text } from "@chakra-ui/react";
 import { BsHandThumbsUpFill } from "react-icons/bs";
-import { addLikeToCommFeed } from "../supabaseRoutes";
+import { addLikeToCommFeed } from "../../supabaseRoutes";
 
 const LikeButton = ({ postId, initialLikes, userId }) => {
   const [likesCount, setLikesCount] = useState(initialLikes || 0);

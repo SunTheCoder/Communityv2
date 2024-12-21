@@ -14,7 +14,7 @@ const BuyETHButton = ({ walletAddress }) => {
   };
 
   return (
-    <Button firstFlow onClick={buyETH}>
+    <Button size="xs" firstFlow onClick={buyETH}>
       Buy ETH
     </Button>
   );

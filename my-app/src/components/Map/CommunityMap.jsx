@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import { supabase } from "../App"; // Import your Supabase client setup
+import { supabase } from "../../App"; // Import your Supabase client setup
 import {
   Box,
   Heading,

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { supabase } from "../App";
+import { supabase } from "../../App";
 import { Box, Text, VStack, Separator, Button, HStack, Circle, Center } from "@chakra-ui/react";
-import Post from "./Posts"; // Import the Post component
-import PostsAddDrawer from "./PostsAddDrawer";
+import Post from "../Posts/Posts"; // Import the Post component
+import PostsAddDrawer from "../Posts/PostsAddDrawer";
 import AddPostInput from "./AddPostInput";
 
 const CommunityFeed = () => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Grid, GridItem, Text, VStack } from "@chakra-ui/react";
-import SignUp from "../SignUp";
+import SignUp from "../SignUp/SignUp";
 import { ColorModeButton } from "../ui/color-mode";
 import { Blockquote } from "../ui/blockquote";
 

@@ -12,17 +12,17 @@ import {
   Button,
   Icon
 } from "@chakra-ui/react";
-import { Avatar } from "./ui/avatar";
-import { StatLabel, StatRoot, StatValueText } from "./ui/stat";
-import { ProgressBar, ProgressRoot } from "./ui/progress"
+import { Avatar } from "../ui/avatar";
+import { StatLabel, StatRoot, StatValueText } from "../ui/stat";
+import { ProgressBar, ProgressRoot } from "../ui/progress"
 import { BsHandThumbsUpFill } from "react-icons/bs";
-import LikeButton from "./LikeButton";
+import LikeButton from "../CommunityFeed/LikeButton";
 
 import { useSelector } from "react-redux";
-import { supabase } from "../App";
+import { supabase } from "../../App";
 import PostReplyDrawer from "./PostsReplyDrawer";
 import PostDate from "./PostDate";
-import { addLikeToCommFeed } from "../supabaseRoutes";
+import { addLikeToCommFeed } from "../../supabaseRoutes";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user);

@@ -10,11 +10,11 @@ import {
   DrawerHeader,
   DrawerRoot,
   DrawerTrigger,
-} from "./ui/drawer";
-import { Toaster, toaster } from "./ui/toaster";
-import { supabase } from "../App";
+} from "../ui/drawer";
+import { Toaster, toaster } from "../ui/toaster";
+import { supabase } from "../../App";
 import { useSelector } from "react-redux";
-import DynamicUploadImage from "./DynamicUploadImage"; // Import the DynamicUploadImage component
+import DynamicUploadImage from "../CommunityFeed/DynamicUploadImage"; // Import the DynamicUploadImage component
 
 const PostReplyDrawer = ({ parentPostId, trigger }) => {
   const [replyContent, setReplyContent] = useState("");

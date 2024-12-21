@@ -17,7 +17,7 @@ import {
   PopoverCloseTrigger,
 } from "@/components/ui/popover";
 import { useSelector } from "react-redux";
-import BuyETHButton from "./BuyEthButton";
+import BuyETHButton from "../BuyEthButton";
 
 const WalletInteractionPopover = ({ walletAddress }) => {
   const [recipient, setRecipient] = useState("");

@@ -1,16 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Box, Input, Button, VStack, Text, Circle, Group, Icon } from "@chakra-ui/react";
-import { Toaster, toaster } from "./ui/toaster";
-import { supabase } from "../App";
+import { Toaster, toaster } from "../ui/toaster";
+import { supabase } from "../../App";
 import { useSelector } from "react-redux";
-import { InputGroup } from "./ui/input-group";
+import { InputGroup } from "../ui/input-group";
 import { CiCirclePlus } from "react-icons/ci";
 import { AiOutlineUpload } from "react-icons/ai";
 import DynamicUploadImage from "./DynamicUploadImage";
 import { useState } from "react";
-import { uploadImage } from "../supabaseRoutes/storage/uploadImage";
-import { getPublicUrl } from "../supabaseRoutes/storage/getPublicUrl";
+import { uploadImage } from "../../supabaseRoutes/storage/uploadImage";
+import { getPublicUrl } from "../../supabaseRoutes/storage/getPublicUrl";
 
 
 
