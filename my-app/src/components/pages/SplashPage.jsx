@@ -85,12 +85,12 @@ const SplashPage = () => {
           p={6}
         >
           <VStack  justify="center">
-          <Text fontSize="5xl">
+          <Text fontSize="4xl">
           {/* There is one thing you have got to learn about our movement. Three people are better than no people. */}
-          Mapping Care,
+          Threads of Support,
             </Text>
-            <Text fontSize="5xl">
-              Building Connections
+            <Text fontSize="4xl">
+              Woven Together
             </Text>
           </VStack>
         </GridItem>

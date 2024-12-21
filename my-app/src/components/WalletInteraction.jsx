@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { Box, VStack, Text, Input, Button } from "@chakra-ui/react";
+import { Box, VStack, Text, Input, Button, Collapsible } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import BuyETHButton from "./BuyEthButton";
 // import BuyETHEmbedded from "./BuyEthEmbedded";
@@ -65,10 +65,21 @@ const WalletInteraction = ({ walletAddress }) => {
         <Text fontSize="lg" fontWeight="bold">
           {formattedUsername}'s Ethereum Wallet
         </Text>
-        <Text>
-          <strong>Wallet Address:</strong> {walletAddress}
+<Collapsible.Root unmountOnExit>
+  <Collapsible.Trigger >
+        <Text cursor="pointer" _hover={{color:"pink.600"}}>
+          <strong>Wallet Address</strong> 
         </Text>
+  </Collapsible.Trigger >
+  <Collapsible.Content >
+        <Text >
+        {walletAddress}
+          
+        </Text>
+  </Collapsible.Content>
+</Collapsible.Root>
         <Text>
+        
           <strong>Balance:</strong> {balance !== null ? `${balance} ETH` : "Loading..."}
         </Text>
 
