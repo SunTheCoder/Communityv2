@@ -9,7 +9,7 @@ import {
   DrawerTrigger,
   DrawerCloseTrigger,
 } from "../ui/drawer";
-import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator } from "@chakra-ui/react";
+import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack } from "@chakra-ui/react";
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
@@ -245,30 +245,43 @@ const WalletDrawer = ({ walletAddress }) => {
           <Button variant="ghost">Close</Button>
         </DrawerCloseTrigger>
         <DrawerHeader>
+        <Text fontSize="2xl" fontWeight="bold" pb={1}>
+            {formattedUsername}'s 
+        </Text>
         <Text fontSize="lg" fontWeight="bold">
-          {formattedUsername}'s Ethereum Wallet
+            Ethereum Wallet
         </Text>
         </DrawerHeader>
-        <Separator />
+        <Separator 
+            borderColor="pink.400"
+            mb={4}
+        />
         <DrawerBody >
           <VStack spacing={4} align="stretch">
-            {/* Wallet Connection & Creation */}
-            <Button firstFlow onClick={connectWalletHandler}>Connect Wallet</Button>
-            <Button firstFlow onClick={createWalletHandler}>Create Personal Wallet</Button>
 
+            {/* Wallet Connection & Creation */}
+            <HStack justifyContent="center">
+            <Button firstFlow size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button>
+            <Button firstFlow size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
+            </HStack>
             {/* Admin: Community Wallet Creation */}
             {userRole === "admin" && (
-              <>
+              <VStack>
                 <Text fontWeight="bold">Create Community Wallet</Text>
                 <Input
+                border="2px solid"
+                borderColor="pink.400"
+                
+                outlineColor="pink.400"
+                  w="200px"
                   placeholder="Enter Community Zip Code"
                   value={communityZipCode}
                   onChange={(e) => setCommunityZipCode(e.target.value)}
                 />
-                <Button firstFlow onClick={createCommunityWalletHandler}>Create Community Wallet</Button>
-              </>
+                <Button firstFlow size="xs" w="fit-content" onClick={createCommunityWalletHandler}>Create Community Wallet</Button>
+              </VStack>
             )}
-
+            
             {/* Wallet Balance */}
             <Collapsible.Root unmountOnExit>
               <Collapsible.Trigger >
@@ -282,6 +295,7 @@ const WalletDrawer = ({ walletAddress }) => {
                 </Text>
               </Collapsible.Content>
             </Collapsible.Root>
+            <VStack>
             <Text>
               <strong>Balance:</strong>{" "}
               {balance !== null ? `${balance} ETH` : <Spinner size="sm" />}
@@ -290,18 +304,31 @@ const WalletDrawer = ({ walletAddress }) => {
             {/* Buy ETH & Send ETH */}
             <Text fontWeight="bold">Buy ETH</Text>
             <BuyETHButton walletAddress={walletAddress} />
+            </VStack>
+            <VStack>
             <Text fontWeight="bold">Send ETH</Text>
+
             <Input
+            border="2px solid"
+            borderColor="pink.400"
+            
+            outlineColor="pink.400"
+              w="200px"
               placeholder="Recipient Address"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
             />
             <Input
+            border="2px solid"
+            borderColor="pink.400"
+            
+            outlineColor="pink.400"
+              w="200px"
               placeholder="Amount in ETH"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
-            <Button size="xs" firstFlow onClick={sendTransaction}>
+            <Button size="xs" w="fit-content" firstFlow onClick={sendTransaction}>
               Send Transaction
             </Button>
             {transactionHash && (
@@ -314,6 +341,7 @@ const WalletDrawer = ({ walletAddress }) => {
                 <strong>Error:</strong> {errorMessage}
               </Text>
             )}
+            </VStack>
           </VStack>
         </DrawerBody>
         <DrawerFooter>
