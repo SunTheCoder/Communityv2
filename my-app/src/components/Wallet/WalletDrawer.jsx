@@ -9,7 +9,7 @@ import {
   DrawerTrigger,
   DrawerCloseTrigger,
 } from "../ui/drawer";
-import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack } from "@chakra-ui/react";
+import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex } from "@chakra-ui/react";
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
@@ -412,13 +412,23 @@ const WalletDrawer = ({ walletAddress }) => {
             
             {/* Wallet Balance */}
             <Collapsible.Root unmountOnExit>
+              <Flex
+                justifyContent="center"
+              >
               <Collapsible.Trigger >
-                <Text cursor="pointer" _hover={{color:"pink.600"}}>
+              
+                <Text  
+                    cursor="pointer" 
+                    _hover={{color:"pink.600"}}
+                    // fontSize="lg"
+                >
                   <strong>Wallet Address</strong> 
                 </Text>
               </Collapsible.Trigger >
+                </Flex>
               <Collapsible.Content >
-                <Text >
+
+                <Text textAlign="center">
                   {walletAddress}
                 </Text>
               </Collapsible.Content>

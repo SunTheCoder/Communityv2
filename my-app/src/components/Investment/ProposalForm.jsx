@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Textarea, Input, Button, VStack, Text } from "@chakra-ui/react";
+import { Textarea, Input, Button, VStack, Text, Flex } from "@chakra-ui/react";
 import { useSelector } from "react-redux"; // Access Redux state
 import { Toaster, toaster } from "../ui/toaster";
 import { supabase } from "../../App"; // Supabase client setup
@@ -88,9 +88,9 @@ const ProposalForm = () => {
   
   return (
     <VStack spacing={4} align="stretch" maxW="md" mx="auto" mt={6}>
-      <Text fontSize="2xl" fontWeight="bold">
+      <Flex fontSize="2xl" fontWeight="bold" justifyContent="center" mb="2">
         Submit a New Proposal
-      </Text>
+      </Flex>
       <Input
         placeholder="Proposal Title"
         value={title}
@@ -110,6 +110,7 @@ const ProposalForm = () => {
       <Button
         firstFlow
         size="xs"
+        m="auto"
         w="fit-content"
         onClick={handleSubmit}
         isLoading={isSubmitting}
