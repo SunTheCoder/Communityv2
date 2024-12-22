@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { VStack, HStack, Box, Text, Spinner, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { supabase } from "../../App"; // Supabase client setup
-import {Toaster, toaster } from "../ui/toaster";
+import { Toaster, toaster } from "../ui/toaster";
 
 const ProposalsList = () => {
   const [proposals, setProposals] = useState([]);

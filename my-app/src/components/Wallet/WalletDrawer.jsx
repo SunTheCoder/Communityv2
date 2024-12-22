@@ -350,7 +350,7 @@ const WalletDrawer = ({ walletAddress }) => {
   
 
   return (
-    <DrawerRoot placement="right">
+    <DrawerRoot placement="right" size="md">
       <DrawerBackdrop />
       <DrawerTrigger 
         asChild
