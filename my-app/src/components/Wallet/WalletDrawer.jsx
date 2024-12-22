@@ -16,6 +16,8 @@ import BuyETHButton from "./BuyEthButton";
 import { useSelector } from "react-redux";
 import { supabase } from "../../App";
 import CryptoJS from "crypto-js";
+import ProposalForm from "../Investment/ProposalForm";
+import ProposalsList from "../Investment/ProposalList";
 
 const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
 
@@ -488,6 +490,9 @@ const WalletDrawer = ({ walletAddress }) => {
             )}
             </VStack>
           </VStack>
+          <ProposalForm />
+          <ProposalsList />
+          
         </DrawerBody>
         <DrawerFooter>
           <Text fontSize="sm" color="gray.500">Manage your Ethereum wallet seamlessly</Text>

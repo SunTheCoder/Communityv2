@@ -91,21 +91,13 @@ const Layout = () => {
         if (session && session.user) {
           const { data: profileData, error: profileError } = await supabase
             .from("profiles")
-            .select("id, username, bio, avatar_url, email, role")
+            .select("id, username, bio, avatar_url, email, role, zip_code, region")
             .eq("id", session.user.id)
             .single();
 
           if (profileError) throw new Error(profileError.message);
 
-          dispatch(
-            login({
-              id: profileData.id,
-              username: profileData.username,
-              avatarUrl: profileData.avatar_url,
-              email: profileData.email,
-              role: profileData.role,
-            })
-          );
+         
 
            // Fetch wallet address
            const { data: walletData, error: walletError } = await supabase
@@ -119,6 +111,20 @@ const Layout = () => {
            throw new Error(walletError.message);
 
          setWalletAddress(walletData?.wallet_address || null);
+         
+         dispatch(
+          login({
+            id: profileData.id,
+            username: profileData.username,
+            avatarUrl: profileData.avatar_url,
+            email: profileData.email,
+            role: profileData.role,
+            zipCode: profileData.zip_code,
+            region: profileData.region,
+            walletAddress: walletData?.wallet_address || null, // Add wallet address if available
+
+          })
+        );
         }
       } catch (error) {
         console.error("Error fetching user profile or wallet:", error.message);
