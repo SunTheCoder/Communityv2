@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { VStack, Box, Text, Spinner, Button } from "@chakra-ui/react";
+import { VStack, HStack, Box, Text, Spinner, Button } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { supabase } from "../../App"; // Supabase client setup
 import {Toaster, toaster } from "../ui/toaster";
@@ -97,20 +97,22 @@ const ProposalsList = () => {
         <Text fontSize="sm" color="gray.600">
           Status: {proposal.proposal_status}
         </Text>
-        <VStack mt={3}>
+        <HStack mt={3}>
           <Button
-            colorScheme="green"
+            firstFlow
+            size="xs"
             onClick={() => handleVote(proposal.id, "yes")}
           >
             Yes
           </Button>
           <Button
-            colorScheme="red"
+            firstFlow
+            size="xs"
             onClick={() => handleVote(proposal.id, "no")}
           >
             No
           </Button>
-        </VStack>
+        </HStack>
       </Box>
       ))}
     </VStack>

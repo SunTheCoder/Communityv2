@@ -108,7 +108,9 @@ const ProposalForm = () => {
         _focus={{ borderColor: "pink.500", outlineColor: "pink.500", outline: "2px solid pink.500" }}
       />
       <Button
-        colorScheme="pink"
+        firstFlow
+        size="xs"
+        w="fit-content"
         onClick={handleSubmit}
         isLoading={isSubmitting}
         isDisabled={!title || !description}
