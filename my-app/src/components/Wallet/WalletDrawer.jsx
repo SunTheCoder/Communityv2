@@ -388,7 +388,7 @@ const WalletDrawer = ({ walletAddress }) => {
           <VStack spacing={4} align="stretch">
 
             {/* Wallet Connection & Creation */}
-            <HStack justifyContent="center">
+            <HStack justifyContent="center" mb={5}>
             <Button firstFlow size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button>
             <Button firstFlow size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
             </HStack>

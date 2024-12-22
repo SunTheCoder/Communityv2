@@ -93,7 +93,7 @@ const ProposalsList = () => {
   if (!proposals.length) {
     return <Text 
             textAlign="center"
-            m="2"
+            m="5"
             
             >No proposals available for voting in your area.</Text>;
   }
