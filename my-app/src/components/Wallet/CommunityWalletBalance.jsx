@@ -1,6 +1,8 @@
 import React from "react";
-import { VStack, Text, Spinner } from "@chakra-ui/react";
+import { VStack, Text, Spinner, HStack } from "@chakra-ui/react";
+import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
 import { useSelector } from "react-redux";
+
 
 const CommunityWalletBalance = ({ communityBalance, loading, errorMessage }) => {
     const user = useSelector((state) => state.user.user);
@@ -8,7 +10,13 @@ const CommunityWalletBalance = ({ communityBalance, loading, errorMessage }) => 
   return (
     <VStack spacing={4} align="stretch">
       <Text fontWeight="bold">Community Wallet Address</Text>
-      <Text>{user.communityWallet}</Text>
+      
+      <ClipboardRoot value={user.communityWallet}>
+        <HStack>
+            <Text>{user.communityWallet}</Text>
+            <ClipboardIconButton size="xs" variant="ghost"/>
+        </HStack>
+      </ClipboardRoot>
       <Text fontWeight="bold">Community Wallet Balance</Text>
       {loading ? (
         <Spinner size="sm" />
