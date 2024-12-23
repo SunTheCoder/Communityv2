@@ -3,12 +3,16 @@ import { VStack, HStack, Box, Text, Spinner, Button, Badge } from "@chakra-ui/re
 import { useSelector } from "react-redux";
 import { supabase } from "../../App"; // Supabase client setup
 import { Toaster, toaster } from "../ui/toaster";
+import axios from "axios";
 
 const ProposalsList = () => {
   const [proposals, setProposals] = useState([]);
   const [closedProposals, setClosedProposals] = useState([]);
   const [votingHistory, setVotingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+
+    const [exchangeRates, setExchangeRates] = useState({ eth: 0, matic: 0 });
+
 
   const user = useSelector((state) => state.user.user);
   const userZipCode = user?.zipCode;
@@ -20,8 +24,9 @@ const ProposalsList = () => {
       // Step 1: Fetch all proposals
       const { data: allProposals, error: proposalsError } = await supabase
         .from("proposals")
-        .select("id, title, description, proposal_status, community_zip_code")
+        .select("id, title, description, proposal_status, community_zip_code, funding_required")
         .eq("community_zip_code", userZipCode);
+        
 
       if (proposalsError) throw proposalsError;
 
@@ -93,8 +98,50 @@ const ProposalsList = () => {
   useEffect(() => {
     if (userZipCode && user.id) {
       fetchProposalsAndVotes();
+
+      const fetchExchangeRates = async () => {
+        try {
+          const response = await axios.get(
+            "https://api.coingecko.com/api/v3/simple/price?ids=ethereum,polygon&vs_currencies=usd"
+          );
+          const { ethereum, polygon } = response.data;
+      
+          if (ethereum?.usd && polygon?.usd) {
+            setExchangeRates({ eth: ethereum.usd, matic: polygon.usd });
+          } else {
+            throw new Error("Incomplete CoinGecko data");
+          }
+        } catch {
+          console.warn("Using fallback API...");
+          try {
+            const fallbackResponse = await axios.get(
+              "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH,MATIC&tsyms=USD"
+            );
+            const { ETH, MATIC } = fallbackResponse.data;
+            if (ETH?.USD && MATIC?.USD) {
+              setExchangeRates({ eth: ETH.USD, matic: MATIC.USD });
+            } else {
+              throw new Error("Fallback API failed");
+            }
+          } catch (error) {
+            console.error("All exchange rate sources failed:", error.message);
+            toaster.create({
+              title: "Error",
+              description: "Unable to fetch exchange rates from any source.",
+              status: "error",
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+        }
+      };
+      
+  
+      fetchExchangeRates();
     }
   }, [userZipCode, user.id]);
+
+  const convertToCrypto = (usd, rate) => (usd / rate).toFixed(4);
 
   const handleVote = async (proposalId, vote) => {
     try {
@@ -166,9 +213,21 @@ const ProposalsList = () => {
             )}
           </HStack>
           <Text>{proposal.description}</Text>
+          <Text>
+            Status: {proposal.proposal_status === "open" ? "Open" : "Closed"}
+        </Text>
           <Text fontSize="sm" color="gray.600">
-            Status: {proposal.proposal_status}
+            Funding Needed: ${proposal.funding_required}.00
           </Text>
+          <Text fontSize="sm" color="gray.600">
+              Equivalent in ETH:{" "}
+              {convertToCrypto(proposal.funding_required, exchangeRates.eth)} ETH
+            </Text>
+            <Text fontSize="sm" color="gray.600">
+              Equivalent in MATIC:{" "}
+              {convertToCrypto(proposal.funding_required, exchangeRates.matic)}{" "}
+              MATIC
+            </Text>
           <Text fontSize="sm" color="gray.600" mt={2}>
             Yes Votes: {proposal.yesVotes} | No Votes: {proposal.noVotes}
           </Text>
