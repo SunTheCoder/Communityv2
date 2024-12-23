@@ -88,7 +88,7 @@ const ProposalForm = () => {
   
   return (
     <VStack spacing={4} align="stretch" maxW="md" mx="auto" mt={6}>
-      <Flex fontSize="2xl" fontWeight="bold" justifyContent="center" mb="2">
+      <Flex fontSize="sm" fontWeight="bold" justifyContent="center" mb="2">
         Submit a New Proposal
       </Flex>
       <Input
