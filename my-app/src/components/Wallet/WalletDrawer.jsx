@@ -19,6 +19,7 @@ import CryptoJS from "crypto-js";
 import ProposalForm from "../Investment/ProposalForm";
 import ProposalsList from "../Investment/ProposalList";
 import SendTransactionComponent from "./SendTransactionComponent";
+import UserWalletBalance from "./UserWalletBalance";
 
 const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
 
@@ -87,78 +88,7 @@ const WalletDrawer = ({ walletAddress }) => {
   
 
   // Fetch wallet balance when walletAddress changes
-  useEffect(() => {
-    const fetchBalances = async () => {
-      try {
-        if (!walletAddress) return;
-        if (!window.ethereum) throw new Error("MetaMask is not installed.");
   
-        const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
-  
-        // Ethereum Mainnet
-        if (currentChainId === "0x1") {
-          const provider = new ethers.BrowserProvider(window.ethereum);
-          
-          // Fetch ETH balance
-          const ethBalance = await provider.getBalance(walletAddress);
-          const formattedEthBalance = ethers.formatEther(ethBalance);
-
-          const gasFees = await fetchGasFees();
-  
-          // Fetch MATIC as ERC-20 (via Ethereum Mainnet)
-          const maticContract = new ethers.Contract(
-            "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0", // MATIC contract on Ethereum Mainnet
-            [
-              "function balanceOf(address owner) view returns (uint256)"
-            ],
-            provider
-          );
-          const maticBalance = await maticContract.balanceOf(walletAddress);
-          const formattedMaticBalance = ethers.formatEther(maticBalance);
-  
-          setBalance({
-            eth: `${formattedEthBalance} ETH`,
-            matic: `${formattedMaticBalance} MATIC (on Ethereum)`,
-          });
-          console.log("Gas Fees:", gasFees);
-
-          setGasFees(gasFees);
-        }
-  
-        // Polygon Mainnet
-        else if (currentChainId === "0x89") {
-            console.log("Fetching balances and gas fees on Polygon Mainnet...");
-
-          const polygonProvider = new ethers.JsonRpcProvider("https://polygon-rpc.com");
-          
-          // Fetch MATIC balance on Polygon Mainnet
-          const maticBalance = await polygonProvider.getBalance(walletAddress);
-          const formattedMaticBalance = ethers.formatEther(maticBalance);
-
-           // Fetch gas fees
-        const gasFees = await fetchGasFees();
-  
-          setBalance({
-            eth: "N/A (on Polygon)", // ETH is not native on Polygon
-            matic: `${formattedMaticBalance} MATIC`,
-          });
-          console.log("Gas Fees:", gasFees);
-
-          setGasFees(gasFees);
-        }
-  
-        // Other networks
-        else {
-          setErrorMessage("Unsupported network. Please switch to Ethereum or Polygon.");
-        }
-      } catch (error) {
-        console.error("Error fetching balances:", error);
-        setErrorMessage(error.message);
-      }
-    };
-  
-    fetchBalances();
-  }, [walletAddress]);
   
 
   // Connect Wallet
@@ -296,34 +226,7 @@ const WalletDrawer = ({ walletAddress }) => {
   
   
 
-  // Send ETH Transaction
-  const sendTransaction = async () => {
-    try {
-      if (!window.ethereum) throw new Error("MetaMask is not installed.");
-  
-      // Ensure the user is on Polygon
-      const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
-      if (currentChainId !== "0x89") {
-        await addPolygonNetwork();
-      }
-  
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-  
-      // Send transaction
-      const transaction = await signer.sendTransaction({
-        to: recipient,
-        value: ethers.parseEther(amount),
-      });
-  
-      setTransactionHash(transaction.hash);
-      alert(`Transaction sent! Hash: ${transaction.hash}`);
-    } catch (error) {
-      console.error("Error sending transaction:", error);
-      setErrorMessage(error.message);
-    }
-  };
-  
+ 
 
   const addPolygonNetwork = async () => {
     try {
@@ -385,8 +288,11 @@ const WalletDrawer = ({ walletAddress }) => {
             borderColor="pink.400"
             mb={4}
         />
+        
         <DrawerBody >
           <VStack spacing={4} align="stretch">
+
+            <UserWalletBalance/>
 
             {/* Wallet Connection & Creation */}
             <HStack justifyContent="center" mb={5}>
@@ -411,53 +317,9 @@ const WalletDrawer = ({ walletAddress }) => {
               </VStack>
             )}
             
-            {/* Wallet Balance */}
-            <Collapsible.Root unmountOnExit>
-              <Flex
-                justifyContent="center"
-              >
-              <Collapsible.Trigger >
-              
-                <Text  
-                    cursor="pointer" 
-                    _hover={{color:"pink.600"}}
-                    // fontSize="lg"
-                >
-                  <strong>Wallet Address</strong> 
-                </Text>
-              </Collapsible.Trigger >
-                </Flex>
-              <Collapsible.Content >
-
-                <Text textAlign="center">
-                  {walletAddress}
-                </Text>
-              </Collapsible.Content>
-            </Collapsible.Root>
+            
             <VStack>
-            <VStack>
-  <Text>
-    <strong>ETH Balance:</strong>{" "}
-    {balance.eth !== null ? balance.eth : <Spinner size="sm" />}
-  </Text>
-  <Text>
-    <strong>MATIC Balance:</strong>{" "}
-    {balance.matic !== null ? balance.matic : <Spinner size="sm" />}
-  </Text>
-  <Text>
-    <strong>Gas Price:</strong>{" "}
-    {gasFees.gasPriceGwei !== null ? `${gasFees.gasPriceGwei} Gwei` : <Spinner size="sm" />}
-  </Text>
-  <Text>
-    <strong>Estimated Gas Fee:</strong>{" "}
-    {gasFees.gasFeeMatic !== null ? `${gasFees.gasFeeMatic} MATIC` : <Spinner size="sm" />}
-  </Text>
-  {errorMessage && (
-    <Text color="red.500">
-      <strong>Error:</strong> {errorMessage}
-    </Text>
-  )}
-</VStack>
+           
 
             {/* Buy ETH & Send ETH */}
             <Text fontWeight="bold">Buy ETH</Text>

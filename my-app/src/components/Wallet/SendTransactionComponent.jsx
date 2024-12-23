@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { VStack, Input, Button, Text, Spinner } from "@chakra-ui/react";
 import { ethers } from "ethers";
+import { useSelector } from "react-redux";
 
 const SendTransactionComponent = ({ defaultNetwork = "matic" }) => {
+  const user = useSelector((state) => state.user.user);
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [transactionHash, setTransactionHash] = useState(null);
@@ -28,17 +30,17 @@ const SendTransactionComponent = ({ defaultNetwork = "matic" }) => {
       const dexContractAddress = "DEX_CONTRACT_ADDRESS"; // Address of the DEX (e.g., QuickSwap)
       const dexAbi = [ /* DEX ABI */ ]; // ABI for the DEX contract
       const dexContract = new ethers.Contract(dexContractAddress, dexAbi, signer);
-  
-      const ethAmount = ethers.utils.parseEther(amount);
-  
+
+      const ethAmount = ethers.parseEther(amount);
+
       // Swap ETH for MATIC
       const tx = await dexContract.swapExactETHForTokens(
         0, // Minimum amount of MATIC (can be calculated dynamically)
         ["ETH_ADDRESS", "MATIC_ADDRESS"], // Path: ETH -> MATIC
-        signer.getAddress(),
+        await signer.getAddress(),
         Math.floor(Date.now() / 1000) + 60 * 20 // Deadline: 20 minutes
       );
-  
+
       await tx.wait();
       console.log("ETH successfully converted to MATIC.");
     } catch (error) {
@@ -46,64 +48,61 @@ const SendTransactionComponent = ({ defaultNetwork = "matic" }) => {
       throw new Error("Conversion failed. Please ensure you have sufficient ETH.");
     }
   };
-  
 
-  const sendTransaction = async ({ recipient, amount }) => {
-  try {
-    if (!window.ethereum) throw new Error("MetaMask is not installed.");
-    setLoading(true);
-    setTransactionHash(null);
-    setErrorMessage("");
+  const sendTransaction = async () => {
+    try {
+      if (!window.ethereum) throw new Error("MetaMask is not installed.");
+      setLoading(true);
+      setTransactionHash(null);
+      setErrorMessage("");
 
-    const polygonChainId = "0x89"; // Polygon Mainnet
-    const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
+      const polygonChainId = "0x89"; // Polygon Mainnet
+      const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
 
-    // Ensure the user is on Polygon Network
-    if (currentChainId !== polygonChainId) {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: polygonChainId }],
-      });
-    }
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const userAddress = await signer.getAddress();
-
-    // Check MATIC balance
-    const maticBalance = await provider.getBalance(userAddress);
-
-    if (maticBalance.lt(ethers.utils.parseEther(amount))) {
-      console.log("Insufficient MATIC balance. Checking ETH balance...");
-      // Fetch ETH balance
-      const ethProvider = new ethers.providers.Web3Provider(window.ethereum);
-      const ethBalance = await ethProvider.getBalance(userAddress);
-
-      if (ethBalance.gte(ethers.utils.parseEther(amount))) {
-        console.log("Converting ETH to MATIC...");
-        // Conversion Logic (Use a DEX like QuickSwap)
-        await convertEthToMatic(amount, signer);
-      } else {
-        throw new Error("Insufficient funds. Please add more MATIC or ETH.");
+      // Ensure the user is on Polygon Network
+      if (currentChainId !== polygonChainId) {
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: polygonChainId }],
+        });
       }
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const userAddress = user.walletAddress;
+
+      // Check MATIC balance
+      const maticBalance = await provider.getBalance(userAddress);
+
+      if (maticBalance < ethers.parseEther(amount)) {
+        console.log("Insufficient MATIC balance. Checking ETH balance...");
+        const ethBalance = await provider.getBalance(userAddress);
+
+        if (ethBalance >= ethers.parseEther(amount)) {
+          console.log("Converting ETH to MATIC...");
+          await convertEthToMatic(amount, signer);
+        } else {
+          throw new Error("Insufficient funds. Please add more MATIC or ETH.");
+        }
+      }
+
+      const valueInWei = ethers.parseEther(amount);
+
+      // Send MATIC transaction
+      const transaction = await signer.sendTransaction({
+        to: recipient,
+        value: valueInWei,
+      });
+
+      setTransactionHash(transaction.hash);
+      alert(`Transaction sent! Hash: ${transaction.hash}`);
+    } catch (error) {
+      console.error("Error sending transaction:", error.message);
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
     }
-
-    // Send MATIC transaction
-    const transaction = await signer.sendTransaction({
-      to: recipient,
-      value: ethers.utils.parseEther(amount),
-    });
-
-    setTransactionHash(transaction.hash);
-    alert(`Transaction sent! Hash: ${transaction.hash}`);
-  } catch (error) {
-    console.error("Error sending transaction:", error.message);
-    setErrorMessage(error.message);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <VStack spacing={4} align="stretch">
@@ -154,6 +153,5 @@ const SendTransactionComponent = ({ defaultNetwork = "matic" }) => {
     </VStack>
   );
 };
-
 
 export default SendTransactionComponent;
