@@ -215,9 +215,10 @@ const ProposalsList = () => {
                   <Collapsible.Root>
                   <Collapsible.Trigger >
                     <Text
+                    fontSize="xs"
                     cursor="pointer"
                     _hover={{ color: "pink.700" }}
-                    >Read More</Text>
+                    >Details</Text>
                   </Collapsible.Trigger>
                   <Collapsible.Content>
           <Text>{proposal.description}</Text>
