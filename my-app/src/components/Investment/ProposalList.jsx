@@ -185,8 +185,8 @@ const ProposalsList = () => {
     <VStack spacing={6} align="stretch" maxW="md" mx="auto" mt={6}>
      {/* Open Proposals */}
 {proposals.length > 0 && (
-  <>
-    <Text fontSize="xl" fontWeight="bold">
+  <Box mb={5}>
+    <Text fontSize="sm" textAlign="center" mb={5} fontWeight="bold">
       Open Proposals
     </Text>
     {proposals.map((proposal) => {
@@ -201,6 +201,7 @@ const ProposalsList = () => {
           padding="4"
           bg="gray.50"
           _hover={{ bg: "gray.100" }}
+          
           >
           <HStack justifyContent="space-between" alignItems="center">
             <Text fontSize="lg" fontWeight="bold" mb={2}>
@@ -263,14 +264,14 @@ const ProposalsList = () => {
         </Box>
       );
     })}
-  </>
+  </Box>
 )}
 
 
       {/* Voting History */}
       {votingHistory.length > 0 && (
         <>
-          <Text fontSize="xl" fontWeight="bold">
+          <Text fontSize="sm" textAlign="center" mb={5} fontWeight="bold">
             Voting History
           </Text>
           {votingHistory.map((vote) => {
