@@ -107,11 +107,17 @@ const Layout = () => {
            .eq("wallet_type", "user") // Filter for personal wallets
            .single();
 
-         if (walletError && walletError.code !== "PGRST116")
-           throw new Error(walletError.message);
+           const { data: communityWalletData, error: communityWalletError } = await supabase
+           .from("wallets")
+           .select("wallet_address")
+           .eq("wallet_type", "zip_code") // Filter for community wallets
+           .eq("zip_code", profileData.zip_code) // Match by zip code
+           .single();
+ 
+         if (communityWalletError && communityWalletError.code !== "PGRST116")
+           throw new Error(communityWalletError.message);
 
          setWalletAddress(walletData?.wallet_address || null);
-         
          dispatch(
           login({
             id: profileData.id,
@@ -122,6 +128,7 @@ const Layout = () => {
             zipCode: profileData.zip_code,
             region: profileData.region,
             walletAddress: walletData?.wallet_address || null, // Add wallet address if available
+            communityWallet: communityWalletData?.wallet_address || null, // Community wallet that suer belongs to
 
           })
         );
