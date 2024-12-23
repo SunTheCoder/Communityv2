@@ -18,6 +18,7 @@ import { supabase } from "../../App";
 import CryptoJS from "crypto-js";
 import ProposalForm from "../Investment/ProposalForm";
 import ProposalsList from "../Investment/ProposalList";
+import SendTransactionComponent from "./SendTransactionComponent";
 
 const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
 
@@ -463,7 +464,7 @@ const WalletDrawer = ({ walletAddress }) => {
             <BuyETHButton walletAddress={walletAddress} />
             </VStack>
             <VStack>
-            <Text fontWeight="bold">Send ETH</Text>
+            {/* <Text fontWeight="bold">Send ETH</Text>
 
             <Input
             border="2px solid"
@@ -487,7 +488,7 @@ const WalletDrawer = ({ walletAddress }) => {
             />
             <Button size="xs" w="fit-content" firstFlow onClick={sendTransaction}>
               Send Transaction
-            </Button>
+            </Button> */}
             {transactionHash && (
               <Text>
                 <strong>Transaction Hash:</strong> {transactionHash}
@@ -501,6 +502,8 @@ const WalletDrawer = ({ walletAddress }) => {
             </VStack>
           </VStack>
           <ProposalForm />
+          <SendTransactionComponent defaultNetwork="matic" />
+
           <ProposalsList />
           
         </DrawerBody>

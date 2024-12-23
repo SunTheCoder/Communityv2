@@ -3,19 +3,46 @@ import { VStack, HStack, Box, Text, Spinner, Button, Badge, Collapsible } from "
 import { useSelector } from "react-redux";
 import { supabase } from "../../App"; // Supabase client setup
 import { Toaster, toaster } from "../ui/toaster";
+import { ethers } from "ethers";
 import axios from "axios";
+import CommunityWalletBalance from "../Wallet/CommunityWalletBalance";
 
 const ProposalsList = () => {
   const [proposals, setProposals] = useState([]);
   const [closedProposals, setClosedProposals] = useState([]);
   const [votingHistory, setVotingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [communityBalance, setCommunityBalance] = useState({ matic: null, usd: null }); // Add state for wallet balance
+  const [errorMessage, setErrorMessage] = useState(null); // For error handling
+
 
     const [exchangeRates, setExchangeRates] = useState({ eth: 0, matic: 0 });
 
 
   const user = useSelector((state) => state.user.user);
   const userZipCode = user?.zipCode;
+
+  const fetchCommunityWalletBalance = async () => {
+    try {
+      const communityWallet = user.communityWallet; // Ensure this is correct
+      if (!communityWallet) throw new Error("Community wallet address not found.");
+  
+      const provider = new ethers.JsonRpcProvider("https://polygon-rpc.com");
+      const balance = await provider.getBalance(communityWallet);
+  
+      console.log("Raw balance in wei:", balance);
+  
+      // Use formatEther safely
+      const maticBalance = ethers.utils ? ethers.utils.formatEther(balance) : 0;
+      const usdBalance = exchangeRates.matic ? parseFloat(maticBalance) * exchangeRates.matic : 0;
+  
+      setCommunityBalance({ matic: parseFloat(maticBalance), usd: parseFloat(usdBalance) });
+    } catch (error) {
+      console.error("Error fetching community wallet balance:", error.message);
+      setErrorMessage("Failed to fetch community wallet balance.");
+    }
+  };
+  
 
   const fetchProposalsAndVotes = async () => {
     try {
@@ -141,6 +168,12 @@ const ProposalsList = () => {
     }
   }, [userZipCode, user.id]);
 
+  useEffect(() => {
+    if (exchangeRates.matic > 0) {
+      fetchCommunityWalletBalance();
+    }
+  }, [exchangeRates]);
+
   const convertToCrypto = (usd, rate) => (usd / rate).toFixed(4);
 
   const handleVote = async (proposalId, vote) => {
@@ -183,6 +216,13 @@ const ProposalsList = () => {
 
   return (
     <VStack spacing={6} align="stretch" maxW="md" mx="auto" mt={6}>
+         <CommunityWalletBalance
+            communityBalance={communityBalance}
+            loading={loading}
+            errorMessage={errorMessage}
+        />
+        
+      
      {/* Open Proposals */}
 {proposals.length > 0 && (
   <Box mb={5}>
