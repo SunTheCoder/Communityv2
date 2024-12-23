@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { VStack, HStack, Box, Text, Spinner, Button, Badge } from "@chakra-ui/react";
+import { VStack, HStack, Box, Text, Spinner, Button, Badge, Collapsible } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { supabase } from "../../App"; // Supabase client setup
 import { Toaster, toaster } from "../ui/toaster";
@@ -194,24 +194,32 @@ const ProposalsList = () => {
 
       return (
         
-        <Box
+          <Box
           key={proposal.id}
           borderWidth="1px"
           borderRadius="lg"
           padding="4"
           bg="gray.50"
           _hover={{ bg: "gray.100" }}
-        >
+          >
           <HStack justifyContent="space-between" alignItems="center">
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="lg" fontWeight="bold" mb={2}>
               {proposal.title}
             </Text>
             {hasVoted && (
-              <Badge colorPalette="red" fontSize="0.8em">
+                <Badge colorPalette="red" fontSize="0.8em">
                 Voted
               </Badge>
             )}
           </HStack>
+                  <Collapsible.Root>
+                  <Collapsible.Trigger >
+                    <Text
+                    cursor="pointer"
+                    _hover={{ color: "pink.700" }}
+                    >Read More</Text>
+                  </Collapsible.Trigger>
+                  <Collapsible.Content>
           <Text>{proposal.description}</Text>
           <Text>
             Status: {proposal.proposal_status === "open" ? "Open" : "Closed"}
@@ -228,6 +236,8 @@ const ProposalsList = () => {
               {convertToCrypto(proposal.funding_required, exchangeRates.matic)}{" "}
               MATIC
             </Text>
+          </Collapsible.Content>
+              </Collapsible.Root>
           <Text fontSize="sm" color="gray.600" mt={2}>
             Yes Votes: {proposal.yesVotes} | No Votes: {proposal.noVotes}
           </Text>
