@@ -234,7 +234,7 @@ const ProposalsList = () => {
           <HStack mt={3}>
             <Button
               size="xs"
-              colorScheme="green"
+              login
               onClick={() => handleVote(proposal.id, "yes")}
               disabled={hasVoted}
             >
@@ -242,7 +242,7 @@ const ProposalsList = () => {
             </Button>
             <Button
               size="xs"
-              colorScheme="red"
+              logout
               onClick={() => handleVote(proposal.id, "no")}
               disabled={hasVoted}
             >
