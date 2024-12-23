@@ -51,7 +51,7 @@ const ProposalForm = () => {
           {
             title,
             description,
-            created_by: walletId, // Link proposal to wallet
+            created_by: user.id, // Link proposal to wallet
             community_zip_code: userZipCode, // Directly use Redux-provided zip code
           },
         ]);
@@ -84,6 +84,20 @@ const ProposalForm = () => {
     }
   };
   
+  const fetchVotedProposals = async () => {
+    try {
+      const { data: votedProposals, error } = await supabase
+        .from("votes")
+        .select("proposal_id, vote, proposal:title, description")
+        .eq("vote_by", user.id);
+  
+      if (error) throw error;
+  
+      setVotedProposals(votedProposals);
+    } catch (err) {
+      console.error("Error fetching voting history:", err.message);
+    }
+  };
   
   
   return (

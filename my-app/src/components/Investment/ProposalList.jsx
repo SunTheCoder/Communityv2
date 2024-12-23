@@ -1,50 +1,98 @@
 import React, { useEffect, useState } from "react";
-import { VStack, HStack, Box, Text, Spinner, Button } from "@chakra-ui/react";
+import { VStack, HStack, Box, Text, Spinner, Button, Badge } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { supabase } from "../../App"; // Supabase client setup
 import { Toaster, toaster } from "../ui/toaster";
 
 const ProposalsList = () => {
   const [proposals, setProposals] = useState([]);
+  const [closedProposals, setClosedProposals] = useState([]);
+  const [votingHistory, setVotingHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const user = useSelector((state) => state.user.user);
   const userZipCode = user?.zipCode;
 
+  const fetchProposalsAndVotes = async () => {
+    try {
+      setLoading(true);
+
+      // Step 1: Fetch all proposals
+      const { data: allProposals, error: proposalsError } = await supabase
+        .from("proposals")
+        .select("id, title, description, proposal_status, community_zip_code")
+        .eq("community_zip_code", userZipCode);
+
+      if (proposalsError) throw proposalsError;
+
+      console.log("Fetched proposals:", allProposals);
+
+      // Step 2: Fetch all votes for the proposals
+      const proposalIds = allProposals.map((proposal) => proposal.id);
+      const { data: allVotes, error: votesError } = await supabase
+        .from("votes")
+        .select("proposal_id, vote")
+        .in("proposal_id", proposalIds);
+
+      if (votesError) throw votesError;
+
+      console.log("Fetched votes:", allVotes);
+
+      // Step 3: Calculate vote counts for each proposal
+      const voteCounts = proposalIds.reduce((acc, id) => {
+        acc[id] = { yes: 0, no: 0 };
+        return acc;
+      }, {});
+
+      allVotes.forEach((vote) => {
+        if (voteCounts[vote.proposal_id]) {
+          voteCounts[vote.proposal_id][vote.vote] += 1;
+        }
+      });
+
+      console.log("Calculated vote counts:", voteCounts);
+
+      // Step 4: Separate proposals into open and closed
+      const openProposals = [];
+      const closedProposals = [];
+      allProposals.forEach((proposal) => {
+        const enhancedProposal = {
+          ...proposal,
+          yesVotes: voteCounts[proposal.id]?.yes || 0,
+          noVotes: voteCounts[proposal.id]?.no || 0,
+        };
+
+        if (proposal.proposal_status === "closed") {
+          closedProposals.push(enhancedProposal);
+        } else {
+          openProposals.push(enhancedProposal);
+        }
+      });
+
+      setProposals(openProposals);
+      setClosedProposals(closedProposals);
+
+      // Step 5: Fetch user voting history
+      const { data: userVotes, error: userVotesError } = await supabase
+        .from("votes")
+        .select("proposal_id, vote")
+        .eq("vote_by", user.id);
+
+      if (userVotesError) throw userVotesError;
+
+      setVotingHistory(userVotes);
+
+      console.log("User voting history:", userVotes);
+    } catch (err) {
+      console.error("Error fetching proposals and votes:", err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        setLoading(true);
-
-        // Step 1: Fetch proposal IDs the user has voted on
-        const { data: votedProposals, error: votesError } = await supabase
-          .from("votes")
-          .select("proposal_id")
-          .eq("vote_by", user.id); // Match votes by user's ID
-
-        if (votesError) throw votesError;
-
-        const votedProposalIds = votedProposals?.map((vote) => vote.proposal_id) || [];
-
-        // Step 2: Fetch proposals for the user's zip code excluding voted ones
-        const { data: availableProposals, error: proposalsError } = await supabase
-          .from("proposals")
-          .select("id, title, description, proposal_status") // Add fields to fetch
-          .eq("community_zip_code", userZipCode)
-          .not("id", "in", `(${votedProposalIds.join(",")})`); // Exclude already voted proposals
-
-        if (proposalsError) throw proposalsError;
-
-        setProposals(availableProposals);
-      } catch (err) {
-        console.error("Error fetching proposals:", err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (userZipCode && user.id) {
-      fetchProposals();
+      fetchProposalsAndVotes();
     }
   }, [userZipCode, user.id]);
 
@@ -54,19 +102,15 @@ const ProposalsList = () => {
       const { error } = await supabase.from("votes").insert([
         {
           proposal_id: proposalId,
-          vote_by: user.id, // Link vote to the user
-          vote, // Store the vote ("yes" or "no")
-          vote_type: "community_investment",
-          wallet_address: user.walletAddress, // Store the user's wallet address
+          vote_by: user.id,
+          vote, // "yes" or "no"
         },
       ]);
 
       if (error) throw error;
 
-      // Remove voted proposal from the list
-      setProposals((prevProposals) =>
-        prevProposals.filter((proposal) => proposal.id !== proposalId)
-      );
+      // Refresh proposals and votes after voting
+      await fetchProposalsAndVotes();
 
       toaster.create({
         title: "Vote Submitted",
@@ -90,17 +134,19 @@ const ProposalsList = () => {
     return <Spinner color="pink.400" size="lg" />;
   }
 
-  if (!proposals.length) {
-    return <Text 
-            textAlign="center"
-            m="5"
-            
-            >No proposals available for voting in your area.</Text>;
-  }
-
   return (
-    <VStack spacing={4} align="stretch" maxW="md" mx="auto" mt={6}>
-      {proposals.map((proposal) => (
+    <VStack spacing={6} align="stretch" maxW="md" mx="auto" mt={6}>
+     {/* Open Proposals */}
+{proposals.length > 0 && (
+  <>
+    <Text fontSize="xl" fontWeight="bold">
+      Open Proposals
+    </Text>
+    {proposals.map((proposal) => {
+      const hasVoted = votingHistory.some((vote) => vote.proposal_id === proposal.id);
+
+      return (
+        
         <Box
           key={proposal.id}
           borderWidth="1px"
@@ -109,18 +155,29 @@ const ProposalsList = () => {
           bg="gray.50"
           _hover={{ bg: "gray.100" }}
         >
-          <Text fontSize="lg" fontWeight="bold">
-            {proposal.title}
-          </Text>
+          <HStack justifyContent="space-between" alignItems="center">
+            <Text fontSize="lg" fontWeight="bold">
+              {proposal.title}
+            </Text>
+            {hasVoted && (
+              <Badge colorPalette="red" fontSize="0.8em">
+                Voted
+              </Badge>
+            )}
+          </HStack>
           <Text>{proposal.description}</Text>
           <Text fontSize="sm" color="gray.600">
             Status: {proposal.proposal_status}
+          </Text>
+          <Text fontSize="sm" color="gray.600" mt={2}>
+            Yes Votes: {proposal.yesVotes} | No Votes: {proposal.noVotes}
           </Text>
           <HStack mt={3}>
             <Button
               size="xs"
               colorScheme="green"
               onClick={() => handleVote(proposal.id, "yes")}
+              disabled={hasVoted}
             >
               Yes
             </Button>
@@ -128,12 +185,68 @@ const ProposalsList = () => {
               size="xs"
               colorScheme="red"
               onClick={() => handleVote(proposal.id, "no")}
+              disabled={hasVoted}
             >
               No
             </Button>
           </HStack>
         </Box>
-      ))}
+      );
+    })}
+  </>
+)}
+
+
+      {/* Voting History */}
+      {votingHistory.length > 0 && (
+        <>
+          <Text fontSize="xl" fontWeight="bold">
+            Voting History
+          </Text>
+          {votingHistory.map((vote) => {
+            const voteCounts = proposals.find((p) => p.id === vote.proposal_id) || {};
+            return (
+              <Box key={vote.proposal_id} borderWidth="1px" borderRadius="lg" padding="4">
+                <Text>Proposal: {voteCounts.title}</Text>
+                <Text>Your Vote: {vote.vote}</Text>
+                <Text fontSize="sm" color="gray.600" mt={2}>
+                  Yes Votes: {voteCounts.yesVotes || 0} | No Votes: {voteCounts.noVotes || 0}
+                </Text>
+              </Box>
+            );
+          })}
+        </>
+      )}
+
+      {/* Closed Proposals */}
+      {closedProposals.length > 0 && (
+        <>
+          <Text fontSize="xl" fontWeight="bold">
+            Closed Proposals
+          </Text>
+          {closedProposals.map((proposal) => (
+            <Box
+              key={proposal.id}
+              borderWidth="1px"
+              borderRadius="lg"
+              padding="4"
+              bg="gray.50"
+              _hover={{ bg: "gray.100" }}
+            >
+              <Text fontSize="lg" fontWeight="bold">
+                {proposal.title}
+              </Text>
+              <Text>{proposal.description}</Text>
+              <Text fontSize="sm" color="gray.600">
+                Status: {proposal.proposal_status}
+              </Text>
+              <Text fontSize="sm" color="gray.600" mt={2}>
+                Yes Votes: {proposal.yesVotes} | No Votes: {proposal.noVotes}
+              </Text>
+            </Box>
+          ))}
+        </>
+      )}
     </VStack>
   );
 };
