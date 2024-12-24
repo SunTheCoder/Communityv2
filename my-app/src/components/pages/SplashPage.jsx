@@ -32,8 +32,9 @@ const SplashPage = () => {
       >
         <ColorModeButton 
         position="absolute"
-        left="15px"
+        right="15px"
         top="15px"
+        borderRadius="4xl"
         
         />
         {/* Left Column - SignUp */}
