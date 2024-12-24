@@ -82,7 +82,7 @@ const WalletBalance = ({ walletType }) => {
   return (
     <VStack spacing={4} align="stretch">
       <Text fontWeight="bold">
-        {walletType === "user" ? "Wallet Balance" : `Community Wallet Balance (${user?.zipCode})`}
+        {walletType === "user" ? "Wallet Balance" : `${user?.city} Community Wallet Balance `}
       </Text>
       {loading ? (
         <Spinner size="sm" />

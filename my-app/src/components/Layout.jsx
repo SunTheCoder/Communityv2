@@ -91,7 +91,7 @@ const Layout = () => {
         if (session && session.user) {
           const { data: profileData, error: profileError } = await supabase
             .from("profiles")
-            .select("id, username, bio, avatar_url, email, role, zip_code, region")
+            .select("id, username, bio, avatar_url, email, role, zip_code, region, zip_codes(place_name)")
             .eq("id", session.user.id)
             .single();
 
@@ -127,6 +127,7 @@ const Layout = () => {
             role: profileData.role,
             zipCode: profileData.zip_code,
             region: profileData.region,
+            city: profileData.zip_codes?.place_name || null, // Add the city from zip_codes table
             walletAddress: walletData?.wallet_address || null, // Add wallet address if available
             communityWallet: communityWalletData?.wallet_address || null, // Community wallet that suer belongs to
 

@@ -42,7 +42,8 @@ const WalletDrawer = ({ walletAddress }) => {
     const user = useSelector((state) => state.user?.user);
   const userName = (user?.username || null);
   const userId = (user?.id || null);
-  const userRole = (user?.role || null); // Check if user is admin
+  const userRole = (user?.role || null); // Check if user is admin\
+  const city = (user?.city || null);
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [transactionHash, setTransactionHash] = useState(null);
@@ -338,7 +339,7 @@ const connectWalletHandler = async () => {
       </ClipboardRoot>
             
             <WalletBalance walletType="user" />
-            <Text fontWeight="bold">Community Wallet Address</Text>
+            <Text fontWeight="bold">{city} Community Wallet Address</Text>
             <ClipboardRoot value={user?.communityWallet}>
         <HStack>
             <Text>{user?.communityWallet}</Text>
