@@ -80,7 +80,7 @@ const WalletBalance = ({ walletType }) => {
   return (
     <VStack spacing={4} align="stretch">
       <Text fontWeight="bold">
-        {walletType === "user" ? "User Wallet Balance" : `Community Wallet Balance (${user?.zipCode})`}
+        {walletType === "user" ? "Wallet Balance" : `Community Wallet Balance (${user?.zipCode})`}
       </Text>
       {loading ? (
         <Spinner size="sm" />
@@ -89,7 +89,7 @@ const WalletBalance = ({ walletType }) => {
       ) : balances.ethMatic !== null ? (
         <>
           <Text>
-            <strong>MATIC on Ethereum:</strong> {balances.ethMatic || 0} MATIC
+            <strong>MATIC on Ethereum (Layer 2):</strong> {balances.ethMatic || 0} MATIC
           </Text>
           <Text>
             <strong>Total USD:</strong> ${balances.usd || 0}

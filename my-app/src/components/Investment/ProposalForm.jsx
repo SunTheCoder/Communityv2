@@ -122,7 +122,7 @@ const ProposalForm = () => {
         _focus={{ borderColor: "pink.500", outlineColor: "pink.500", outline: "2px solid pink.500" }}
       />
       <Button
-        firstFlow
+        login
         size="xs"
         m="auto"
         w="fit-content"

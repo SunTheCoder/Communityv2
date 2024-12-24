@@ -334,8 +334,8 @@ const connectWalletHandler = async () => {
 
             {/* Wallet Connection & Creation */}
             <HStack justifyContent="center" mb={5}>
-            <Button firstFlow size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button>
-            <Button firstFlow size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
+            <Button login size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button>
+            <Button login size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
             </HStack>
             {/* Admin: Community Wallet Creation */}
             {userRole === "admin" && (
@@ -351,7 +351,7 @@ const connectWalletHandler = async () => {
                   value={communityZipCode}
                   onChange={(e) => setCommunityZipCode(e.target.value)}
                 />
-                <Button firstFlow size="xs" w="fit-content" onClick={createCommunityWalletHandler}>Create Community Wallet</Button>
+                <Button login size="xs" w="fit-content" onClick={createCommunityWalletHandler}>Create Community Wallet</Button>
               </VStack>
             )}
             
