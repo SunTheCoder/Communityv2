@@ -13,6 +13,12 @@ import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HSta
 import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
 import { Tooltip } from "../ui/tooltip";
 import { LuInfo } from "react-icons/lu"
+import {
+    AccordionItem,
+    AccordionItemContent,
+    AccordionItemTrigger,
+    AccordionRoot,
+  } from "../ui/accordion"
 
 
 
@@ -57,9 +63,38 @@ const WalletDrawer = ({ walletAddress }) => {
 
   const [communityZipCode, setCommunityZipCode] = useState("");
   const formattedUsername = userName?.slice(0, 1).toUpperCase().concat(userName.slice(1).toLowerCase());
+  
+  const blockchainDescription = "Blockchain is a digital ledger technology that records transactions across a network of computers in a secure, transparent, and decentralized manner. Each transaction is grouped into a \"block,\" and these blocks are linked together in a chronological sequence, forming a \"chain.\""
 
+  const blochchainHow = [
+    "Decentralization: Unlike traditional systems that rely on a single central server, blockchain uses a distributed network where all participants (called nodes) share and validate data.",
+    "Transparency: Every transaction is recorded on a shared ledger that is visible to all participants. Once a transaction is added, it is nearly impossible to alter without the agreement of the entire network.",
+    "Security: Transactions are encrypted and grouped into blocks that are validated using consensus mechanisms such as Proof of Work (PoW) or Proof of Stake (PoS). This makes tampering extremely difficult.",
+    "Immutability: Once data is recorded on the blockchain, it cannot be easily modified or deleted, ensuring trust and reliability.",
+    "Smart Contracts: Many blockchains, like Ethereum and Polygon, allow for programmable agreements called smart contracts, which automatically execute predefined actions when conditions are met.",
+  ];
+  
+  const blockchainImportance = [
+    "Trust: Blockchain eliminates the need for intermediaries (like banks or authorities) by establishing trust through cryptographic proofs and consensus.",
+    "Efficiency: Transactions can happen directly between parties, reducing time and costs.",
+    "Inclusion: Blockchain provides opportunities for individuals and communities who lack access to traditional financial systems.",
+  ];
+
+  const layer2Description = "Layer 2 solutions are designed to make cryptocurrency transactions faster, cheaper, and more efficient by handling transactions off the main blockchain (Layer 1) while maintaining the security and decentralization of Ethereum. MATIC, a token used on the Polygon network, is an excellent example of a Layer 2 asset. Even though it operates on Polygon, it remains compatible with Ethereum's blockchain as an ERC-20 token. This means you can enjoy lower fees and quicker transactions without sacrificing the security of Ethereum. Using Layer 2, like Polygon, allows you to contribute to your community investments seamlessly and affordably."
+
+
+  
   const walletDescription = "This feature lets you connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
+  
+  const infoItems = [
+    { value: "a", title: "What is Blockchain?", text: blockchainDescription },
+    { value: "b", title: "How does Blockchain work?", text: blochchainHow },
+    { value: "c", title: "Why is Blockchain important?", text: blockchainImportance },
+    { value: "d", title: "Why Layer 2?", text: layer2Description },
 
+    { value: "e", title: "Is this secure?", text: "Some value 3..." },
+    { value: "f", title: "Why should I download the Metamask extension?", text: "Some value 4..." },
+  ]
   const encryptPrivateKey = (privateKey, encryptionKey) => {
     const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
     const encrypted = CryptoJS.AES.encrypt(privateKey, CryptoJS.enc.Utf8.parse(encryptionKey), {
@@ -319,10 +354,26 @@ const connectWalletHandler = async () => {
     <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
     </Tooltip>
     <Collapsible.Content>
-      <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
-       <strong>Why Layer 2?</strong>  <br /><br />
-      Layer 2 solutions are designed to make cryptocurrency transactions faster, cheaper, and more efficient by handling transactions off the main blockchain (Layer 1) while maintaining the security and decentralization of Ethereum. MATIC, a token used on the Polygon network, is an excellent example of a Layer 2 asset. Even though it operates on Polygon, it remains compatible with Ethereum's blockchain as an ERC-20 token. This means you can enjoy lower fees and quicker transactions without sacrificing the security of Ethereum. Using Layer 2, like Polygon, allows you to contribute to your community investments seamlessly and affordably.
-      </Box>
+    <AccordionRoot collapsible>
+  {infoItems.map((item, index) => (
+    <AccordionItem key={index} value={item.value}>
+      <AccordionItemTrigger>{item.title}</AccordionItemTrigger>
+      <AccordionItemContent>
+        {Array.isArray(item.text) ? (
+          <ul>
+            {item.text.map((listItem, listIndex) => (
+              <li key={listIndex}>{listItem}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>{item.text}</p>
+        )}
+      </AccordionItemContent>
+    </AccordionItem>
+  ))}
+</AccordionRoot>
+
+
     </Collapsible.Content>
   </Collapsible.Root>
          {/* Wallet Connection & Creation */}
