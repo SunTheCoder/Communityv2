@@ -21,10 +21,10 @@ const ProposalsList = () => {
 
   const user = useSelector((state) => state.user.user);
   const userZipCode = user?.zipCode;
+  const communityWallet = user.communityWallet; // Ensure this is correct
 
   const fetchCommunityWalletBalance = async () => {
     try {
-      const communityWallet = user.communityWallet; // Ensure this is correct
       if (!communityWallet) throw new Error("Community wallet address not found.");
   
       const provider = new ethers.JsonRpcProvider("https://polygon-rpc.com");
@@ -33,7 +33,7 @@ const ProposalsList = () => {
       console.log("Raw balance in wei:", balance);
   
       // Use formatEther safely
-      const maticBalance = ethers.utils ? ethers.utils.formatEther(balance) : 0;
+      const maticBalance = ethers ? ethers.formatEther(balance) : 0;
       const usdBalance = exchangeRates.matic ? parseFloat(maticBalance) * exchangeRates.matic : 0;
   
       setCommunityBalance({ matic: parseFloat(maticBalance), usd: parseFloat(usdBalance) });
@@ -172,7 +172,7 @@ const ProposalsList = () => {
     if (exchangeRates.matic > 0) {
       fetchCommunityWalletBalance();
     }
-  }, [exchangeRates]);
+  }, [exchangeRates, communityWallet]);
 
   const convertToCrypto = (usd, rate) => (usd / rate).toFixed(4);
 
@@ -216,11 +216,11 @@ const ProposalsList = () => {
 
   return (
     <VStack spacing={6} align="stretch" maxW="md" mx="auto" mt={6}>
-         <CommunityWalletBalance
+         {/* <CommunityWalletBalance
             communityBalance={communityBalance}
             loading={loading}
             errorMessage={errorMessage}
-        />
+        /> */}
         
       
      {/* Open Proposals */}

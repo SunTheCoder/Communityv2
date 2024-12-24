@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { VStack, Text, Spinner } from "@chakra-ui/react";
-import { ethers } from "ethers";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { VStack, Text, Spinner, Button } from "@chakra-ui/react";
+import { SkeletonText } from "../ui/skeleton"
+import { Tooltip } from "../ui/tooltip"
+
+
+import { ethers } from "ethers";
 import axios from "axios";
 
-const UserWalletBalance = () => {
+const WalletBalance = ({ walletType }) => {
   const user = useSelector((state) => state.user?.user);
-  const walletAddress = user?.walletAddress;
+  const walletAddress =
+    walletType === "user" ? user?.walletAddress : user?.communityWallet;
   const [balances, setBalances] = useState({
     ethMatic: null, // MATIC on Ethereum
-    totalMatic: null,
-    usd: null,
+    usd: null, // USD equivalent
   });
   const [gasPrices, setGasPrices] = useState({
     ethGasPrice: null, // Gas price on Ethereum
     ethGasUsd: null, // Gas cost in USD (Ethereum)
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const fetchBalancesAndGasPrices = async () => {
@@ -58,7 +62,6 @@ const UserWalletBalance = () => {
       // Update state
       setBalances({
         ethMatic: parseFloat(formattedEthMaticBalance),
-        totalMatic: parseFloat(formattedEthMaticBalance).toFixed(4),
         usd: ethMaticBalanceUsd.toFixed(2),
       });
 
@@ -67,31 +70,26 @@ const UserWalletBalance = () => {
         ethGasUsd: ethGasCostUsd,
       });
     } catch (error) {
-      console.error("Error fetching balances and gas prices:", error.message);
-      setErrorMessage("Failed to fetch wallet balances or gas prices.");
+      console.error("Error fetching Ethereum balance or gas price:", error.message);
+      setErrorMessage("Failed to fetch wallet balance or gas price.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchBalancesAndGasPrices();
-  }, [walletAddress]);
-
   return (
     <VStack spacing={4} align="stretch">
-      <Text fontWeight="bold">User Wallet Balance</Text>
+      <Text fontWeight="bold">
+        {walletType === "user" ? "User Wallet Balance" : `Community Wallet Balance (${user?.zipCode})`}
+      </Text>
       {loading ? (
         <Spinner size="sm" />
       ) : errorMessage ? (
         <Text color="red.500">{errorMessage}</Text>
-      ) : (
+      ) : balances.ethMatic !== null ? (
         <>
           <Text>
             <strong>MATIC on Ethereum:</strong> {balances.ethMatic || 0} MATIC
-          </Text>
-          <Text>
-            <strong>Total MATIC:</strong> {balances.totalMatic || 0} MATIC
           </Text>
           <Text>
             <strong>Total USD:</strong> ${balances.usd || 0}
@@ -100,9 +98,16 @@ const UserWalletBalance = () => {
             <strong>Ethereum Gas Price:</strong> {gasPrices.ethGasPrice || "N/A"} Gwei (${gasPrices.ethGasUsd || "N/A"} USD)
           </Text>
         </>
-      )}
+      ) : (
+        <SkeletonText noOfLines={1}  gap="4"/>
+        )}
+        <Tooltip content="Balance and fees are not yet displayed. Click the button to see latest info.">
+      <Button login w="fit-content" size="xs" onClick={fetchBalancesAndGasPrices} isDisabled={loading}>
+        Balance & Fees
+      </Button>
+        </Tooltip>
     </VStack>
   );
 };
 
-export default UserWalletBalance;
+export default WalletBalance;

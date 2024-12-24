@@ -10,6 +10,8 @@ import {
   DrawerCloseTrigger,
 } from "../ui/drawer";
 import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex } from "@chakra-ui/react";
+import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
+
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
@@ -20,6 +22,11 @@ import ProposalForm from "../Investment/ProposalForm";
 import ProposalsList from "../Investment/ProposalList";
 import SendTransactionComponent from "./SendTransactionComponent";
 import UserWalletBalance from "./UserWalletBalance";
+import WalletComponent from "./WalletComponent";
+import MetaMaskComponent from "./MetaMaskComponent";
+import MetaMaskDeepLinkComponent from "./MetaMaskDeepLinkComponent";
+import CommunityWalletBalance from "./CommunityWalletBalance";
+import WalletBalance from "./WalletBalance";
 
 const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
 
@@ -28,9 +35,10 @@ if (!encryptionKey) {
 }
 
 const WalletDrawer = ({ walletAddress }) => {
-  const userName = useSelector((state) => state.user?.user?.username || null);
-  const userId = useSelector((state) => state.user?.user?.id || null);
-  const userRole = useSelector((state) => state.user?.user?.role || null); // Check if user is admin
+    const user = useSelector((state) => state.user?.user);
+  const userName = (user?.username || null);
+  const userId = (user?.id || null);
+  const userRole = (user?.role || null); // Check if user is admin
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [transactionHash, setTransactionHash] = useState(null);
@@ -92,29 +100,40 @@ const WalletDrawer = ({ walletAddress }) => {
   
 
   // Connect Wallet
-  const connectWalletHandler = async () => {
+const connectWalletHandler = async () => {
     try {
       if (!window.ethereum) throw new Error("MetaMask is not installed.");
-
+  
       // Ensure Polygon network is added and selected
       await addPolygonNetwork();
-
+  
       // Request wallet connection
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
       const connectedWalletAddress = accounts[0];
-
+  
+      // Normalize for database storage
+      const normalizedAddress = connectedWalletAddress.toLowerCase();
+      console.log("Connected wallet address:", connectedWalletAddress);
+  
+      // Save the normalized address to the database
       const { error } = await supabase
         .from("wallets")
-        .upsert({ wallet_address: connectedWalletAddress, user_id: userId }, { onConflict: "wallet_address" });
-
+        .upsert(
+          { wallet_address: normalizedAddress, user_id: userId },
+          { onConflict: "wallet_address" }
+        );
+  
       if (error) throw new Error("Failed to save wallet to Supabase");
-
-      alert(`Wallet connected: ${connectedWalletAddress}`);
+  
+      // Display the checksum address to the user
+      const checksumAddress = ethers.getAddress(connectedWalletAddress);
+      alert(`Wallet connected: ${checksumAddress}`);
     } catch (error) {
       console.error("Error connecting wallet:", error);
       setErrorMessage(error.message);
     }
   };
+  
 
   // Create Personal Wallet
   const createWalletHandler = async () => {
@@ -291,8 +310,27 @@ const WalletDrawer = ({ walletAddress }) => {
         
         <DrawerBody >
           <VStack spacing={4} align="stretch">
-
-            <UserWalletBalance/>
+            {/* <MetaMaskComponent /> */}
+            {/* <MetaMaskDeepLinkComponent /> */}
+            <Text fontWeight="bold">{formattedUsername}'s Wallet Address</Text>
+            <ClipboardRoot value={user?.walletAddress}>
+        <HStack>
+            <Text>{user?.walletAddress}</Text>
+            <ClipboardIconButton size="xs" variant="ghost"/>
+        </HStack>
+      </ClipboardRoot>
+            
+            <WalletBalance walletType="user" />
+            <Text fontWeight="bold">Community Wallet Address</Text>
+            <ClipboardRoot value={user?.communityWallet}>
+        <HStack>
+            <Text>{user?.communityWallet}</Text>
+            <ClipboardIconButton size="xs" variant="ghost"/>
+        </HStack>
+      </ClipboardRoot>
+            <WalletBalance walletType="community" />
+            {/* <CommunityWalletBalance />
+            <UserWalletBalance/> */}
 
             {/* Wallet Connection & Creation */}
             <HStack justifyContent="center" mb={5}>
@@ -322,8 +360,8 @@ const WalletDrawer = ({ walletAddress }) => {
            
 
             {/* Buy ETH & Send ETH */}
-            <Text fontWeight="bold">Buy ETH</Text>
-            <BuyETHButton walletAddress={walletAddress} />
+            {/* <Text fontWeight="bold">Buy ETH</Text> */}
+            {/* <BuyETHButton walletAddress={walletAddress} /> */}
             </VStack>
             <VStack>
             {/* <Text fontWeight="bold">Send ETH</Text>
@@ -364,7 +402,7 @@ const WalletDrawer = ({ walletAddress }) => {
             </VStack>
           </VStack>
           <ProposalForm />
-          <SendTransactionComponent defaultNetwork="matic" />
+          {/* <SendTransactionComponent defaultNetwork="matic" /> */}
 
           <ProposalsList />
           
