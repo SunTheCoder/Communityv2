@@ -11,6 +11,8 @@ import {
 } from "../ui/drawer";
 import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex } from "@chakra-ui/react";
 import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
+import { LuInfo } from "react-icons/lu"
+
 
 
 import { IoWalletOutline } from "react-icons/io5";
@@ -297,6 +299,7 @@ const connectWalletHandler = async () => {
           <Button variant="ghost">Close</Button>
         </DrawerCloseTrigger>
         <DrawerHeader>
+            
         <Text fontSize="2xl" fontWeight="bold" pb={1}>
             {formattedUsername}'s 
         </Text>
@@ -304,7 +307,7 @@ const connectWalletHandler = async () => {
             Ethereum Wallet
         </Text>
         <Collapsible.Root>
-    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} px={1} fontSize="12px" _hover={{bg: "pink.300"}}>Info</Collapsible.Trigger>
+    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
     <Collapsible.Content>
       <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
        <strong>Why Layer 2?</strong>  <br /><br />
