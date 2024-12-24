@@ -16,6 +16,8 @@ import { LuInfo } from "react-icons/lu"
 
 
 
+
+
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
@@ -55,6 +57,8 @@ const WalletDrawer = ({ walletAddress }) => {
 
   const [communityZipCode, setCommunityZipCode] = useState("");
   const formattedUsername = userName?.slice(0, 1).toUpperCase().concat(userName.slice(1).toLowerCase());
+
+  const walletDescription = "This feature lets you connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
 
   const encryptPrivateKey = (privateKey, encryptionKey) => {
     const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
@@ -280,12 +284,14 @@ const connectWalletHandler = async () => {
   return (
     <DrawerRoot placement="right" size="md">
       <DrawerBackdrop />
+      <Tooltip content={walletDescription}>
       <DrawerTrigger 
         asChild
         p={2} borderRadius="4xl" _hover={{bg:"pink.300"}} _dark={{_hover:{bg:"pink.700"}}}
         >
         <IoWalletOutline cursor="pointer" size="35px"/>
       </DrawerTrigger>
+        </Tooltip>
       <DrawerContent
         borderRightRadius="lg"
         border="2px solid"
