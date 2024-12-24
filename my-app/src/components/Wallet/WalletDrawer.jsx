@@ -82,6 +82,13 @@ const WalletDrawer = ({ walletAddress }) => {
 
   const layer2Description = "Layer 2 solutions are designed to make cryptocurrency transactions faster, cheaper, and more efficient by handling transactions off the main blockchain (Layer 1) while maintaining the security and decentralization of Ethereum. MATIC, a token used on the Polygon network, is an excellent example of a Layer 2 asset. Even though it operates on Polygon, it remains compatible with Ethereum's blockchain as an ERC-20 token. This means you can enjoy lower fees and quicker transactions without sacrificing the security of Ethereum. Using Layer 2, like Polygon, allows you to contribute to your community investments seamlessly and affordably."
 
+  const blockchainMission = [
+    "Decentralization: The app’s reliance on blockchain removes control from centralized entities, ensuring that no single party has undue influence over the system. This decentralization aligns with the values of fairness, autonomy, and self-governance.", 
+    "Transparency and Trust: Blockchain ensures that community actions, such as resource sharing, transactions, or decision-making, are transparent and verifiable. -The immutable nature of the ledger fosters trust among users, which is crucial for building strong, resilient communities.",
+    "Financial Resilience: Blockchain-based tokens or cryptocurrencies can enable communities to transact even in areas with limited banking infrastructure. Smart contracts ensure fair exchanges and reduce the risk of fraud or exploitation.",
+    "Community Empowerment: The app can enable users to manage resources, vote on decisions, and participate in community activities directly through blockchain. This encourages active involvement and reduces reliance on external authorities.",
+    "Resilience in Crises: During disruptions or disasters, a blockchain-based system remains operational as long as the network is active, offering a dependable platform for organizing aid, sharing resources, or rebuilding trust."
+   ]
 
   
   const walletDescription = "This feature lets you connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
@@ -91,9 +98,10 @@ const WalletDrawer = ({ walletAddress }) => {
     { value: "b", title: "How does Blockchain work?", text: blochchainHow },
     { value: "c", title: "Why is Blockchain important?", text: blockchainImportance },
     { value: "d", title: "Why Layer 2?", text: layer2Description },
+    { value: "e", title: "Why Blockchain Supports This Mission?", text: blockchainMission },
 
-    { value: "e", title: "Is this secure?", text: "Some value 3..." },
-    { value: "f", title: "Why should I download the Metamask extension?", text: "Some value 4..." },
+    { value: "f", title: "Is this secure?", text: "Some value 3..." },
+    { value: "g", title: "Why should I download the Metamask extension?", text: "Some value 4..." },
   ]
   const encryptPrivateKey = (privateKey, encryptionKey) => {
     const iv = CryptoJS.lib.WordArray.random(16); // Generate a random IV
@@ -362,7 +370,7 @@ const connectWalletHandler = async () => {
         {Array.isArray(item.text) ? (
           <List.Root spacing={3}>
             {item.text.map((listItem, listIndex) => (
-              <List.Item key={listIndex}>{listItem}</List.Item>
+              <List.Item mb={3} key={listIndex}>{listItem}</List.Item>
             ))}
           </List.Root>
         ) : (
