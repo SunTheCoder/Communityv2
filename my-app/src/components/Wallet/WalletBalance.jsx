@@ -89,7 +89,7 @@ const WalletBalance = ({ walletType }) => {
       ) : balances.ethMatic !== null ? (
         <>
           <Text>
-            <strong>MATIC on Ethereum (Layer 2):</strong> {balances.ethMatic || 0} MATIC
+            <strong>MATIC on Ethereum:</strong> {balances.ethMatic || 0} MATIC
           </Text>
           <Text>
             <strong>Total USD:</strong> ${balances.usd || 0}

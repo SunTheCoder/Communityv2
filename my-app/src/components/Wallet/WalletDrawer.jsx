@@ -12,6 +12,7 @@ import {
 import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex } from "@chakra-ui/react";
 import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
 
+
 import { IoWalletOutline } from "react-icons/io5";
 import { ethers } from "ethers";
 import BuyETHButton from "./BuyEthButton";
@@ -302,6 +303,16 @@ const connectWalletHandler = async () => {
         <Text fontSize="lg" fontWeight="bold">
             Ethereum Wallet
         </Text>
+        <Collapsible.Root>
+    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} px={1} fontSize="12px" _hover={{bg: "pink.300"}}>Info</Collapsible.Trigger>
+    <Collapsible.Content>
+      <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
+       <strong>Why Layer 2?</strong>  <br /><br />
+      Layer 2 solutions are designed to make cryptocurrency transactions faster, cheaper, and more efficient by handling transactions off the main blockchain (Layer 1) while maintaining the security and decentralization of Ethereum. MATIC, a token used on the Polygon network, is an excellent example of a Layer 2 asset. Even though it operates on Polygon, it remains compatible with Ethereum's blockchain as an ERC-20 token. This means you can enjoy lower fees and quicker transactions without sacrificing the security of Ethereum. Using Layer 2, like Polygon, allows you to contribute to your community investments seamlessly and affordably.
+      </Box>
+    </Collapsible.Content>
+  </Collapsible.Root>
+      
         </DrawerHeader>
         <Separator 
             borderColor="pink.400"
