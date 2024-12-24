@@ -303,7 +303,7 @@ const connectWalletHandler = async () => {
           bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
         }}
       >
-        <DrawerCloseTrigger>
+        <DrawerCloseTrigger borderRadius="sm" outlineColor="pink.400">
           <Button variant="ghost">Close</Button>
         </DrawerCloseTrigger>
         <DrawerHeader>
