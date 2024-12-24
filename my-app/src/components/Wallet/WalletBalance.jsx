@@ -99,7 +99,7 @@ const WalletBalance = ({ walletType }) => {
           </Text>
         </>
       ) : (
-        <SkeletonText noOfLines={1}  gap="4"/>
+        <SkeletonText noOfLines={2}  gap="2"/>
         )}
         <Tooltip content="Balance and fees are not yet displayed. Click the button to see latest info.">
       <Button login w="fit-content" size="xs" onClick={fetchBalancesAndGasPrices} isDisabled={loading}>
