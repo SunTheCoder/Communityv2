@@ -319,50 +319,8 @@ const connectWalletHandler = async () => {
       </Box>
     </Collapsible.Content>
   </Collapsible.Root>
-      
-        </DrawerHeader>
-        <Separator 
-            borderColor="pink.400"
-            mb={4}
-        />
-        
-        <DrawerBody >
-          <VStack spacing={4} align="stretch">
-            {/* <MetaMaskComponent /> */}
-            {/* <MetaMaskDeepLinkComponent /> */}
-            <Text fontWeight="bold">{formattedUsername}'s Wallet Address</Text>
-            <ClipboardRoot value={user?.walletAddress}>
-        <HStack>
-            <Text>{user?.walletAddress}</Text>
-            <ClipboardIconButton size="xs" variant="ghost"/>
-        </HStack>
-      </ClipboardRoot>
-            
-            <WalletBalance walletType="user" />
-            <Text fontWeight="bold">{city} Community Wallet Address</Text>
-            <ClipboardRoot value={user?.communityWallet}>
-        <HStack>
-            <Text>{user?.communityWallet}</Text>
-            <ClipboardIconButton size="xs" variant="ghost"/>
-        </HStack>
-      </ClipboardRoot>
-            <WalletBalance walletType="community" />
-            <Collapsible.Root>
-        <Tooltip content="Info on fees">
-    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
-  </Tooltip>
-    <Collapsible.Content>
-      <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
-       <strong>What are the fees?</strong>  <br /><br />
-       Gas fees are the costs of performing transactions or executing smart contracts on the blockchain. They ensure the network stays secure and operates efficiently by rewarding miners or validators who process transactions. Gas fees vary based on network activity and are measured in <strong>Gwei</strong> (a fraction of Ethereum). On Ethereum, gas fees can sometimes be high due to congestion, but using Layer 2 solutions like Polygon helps significantly lower these fees. For example, sending MATIC on Polygon typically costs fractions of a cent compared to higher fees on Ethereum.
-      </Box>
-    </Collapsible.Content>
-  </Collapsible.Root>
-            {/* <CommunityWalletBalance />
-            <UserWalletBalance/> */}
-
-            {/* Wallet Connection & Creation */}
-            <HStack justifyContent="center" mb={5}>
+         {/* Wallet Connection & Creation */}
+         <HStack justifyContent="center" >
             <Button login size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button>
             <Button login size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
             </HStack>
@@ -383,6 +341,50 @@ const connectWalletHandler = async () => {
                 <Button login size="xs" w="fit-content" onClick={createCommunityWalletHandler}>Create Community Wallet</Button>
               </VStack>
             )}
+            
+        </DrawerHeader>
+        <Separator 
+            borderColor="pink.400"
+            mb={4}
+        />
+        
+        <DrawerBody >
+          <VStack spacing={4} align="stretch">
+            
+            {/* <MetaMaskComponent /> */}
+            {/* <MetaMaskDeepLinkComponent /> */}
+            <Text fontSize="lg"fontWeight="bold">{formattedUsername}'s Wallet Info</Text>
+            <ClipboardRoot value={user?.walletAddress}>
+        <HStack>
+            <Text><strong>Address: </strong>{user?.walletAddress}</Text>
+            <ClipboardIconButton size="xs" variant="ghost"/>
+        </HStack>
+      </ClipboardRoot>
+            
+            <WalletBalance walletType="user" />
+            <Text fontSize="lg" fontWeight="bold" mt={10}>{city} Community Wallet Info</Text>
+            <ClipboardRoot value={user?.communityWallet}>
+        <HStack>
+            <Text><strong>Address:</strong> {user?.communityWallet}</Text>
+            <ClipboardIconButton size="xs" variant="ghost"/>
+        </HStack>
+      </ClipboardRoot>
+            <WalletBalance walletType="community" />
+            <Collapsible.Root>
+        <Tooltip content="Info on fees">
+    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
+  </Tooltip>
+    <Collapsible.Content>
+      <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
+       <strong>What are the fees?</strong>  <br /><br />
+       Gas fees are the costs of performing transactions or executing smart contracts on the blockchain. They ensure the network stays secure and operates efficiently by rewarding miners or validators who process transactions. Gas fees vary based on network activity and are measured in <strong>Gwei</strong> (a fraction of Ethereum). On Ethereum, gas fees can sometimes be high due to congestion, but using Layer 2 solutions like Polygon helps significantly lower these fees. For example, sending MATIC on Polygon typically costs fractions of a cent compared to higher fees on Ethereum.
+      </Box>
+    </Collapsible.Content>
+  </Collapsible.Root>
+            {/* <CommunityWalletBalance />
+            <UserWalletBalance/> */}
+
+           
             
             
             <VStack>
@@ -430,6 +432,7 @@ const connectWalletHandler = async () => {
             )}
             </VStack>
           </VStack>
+         
           <ProposalForm />
           {/* <SendTransactionComponent defaultNetwork="matic" /> */}
 
