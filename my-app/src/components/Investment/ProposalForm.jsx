@@ -124,7 +124,7 @@ const ProposalForm = () => {
       <Button
         login
         size="xs"
-        m="auto"
+        // m="auto"
         w="fit-content"
         onClick={handleSubmit}
         isLoading={isSubmitting}
