@@ -32,8 +32,8 @@ const SplashPage = () => {
       >
         <ColorModeButton 
         position="absolute"
-        right="15px"
-        top="15px"
+        right="18px"
+        top="18px"
         borderRadius="4xl"
         
         />
