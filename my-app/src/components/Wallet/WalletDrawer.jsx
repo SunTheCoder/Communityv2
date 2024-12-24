@@ -9,7 +9,7 @@ import {
   DrawerTrigger,
   DrawerCloseTrigger,
 } from "../ui/drawer";
-import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex} from "@chakra-ui/react";
+import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex, List, ListItem} from "@chakra-ui/react";
 import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
 import { Tooltip } from "../ui/tooltip";
 import { LuInfo } from "react-icons/lu"
@@ -360,11 +360,11 @@ const connectWalletHandler = async () => {
       <AccordionItemTrigger>{item.title}</AccordionItemTrigger>
       <AccordionItemContent>
         {Array.isArray(item.text) ? (
-          <ul>
+          <List.Root spacing={3}>
             {item.text.map((listItem, listIndex) => (
-              <li key={listIndex}>{listItem}</li>
+              <List.Item key={listIndex}>{listItem}</List.Item>
             ))}
-          </ul>
+          </List.Root>
         ) : (
           <p>{item.text}</p>
         )}
