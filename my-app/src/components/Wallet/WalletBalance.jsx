@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { VStack, Text, Spinner, Button } from "@chakra-ui/react";
+import { VStack, Text, Spinner, Button, Collapsible, Box } from "@chakra-ui/react";
 import { SkeletonText } from "../ui/skeleton"
 import { Tooltip } from "../ui/tooltip"
+import { LuInfo } from "react-icons/lu"
+
 
 
 import { ethers } from "ethers";
@@ -106,6 +108,7 @@ const WalletBalance = ({ walletType }) => {
         Balance & Fees
       </Button>
         </Tooltip>
+       
     </VStack>
   );
 };

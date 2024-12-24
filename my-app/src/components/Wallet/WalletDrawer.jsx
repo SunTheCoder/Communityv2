@@ -9,8 +9,9 @@ import {
   DrawerTrigger,
   DrawerCloseTrigger,
 } from "../ui/drawer";
-import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex } from "@chakra-ui/react";
+import { Button, VStack, Text, Input, Spinner, Box, Collapsible, Separator, HStack, Flex} from "@chakra-ui/react";
 import { ClipboardButton, ClipboardIconButton, ClipboardRoot } from "../ui/clipboard"
+import { Tooltip } from "../ui/tooltip";
 import { LuInfo } from "react-icons/lu"
 
 
@@ -307,7 +308,9 @@ const connectWalletHandler = async () => {
             Ethereum Wallet
         </Text>
         <Collapsible.Root>
+        <Tooltip content="Info on Ethereum and Layer 2 Blockchain Solutions">
     <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
+    </Tooltip>
     <Collapsible.Content>
       <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
        <strong>Why Layer 2?</strong>  <br /><br />
@@ -343,6 +346,17 @@ const connectWalletHandler = async () => {
         </HStack>
       </ClipboardRoot>
             <WalletBalance walletType="community" />
+            <Collapsible.Root>
+        <Tooltip content="Info on fees">
+    <Collapsible.Trigger borderRadius="sm" cursor="pointer" my={1} p={1} fontSize="18px" _hover={{bg: "pink.300"}}> <LuInfo /></Collapsible.Trigger>
+  </Tooltip>
+    <Collapsible.Content>
+      <Box padding="4" borderWidth="1px" borderColor="pink.600" borderRadius="sm">
+       <strong>What are the fees?</strong>  <br /><br />
+       Gas fees are the costs of performing transactions or executing smart contracts on the blockchain. They ensure the network stays secure and operates efficiently by rewarding miners or validators who process transactions. Gas fees vary based on network activity and are measured in <strong>Gwei</strong> (a fraction of Ethereum). On Ethereum, gas fees can sometimes be high due to congestion, but using Layer 2 solutions like Polygon helps significantly lower these fees. For example, sending MATIC on Polygon typically costs fractions of a cent compared to higher fees on Ethereum.
+      </Box>
+    </Collapsible.Content>
+  </Collapsible.Root>
             {/* <CommunityWalletBalance />
             <UserWalletBalance/> */}
 
