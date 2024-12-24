@@ -295,9 +295,9 @@ const Layout = () => {
             </Heading>
             </Box>
         <Box  
-        
+         mr={5} 
         >
-          <ColorModeButton />
+          <ColorModeButton borderRadius="4xl"/>
         </Box>
         </HStack>
         {/* Row 2: Tabs Section */}
