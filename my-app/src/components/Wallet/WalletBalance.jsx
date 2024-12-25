@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
-import { VStack, Text, Spinner, Button, Collapsible, Box } from "@chakra-ui/react";
-import { SkeletonText } from "../ui/skeleton"
-import { Tooltip } from "../ui/tooltip"
-import { LuInfo } from "react-icons/lu"
-
-
-
+import { VStack, Text, Spinner, Button } from "@chakra-ui/react";
+import { SkeletonText } from "../ui/skeleton";
+import { Tooltip } from "../ui/tooltip";
 import { ethers } from "ethers";
 import axios from "axios";
+import debounce from "lodash.debounce";
 
 const WalletBalance = ({ walletType }) => {
   const user = useSelector((state) => state.user?.user);
   const walletAddress =
     walletType === "user" ? user?.walletAddress : user?.communityWallet;
+
   const [balances, setBalances] = useState({
     ethMatic: null, // MATIC on Ethereum
     usd: null, // USD equivalent
@@ -25,12 +23,22 @@ const WalletBalance = ({ walletType }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
+  const [cachedBalances, setCachedBalances] = useState({});
+
   const fetchBalancesAndGasPrices = async () => {
     try {
       setLoading(true);
       setErrorMessage(null);
 
       if (!walletAddress) throw new Error("Wallet address not found.");
+
+      // Check if balances are cached
+      if (cachedBalances[walletAddress]) {
+        setBalances(cachedBalances[walletAddress].balances);
+        setGasPrices(cachedBalances[walletAddress].gasPrices);
+        setLoading(false);
+        return;
+      }
 
       // Fetch MATIC and ETH prices in USD
       const priceResponse = await axios.get(
@@ -61,16 +69,26 @@ const WalletBalance = ({ walletType }) => {
         parseFloat(ethers.formatEther(BigInt(ethGasPriceWei) * BigInt(21000))) * ethUsdPrice
       ).toFixed(2);
 
-      // Update state
-      setBalances({
+      // New balances and gas prices
+      const newBalances = {
         ethMatic: parseFloat(formattedEthMaticBalance),
         usd: ethMaticBalanceUsd.toFixed(2),
-      });
+      };
 
-      setGasPrices({
+      const newGasPrices = {
         ethGasPrice: parseFloat(ethGasPriceGwei).toFixed(2),
         ethGasUsd: ethGasCostUsd,
-      });
+      };
+
+      // Update state
+      setBalances(newBalances);
+      setGasPrices(newGasPrices);
+
+      // Cache the fetched data
+      setCachedBalances((prev) => ({
+        ...prev,
+        [walletAddress]: { balances: newBalances, gasPrices: newGasPrices },
+      }));
     } catch (error) {
       console.error("Error fetching Ethereum balance or gas price:", error.message);
       setErrorMessage("Failed to fetch wallet balance or gas price.");
@@ -79,10 +97,22 @@ const WalletBalance = ({ walletType }) => {
     }
   };
 
+  // Debounced fetch function
+  const debouncedFetchBalances = useCallback(debounce(fetchBalancesAndGasPrices, 500), [
+    walletAddress,
+  ]);
+
+  useEffect(() => {
+    if (walletAddress) {
+      debouncedFetchBalances();
+    }
+    return () => debouncedFetchBalances.cancel();
+  }, [walletAddress, debouncedFetchBalances]);
+
   return (
     <VStack spacing={4} align="stretch">
       <Text fontWeight="bold">
-        {walletType === "user" ? "Wallet Balance:" : `Wallet Balance:`}
+        {walletType === "user" ? "Wallet Balance:" : `Community Wallet Balance:`}
       </Text>
       {loading ? (
         <Spinner size="sm" />
@@ -101,14 +131,19 @@ const WalletBalance = ({ walletType }) => {
           </Text>
         </>
       ) : (
-        <SkeletonText noOfLines={2}  gap="2"/>
-        )}
-        <Tooltip content="Balance and fees are not yet displayed. Click the button to see latest info.">
-      <Button login w="fit-content" size="xs" onClick={fetchBalancesAndGasPrices} isDisabled={loading}>
-        Balance & Fees
-      </Button>
-        </Tooltip>
-       
+        <SkeletonText noOfLines={2} gap="2" />
+      )}
+      <Tooltip content="Balance and fees are not yet displayed. Click the button to see latest info.">
+        <Button
+          login
+          w="fit-content"
+          size="xs"
+          onClick={fetchBalancesAndGasPrices}
+          isDisabled={loading}
+        >
+          Balance & Fees
+        </Button>
+      </Tooltip>
     </VStack>
   );
 };
