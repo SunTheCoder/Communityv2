@@ -39,6 +39,7 @@ import MetaMaskComponent from "./MetaMaskComponent";
 import MetaMaskDeepLinkComponent from "./MetaMaskDeepLinkComponent";
 import CommunityWalletBalance from "./CommunityWalletBalance";
 import WalletBalance from "./WalletBalance";
+import ConnectWallet from "./ConnectWallet";
 
 const encryptionKey = import.meta.env.VITE_ENCRYPTION_KEY;
 
@@ -152,7 +153,7 @@ const WalletDrawer = ({ walletAddress }) => {
   
 
   // Connect Wallet
-const connectWalletHandler = async () => {
+  const connectWalletHandler = async () => {
     try {
       if (!window.ethereum) throw new Error("MetaMask is not installed.");
   
@@ -161,13 +162,17 @@ const connectWalletHandler = async () => {
   
       // Request wallet connection
       const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const connectedWalletAddress = accounts[0];
+      if (accounts.length === 0) throw new Error("No MetaMask accounts found.");
   
-      // Normalize for database storage
-      const normalizedAddress = connectedWalletAddress.toLowerCase();
-      console.log("Connected wallet address:", connectedWalletAddress);
+      console.log("Available accounts:", accounts);
   
-      // Save the normalized address to the database
+      // Display a selection prompt if multiple accounts are detected
+      const selectedAccount = accounts[0]; // Default to the first account
+      const normalizedAddress = selectedAccount.toLowerCase(); // Normalize for database storage
+  
+      console.log("Selected wallet address:", selectedAccount);
+  
+      // Save the selected account to the database
       const { error } = await supabase
         .from("wallets")
         .upsert(
@@ -178,7 +183,7 @@ const connectWalletHandler = async () => {
       if (error) throw new Error("Failed to save wallet to Supabase");
   
       // Display the checksum address to the user
-      const checksumAddress = ethers.getAddress(connectedWalletAddress);
+      const checksumAddress = ethers.getAddress(selectedAccount);
       alert(`Wallet connected: ${checksumAddress}`);
     } catch (error) {
       console.error("Error connecting wallet:", error);
@@ -186,15 +191,27 @@ const connectWalletHandler = async () => {
     }
   };
   
+  
 
   // Create Personal Wallet
   const createWalletHandler = async () => {
     try {
+      // Ensure MetaMask is available
+      if (!window.ethereum) {
+        throw new Error("MetaMask is not installed. Please install it to connect your wallet.");
+      }
+  
+      // Request connection to MetaMask
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const walletAddress = accounts[0]; // First account in MetaMask
+  
+      console.log("Connected Wallet Address:", walletAddress);
+  
       // Step 1: Fetch the user's profile to get the zip code
       const { data: profileData, error: profileError } = await supabase
         .from("profiles")
         .select("zip_code")
-        .eq("id", userId) // Assuming `userId` is the user's ID
+        .eq("id", userId)
         .single();
   
       if (profileError || !profileData) {
@@ -207,46 +224,93 @@ const connectWalletHandler = async () => {
       const { data: zipCodeData, error: zipCodeError } = await supabase
         .from("zip_codes")
         .select("id")
-        .eq("postal_code", userZipCode) // Assuming postal_code is the zip code column
+        .eq("postal_code", userZipCode)
         .single();
   
       if (zipCodeError || !zipCodeData) {
         throw new Error("Failed to fetch zip_code_id for the provided zip code.");
       }
       const zipCodeId = zipCodeData.id;
-      console.log("Zip Code ID:", zipCodeId);
   
-      // Step 3: Create a new wallet
-      const wallet = ethers.Wallet.createRandom();
-      const walletAddress = wallet.address;
-      const privateKey = wallet.privateKey;
-  
-      // Step 4: Insert the wallet into the database
+      // Step 3: Save the wallet address to the database
       const { error: walletError } = await supabase
         .from("wallets")
         .insert({
           wallet_address: walletAddress,
           user_id: userId,
-          zip_code_id: zipCodeId, // Add the zip_code_id to the wallet entry
+          zip_code_id: zipCodeId,
         });
   
       if (walletError) {
         throw new Error("Failed to save wallet to Supabase");
       }
   
-      alert(`🎉 New Wallet Created!\nAddress: ${walletAddress}\nPrivate Key: ${privateKey}`);
+      alert(`🎉 Wallet Connected!\nAddress: ${walletAddress}`);
     } catch (error) {
-      console.error("Error creating wallet:", error);
+      console.error("Error connecting wallet:", error);
       setErrorMessage(error.message);
     }
   };
+  
+//   const createWalletHandler = async () => {
+//     try {
+//       // Step 1: Fetch the user's profile to get the zip code
+//       const { data: profileData, error: profileError } = await supabase
+//         .from("profiles")
+//         .select("zip_code")
+//         .eq("id", userId) // Assuming `userId` is the user's ID
+//         .single();
+  
+//       if (profileError || !profileData) {
+//         throw new Error("Failed to fetch user profile or zip code.");
+//       }
+//       const userZipCode = profileData.zip_code;
+//       console.log("User's zip code:", userZipCode);
+  
+//       // Step 2: Fetch the zip_code_id from the zip_codes table
+//       const { data: zipCodeData, error: zipCodeError } = await supabase
+//         .from("zip_codes")
+//         .select("id")
+//         .eq("postal_code", userZipCode) // Assuming postal_code is the zip code column
+//         .single();
+  
+//       if (zipCodeError || !zipCodeData) {
+//         throw new Error("Failed to fetch zip_code_id for the provided zip code.");
+//       }
+//       const zipCodeId = zipCodeData.id;
+//       console.log("Zip Code ID:", zipCodeId);
+  
+//       // Step 3: Create a new wallet
+//       const wallet = ethers.Wallet.createRandom();
+//       const walletAddress = wallet.address;
+//       const privateKey = wallet.privateKey;
+  
+//       // Step 4: Insert the wallet into the database
+//       const { error: walletError } = await supabase
+//         .from("wallets")
+//         .insert({
+//           wallet_address: walletAddress,
+//           user_id: userId,
+//           zip_code_id: zipCodeId, // Add the zip_code_id to the wallet entry
+//         });
+  
+//       if (walletError) {
+//         throw new Error("Failed to save wallet to Supabase");
+//       }
+  
+//       alert(`🎉 New Wallet Created!\nAddress: ${walletAddress}\nPrivate Key: ${privateKey}`);
+//     } catch (error) {
+//       console.error("Error creating wallet:", error);
+//       setErrorMessage(error.message);
+//     }
+//   };
   
 
   // Create Community Wallet (Admin Only)
   const createCommunityWalletHandler = async () => {
     try {
       if (!communityZipCode) throw new Error("Please enter a zip code for the community.");
-      
+  
       // Fetch the zip_code_id for the provided zip code
       const { data: zipData, error: zipFetchError } = await supabase
         .from("zip_codes")
@@ -261,26 +325,22 @@ const connectWalletHandler = async () => {
   
       const zipCodeId = zipData.id;
   
-      // Create a new wallet
-      const wallet = ethers.Wallet.createRandom();
+      // Use Infura to create a wallet
+      const provider = new ethers.providers.JsonRpcProvider(import.meta.env.VITE_INFURA_API_KEY);
+      const wallet = ethers.Wallet.createRandom().connect(provider);
+  
       const walletAddress = wallet.address;
-      const privateKey = wallet.privateKey;
   
-      // Encrypt the private key
-      const { encryptedData, iv } = encryptPrivateKey(privateKey, import.meta.env.VITE_ENCRYPTION_KEY);
+      console.log("Generated Community Wallet Address:", walletAddress);
   
-      // Save the new wallet to the wallets table
+      // Save the wallet address to the database
       const { data: walletData, error: walletError } = await supabase
         .from("wallets")
         .insert({
           wallet_address: walletAddress,
           wallet_type: "zip_code",
           zip_code_id: zipCodeId,
-          encrypted_private_key: encryptedData,
-          iv,
-        })
-        .select()
-        .single();
+        });
   
       if (walletError) {
         console.error("Wallet creation error:", walletError);
@@ -293,6 +353,57 @@ const connectWalletHandler = async () => {
       setErrorMessage(error.message);
     }
   };
+  
+//   const createCommunityWalletHandler = async () => {
+//     try {
+//       if (!communityZipCode) throw new Error("Please enter a zip code for the community.");
+      
+//       // Fetch the zip_code_id for the provided zip code
+//       const { data: zipData, error: zipFetchError } = await supabase
+//         .from("zip_codes")
+//         .select("id")
+//         .eq("postal_code", communityZipCode)
+//         .single();
+  
+//       if (zipFetchError || !zipData) {
+//         console.error("Zip code fetch error:", zipFetchError);
+//         throw new Error("Invalid zip code. Please provide a valid community zip code.");
+//       }
+  
+//       const zipCodeId = zipData.id;
+  
+//       // Create a new wallet
+//       const wallet = ethers.Wallet.createRandom();
+//       const walletAddress = wallet.address;
+//       const privateKey = wallet.privateKey;
+  
+//       // Encrypt the private key
+//       const { encryptedData, iv } = encryptPrivateKey(privateKey, import.meta.env.VITE_ENCRYPTION_KEY);
+  
+//       // Save the new wallet to the wallets table
+//       const { data: walletData, error: walletError } = await supabase
+//         .from("wallets")
+//         .insert({
+//           wallet_address: walletAddress,
+//           wallet_type: "zip_code",
+//           zip_code_id: zipCodeId,
+//           encrypted_private_key: encryptedData,
+//           iv,
+//         })
+//         .select()
+//         .single();
+  
+//       if (walletError) {
+//         console.error("Wallet creation error:", walletError);
+//         throw new Error("Failed to create community wallet.");
+//       }
+  
+//       alert(`🎉 Community Wallet Created for ${communityZipCode}\nAddress: ${walletAddress}`);
+//     } catch (error) {
+//       console.error("Error creating community wallet:", error);
+//       setErrorMessage(error.message);
+//     }
+//   };
   
   
   
@@ -386,7 +497,8 @@ const connectWalletHandler = async () => {
   </Collapsible.Root>
          {/* Wallet Connection & Creation */}
          <HStack mt={4} >
-            <Button login size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button>
+            <ConnectWallet />
+            {/* <Button login size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button> */}
             <Button login size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
             </HStack>
             {/* Admin: Community Wallet Creation */}

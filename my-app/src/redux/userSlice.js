@@ -10,6 +10,9 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    updateUser(state, action) {
+      state.user = { ...state.user, ...action.payload }; // Merge the existing user with the updates
+    },
     login(state, action) {
       state.user = action.payload;
       state.isLoggedIn = true;
@@ -21,5 +24,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { updateUser, login, logout } = userSlice.actions;
 export default userSlice.reducer;
