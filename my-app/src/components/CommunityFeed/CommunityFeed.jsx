@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../../App";
 import { Box, Text, VStack, Separator, Button, HStack, Circle, Center } from "@chakra-ui/react";
+import {
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
+} from "../ui/skeleton"
 import Post from "../Posts/Posts"; // Import the Post component
 import PostsAddDrawer from "../Posts/PostsAddDrawer";
 import AddPostInput from "./AddPostInput";
@@ -12,6 +17,22 @@ const CommunityFeed = () => {
   const [hasMore, setHasMore] = useState(true); // Track if more posts are available
 
   const loadMoreRef = useRef(); // Ref for the scroll trigger
+
+  const renderSkeleton = () => (
+    <VStack gap="6"  w="full" >
+      <Separator my={4} w="100%" borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
+        {[...Array(5)].map((_, index) => (
+          <Box key={index} w="full">
+            
+            <HStack width="full">
+              <SkeletonCircle size="10" />
+              <SkeletonText noOfLines={2} spacing="4" skeletonHeight="2" />
+            </HStack>
+            <Skeleton height="200px" mt="4" />
+          </Box>
+        ))}
+    </VStack>
+  );
 
   // Fetch initial 25 posts
   const fetchInitialPosts = async () => {
@@ -180,13 +201,9 @@ const CommunityFeed = () => {
 
   return (
     <Box maxHeight="1000px" overflow="auto" mt="23px" width="100%">
-      {/* <AddPostInput/> */}
-      {/* <Circle>
-        <PostsAddDrawer />
-      </Circle> */}
       <VStack spacing={4} align="stretch" maxHeight="75.9vh" mx="20px">
         {loading ? (
-          <Text>Loading...</Text>
+          renderSkeleton()
         ) : (
           <>
             {groupedPosts.map(([date, posts]) => (
@@ -205,10 +222,10 @@ const CommunityFeed = () => {
               </Box>
             ))}
 
-            {hasMore && (
+              {hasMore && (
               <Box ref={loadMoreRef}>
                 {loadingMore ? (
-                  <Text>Loading more...</Text>
+                  renderSkeleton()
                 ) : (
                   <Center>
                   <Button 
