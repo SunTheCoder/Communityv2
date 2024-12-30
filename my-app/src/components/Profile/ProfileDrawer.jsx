@@ -13,7 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { AvatarImage, Box, HStack, Input, Textarea } from "@chakra-ui/react";
+import { AvatarImage, Box, HStack, Input, Separator, Text, Textarea, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { Avatar, AvatarGroup } from "@/components/ui/avatar"
 import { Field } from "@/components/ui/field"
@@ -49,9 +49,9 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
         
         borderRightRadius="lg"
         border="2px solid"
-        borderColor="pink.300"
+        borderColor="pink.400"
         borderLeft="none"
-        bg="radial-gradient(circle, #FFE4E1, #F6E6FA)"
+        bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
         _dark={{
           borderColor: "pink.600",
           bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
@@ -60,42 +60,37 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
         mb="430px"
       >
         <DrawerHeader>
-          <DrawerTitle>Profile</DrawerTitle>
+          <DrawerTitle>{user?.username}'s Profile</DrawerTitle>
+            <Separator borderColor="pink.400" mt="4" /  >
         </DrawerHeader>
         <DrawerBody>
           <Box className="space-y-4">
-            <HStack>
+            <VStack
+                mb="30px"
+
+            >
             
             <Field
-                label="Avatar"
+                
             >
               
               <Avatar
                 src={user?.avatarUrl}
+                size="3xl"
+                mb="10px"
+                shadow="md"
                 onUpload={(url) =>
                   setFormData({ ...formData, avatar_url: url })
                 }
               />
-            </Field><AvatarImageUpload/>
-            </HStack>
-
-            {/* Username */}
-            <Field
-                label="Username"
-            >
-              
-              <Input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className="block w-full px-3 py-2 border rounded-md"
-              />
             </Field>
+                <AvatarImageUpload/>
+            </VStack >
 
             {/* Bio */}
             <Field
                 label="Bio"
+                mb="10px"
             >
               
               <Textarea
@@ -109,6 +104,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
             {/* Email */}
             <Field
                 label="Email"
+                mb="10px"
             >
               
               <Input
@@ -121,44 +117,30 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
             </Field>
 
             {/* Zip Code */}
-            <Field
-                label="Zip Code"
+            <Text
+                
+                mb="10px"
             >
               
-              <Input
-                type="text"
-                name="zip_code"
-                value={formData.zip_code}
-                onChange={handleInputChange}
-                className="block w-full px-3 py-2 border rounded-md"
-              />
-            </Field>
+              {user?.zipCode}
+            </Text>
 
             {/* Region */}
-            <Field
+            <Text
                 label="Region"
+                mb="10px"
             >
-              <Input
-                type="text"
-                name="region"
-                value={formData.region}
-                onChange={handleInputChange}
-                className="block w-full px-3 py-2 border rounded-md"
-              />
-            </Field>
+              {user?.region}
+            </Text>
 
             {/* City */}
-            <Field
-                label="City"
+            <Text
+                mb="10px"
             >
-              <Input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-                className="block w-full px-3 py-2 border rounded-md"
-              />
-            </Field>
+              
+                {user?.city}
+              
+            </Text>
           </Box>
         </DrawerBody>
         <DrawerFooter>

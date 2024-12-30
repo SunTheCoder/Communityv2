@@ -81,14 +81,14 @@ const AvatarImageUpload = () => {
         firstFlow
         size="xs"
         as="label"
-        leftIcon={<AiOutlineUpload />}
+        
         variant="solid"
         colorScheme="blue"
         isLoading={isUploading}
         loadingText="Uploading"
-        
+        fontSize="xs"
       >
-        Upload Avatar
+       <AiOutlineUpload /> Update Avatar
         <Input
           type="file"
           onChange={handleFileChange}
