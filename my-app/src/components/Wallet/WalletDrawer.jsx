@@ -93,6 +93,7 @@ const WalletDrawer = ({ walletAddress }) => {
 
   
   const walletDescription = "This feature lets you connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
+  const walletDescriptionLoggedOut = "Login to connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
   
   const infoItems = [
     { value: "a", title: "What is Blockchain?", text: blockchainDescription },
@@ -438,12 +439,15 @@ const WalletDrawer = ({ walletAddress }) => {
   return (
     <DrawerRoot placement="right" size="md">
       <DrawerBackdrop />
-      <Tooltip content={walletDescription}>
+      <Tooltip content={user ? walletDescription : ""}>
       <DrawerTrigger 
         asChild
-        p={2} borderRadius="4xl" _hover={{bg:"pink.300"}} _dark={{_hover:{bg:"pink.700"}}}
+        p={2} 
+        borderRadius="4xl" 
+        _hover={user ? { bg: "pink.300", cursor: "pointer" } : { bg: "none" }}
+        _dark={{_hover:{bg:"pink.700"}}}
         >
-        <IoWalletOutline cursor="pointer" size="35px"/>
+        <IoWalletOutline  size="35px"/>
       </DrawerTrigger>
         </Tooltip>
       <DrawerContent

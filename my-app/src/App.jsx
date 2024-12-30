@@ -9,7 +9,7 @@ import 'leaflet/dist/leaflet.css';
 
 
 
-const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabaseUrl = "https://zgskjpeevxlcynqncsps.supabase.co";
 export const supabase = createClient(supabaseUrl, supabaseKey);
 

@@ -24,6 +24,7 @@ import { HiOutlinePencilSquare, HiOutlineChatBubbleLeftEllipsis } from "react-ic
 import { IoNotificationsOutline } from "react-icons/io5";
 import { PiFlowerLight } from "react-icons/pi";
 import { Avatar, AvatarGroup } from "./ui/avatar";
+import { Tooltip } from "@/components/ui/tooltip"
 
 
 
@@ -75,7 +76,8 @@ const Layout = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const [resources, setResources] = useState([]);
 
-  
+  const walletDescriptionLoggedOut = "Login to connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
+
   // Fetch the logged-in user's profile
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -279,7 +281,20 @@ const Layout = () => {
             }
           /> */}
           {/* <WalletMenu/> */}
-          <WalletDrawer walletAddress={walletAddress} />
+
+          <Tooltip content={!user ? walletDescriptionLoggedOut : ""}>
+          <div
+            style={{
+              opacity: user ? 1 : 0.5, // Adjust opacity
+              // pointerEvents: user ? "auto" : "none", // Disable interaction if conditions aren't met
+              cursor: user ? "default" : "not-allowed", // Optional cursor change
+            }}
+            
+          >
+            <WalletDrawer walletAddress={walletAddress} />
+          </div>
+          </Tooltip>
+          
         </Box>
         
         
