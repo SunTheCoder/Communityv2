@@ -124,7 +124,7 @@ const FriendAvatarGroup = () => {
                 ids={{trigger: friend.id}}
                 content={`${friendProfile?.username || "Unknown"} is online`} // Tooltip Content
                 
-                positioning={{ offset: { mainAxis: 15, crossAxis: -5 }  }}
+                positioning={{ placement: "right-end", offset: { mainAxis: 20, crossAxis: -5 }  }}
               >
                 <Avatar
                 ids={{ root: friend.id }}
