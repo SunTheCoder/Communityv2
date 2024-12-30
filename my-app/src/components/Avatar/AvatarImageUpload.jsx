@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { useToast, Box, Button, Image, Input, VStack } from "@chakra-ui/react";
+import { Box, Button, Image, Input, VStack } from "@chakra-ui/react";
 import { AiOutlineUpload } from "react-icons/ai";
+import { useSelector } from "react-redux";
 import { Toaster, toaster } from "@/components/ui/toaster"
+import { uploadImage } from "../../supabaseRoutes/storage/uploadImage";
+import { getPublicUrl } from "../../supabaseRoutes/storage/getPublicUrl";
+
+
 
 import { supabase } from "../../App"
 
@@ -9,7 +14,7 @@ const AvatarImageUpload = () => {
   const [previewUrl, setPreviewUrl] = useState(null); // For image preview
   const [selectedFile, setSelectedFile] = useState(null); // For storing the file
   const [isUploading, setIsUploading] = useState(false); // Track upload state
-const user = useSelector((state) => state.user?.user);
+    const user = useSelector((state) => state.user?.user);
 
   // Handle file selection and generate preview
   const handleFileChange = (event) => {
@@ -28,25 +33,18 @@ const user = useSelector((state) => state.user?.user);
 
       setIsUploading(true);
 
-      // Upload file to Supabase storage
-      const fileName = `${user.id}-${Date.now()}`; // Generate unique filename
-      const { data, error } = await supabase.storage
-        .from("avatars") // Replace with your bucket name
-        .upload(fileName, selectedFile);
-
-      if (error) throw new Error(error.message);
-
-      // Get public URL of the uploaded image
-      const { publicUrl, error: publicUrlError } = supabase.storage
-        .from("avatars")
-        .getPublicUrl(data.path);
-
-      if (publicUrlError) throw new Error(publicUrlError.message);
+      let uploadedImageUrl = null;
+           if (selectedFile) {
+             // Upload the image
+             const filePath = await uploadImage(selectedFile, "images", "avatar_images");
+             if (!filePath) throw new Error("Failed to upload image.");
+             uploadedImageUrl = getPublicUrl(filePath, "images");
+           }
 
       // Update the user's profile with the new avatar URL
       const { error: updateError } = await supabase
         .from("profiles") // Replace with your table name
-        .update({ avatar_url: publicUrl })
+        .update({ avatar_url: uploadedImageUrl })
         .eq("id", user.id); // Ensure you're updating the correct user
 
       if (updateError) throw new Error(updateError.message);

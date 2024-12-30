@@ -41,6 +41,7 @@ import { IoWalletOutline } from "react-icons/io5";
 import WalletCard from "./Wallet/WalletCard";
 import WalletMenu from "./Wallet/WalletMenu";
 import WalletDrawer from "./Wallet/WalletDrawer";
+import AvatarImageUpload from "./Avatar/AvatarImageUpload";
 
 
 
@@ -242,7 +243,7 @@ const Layout = () => {
             }
             />
         
-        
+        <AvatarImageUpload />
           <IoNotificationsOutline
             size="20"
             cursor="pointer"
