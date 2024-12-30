@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MenuRoot, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from './ui/menu';
-import { Avatar } from './ui/avatar';
+import { MenuRoot, MenuTrigger, MenuContent, MenuItem, MenuSeparator } from '../ui/menu';
+import { Avatar } from '../ui/avatar';
 import { HStack, Stack, Text, defineStyle } from '@chakra-ui/react';
-import { supabase } from '../App';
-import { logout } from '../redux/userSlice'; // Adjust the import path for your Redux slice
-import { Toaster, toaster } from './ui/toaster';
-import SignUpDrawer from './SignUp/SignUpDrawer';
+import { supabase } from '../../App';
+import { logout } from '../../redux/userSlice'; // Adjust the import path for your Redux slice
+import { Toaster, toaster } from '../ui/toaster';
+import SignUpDrawer from '../SignUp/SignUpDrawer';
 
 const UserAvatar = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user); // Fetch user from Redux store

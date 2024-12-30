@@ -17,7 +17,7 @@ import SignUp from "./SignUp/SignUp";
 import ResourceList from "./ResourceList";
 import { ColorModeButton } from "./ui/color-mode";
 import { supabase } from "../App";
-import UserAvatar from "./UserAvatar";
+import UserAvatar from "./Avatar/UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/userSlice";
 import { HiOutlinePencilSquare, HiOutlineChatBubbleLeftEllipsis } from "react-icons/hi2";
