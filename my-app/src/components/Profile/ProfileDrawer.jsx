@@ -21,8 +21,7 @@ import AvatarImageUpload from "../Avatar/AvatarImageUpload";
 
 
 
-const ProfileDrawer = ({ user }) => {
-  const [open, setOpen] = useState(false);
+const ProfileDrawer = ({ user, open, setOpen  }) => {
   const [formData, setFormData] = useState({
     bio: user?.bio || "",
     username: user?.username || "",
@@ -45,11 +44,7 @@ const ProfileDrawer = ({ user }) => {
   return (
     <DrawerRoot open={open} onOpenChange={(e) => setOpen(e.open)} placement="start">
       <DrawerBackdrop />
-      <DrawerTrigger asChild>
-        <Button variant="outline" size="sm">
-          Edit Profile
-        </Button>
-      </DrawerTrigger>
+      
       <DrawerContent
         
         borderRightRadius="lg"

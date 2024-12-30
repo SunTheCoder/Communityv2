@@ -7,11 +7,14 @@ import { supabase } from '../../App';
 import { logout } from '../../redux/userSlice'; // Adjust the import path for your Redux slice
 import { Toaster, toaster } from '../ui/toaster';
 import SignUpDrawer from '../SignUp/SignUpDrawer';
+import ProfileDrawer from '../Profile/ProfileDrawer';
 
 const UserAvatar = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user); // Fetch user from Redux store
   const dispatch = useDispatch();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State to control drawer visibility
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
 
   const ringCss = defineStyle({
     outlineWidth: "2px",
@@ -66,12 +69,15 @@ const UserAvatar = () => {
             <MenuItem>{user?.role || "No Role Available"}</MenuItem>
             <MenuItem
               value="profile"
-              onSelect={() => console.log("Profile clicked")}
+              onClick={() => setDrawerOpen(true)} // Open the drawer
               _hover={{ bg: "gray.100", _dark: { bg: "gray.600" } }}
               _focus={{ bg: "gray.200", _dark: { bg: "gray.500" } }}
             >
               Profile
             </MenuItem>
+
+      {/* Profile Drawer */}
+      <ProfileDrawer open={drawerOpen} setOpen={setDrawerOpen} user={user} />
             <MenuItem
               value="settings"
               onSelect={() => console.log("Settings clicked")}
