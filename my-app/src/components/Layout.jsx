@@ -35,7 +35,7 @@ import CommunityMap from "./Map/CommunityMap";
 import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
 import CommunityFeed from "./CommunityFeed/CommunityFeed";
-import FriendAvatarGroup from "./FriendAvatarGroup";
+import FriendAvatarGroup from "./Avatar/FriendAvatarGroup";
 import AddPostInput from "./CommunityFeed/AddPostInput";
 import { IoWalletOutline } from "react-icons/io5";
 import WalletCard from "./Wallet/WalletCard";

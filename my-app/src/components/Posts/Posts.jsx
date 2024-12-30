@@ -179,7 +179,7 @@ const Post = ({ post }) => {
                 )}
 
                <HStack>
-                {post.user_id === user?.id ? (
+                {post.user_id === user?.id ? (            
                   <Avatar
                     size="xs"
                     src={user?.avatarUrl || "User avatar"}
@@ -187,7 +187,7 @@ const Post = ({ post }) => {
                     colorPalette="pink"
                     css={ringCss}
                     my={2}
-                  />
+                  />                
                 ) : (
                   <Avatar 
                     size="xs" 
