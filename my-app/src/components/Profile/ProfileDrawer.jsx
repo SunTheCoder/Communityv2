@@ -18,6 +18,7 @@ import { useState } from "react";
 import { Avatar, AvatarGroup } from "@/components/ui/avatar"
 import { Field } from "@/components/ui/field"
 import AvatarImageUpload from "../Avatar/AvatarImageUpload";
+import AddFriendship from "../Friendships/AddFriendship";
 
 
 
@@ -150,6 +151,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
             </Button>
           </DrawerActionTrigger>
           <Button firstFlow onClick={handleSave} size="xs">Save</Button>
+          <AddFriendship/>
         </DrawerFooter>
         <DrawerCloseTrigger />
       </DrawerContent>
