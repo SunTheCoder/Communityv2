@@ -78,13 +78,15 @@ const AvatarImageUpload = () => {
     <VStack spacing={4} align="center" width="full">
       {/* Upload Button */}
       <Button
+        firstFlow
+        size="xs"
         as="label"
         leftIcon={<AiOutlineUpload />}
         variant="solid"
         colorScheme="blue"
         isLoading={isUploading}
         loadingText="Uploading"
-        size="sm"
+        
       >
         Upload Avatar
         <Input

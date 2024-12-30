@@ -42,6 +42,7 @@ import WalletCard from "./Wallet/WalletCard";
 import WalletMenu from "./Wallet/WalletMenu";
 import WalletDrawer from "./Wallet/WalletDrawer";
 import AvatarImageUpload from "./Avatar/AvatarImageUpload";
+import ProfileDrawer from "./Profile/ProfileDrawer";
 
 
 
@@ -125,6 +126,7 @@ const Layout = () => {
           login({
             id: profileData.id,
             username: profileData.username,
+            bio: profileData.bio,
             avatarUrl: profileData.avatar_url,
             email: profileData.email,
             role: profileData.role,
@@ -242,8 +244,8 @@ const Layout = () => {
                 })
             }
             />
+        <ProfileDrawer user={user}/>
         
-        <AvatarImageUpload />
           <IoNotificationsOutline
             size="20"
             cursor="pointer"
