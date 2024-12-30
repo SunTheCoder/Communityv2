@@ -28,8 +28,8 @@ const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user);
   const [parentPost, setParentPost] = useState(null); // State to store parent post content
   const [likesCount, setLikesCount] = useState(post.likes_count || 0); // Track likes locally
-
-
+  const [userAvatar, setUserAvatar] = useState(null); // Store user avatar URL
+  
   const ringCss = defineStyle({
     outlineWidth: "2px",
     outlineColor: "colorPalette.500",
@@ -72,6 +72,29 @@ const Post = ({ post }) => {
       console.error("Error adding like:", error);
     }
   };
+
+  // Fetch user's avatar URL
+  useEffect(() => {
+    const fetchUserAvatarUrl = async (userId) => {
+      try {
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("avatar_url")
+          .eq("id", userId)
+          .single();
+
+        if (error) throw error;
+
+        setUserAvatar(data.avatar_url);
+      } catch (error) {
+        console.error("Error fetching user avatar:", error);
+      }
+    };
+
+    if (post?.user_id) {
+      fetchUserAvatarUrl(post.user_id);
+    }
+  }, [post?.user_id]);
 
 
   return (
@@ -166,7 +189,15 @@ const Post = ({ post }) => {
                     my={2}
                   />
                 ) : (
-                  <Avatar size="xs" />
+                  <Avatar 
+                    size="xs" 
+                    src={userAvatar || "User avatar"} 
+                    alt={user?.username || "User username"}
+                    colorPalette="blue"
+                    css={ringCss}
+                    my={2}
+                    
+                    />
                 )}
                
             <Box
