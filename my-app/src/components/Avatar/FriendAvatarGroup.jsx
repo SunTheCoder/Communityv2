@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { VStack, Text, defineStyle } from "@chakra-ui/react";
-import { Avatar, AvatarGroup } from "@/components/ui/avatar";
+import { VStack, defineStyle } from "@chakra-ui/react";
+import { Avatar } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { createClient } from "@supabase/supabase-js";
+import { Tooltip } from "@/components/ui/tooltip";
 
 import { supabase } from "../../App";
+import { px } from "framer-motion";
 
 const ringCss = defineStyle({
   outlineWidth: "2px",
@@ -17,43 +18,47 @@ const ringCss = defineStyle({
 const FriendAvatarGroup = () => {
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
-  const userId = useSelector((state) => state.user?.user?.id); // Get the authenticated user's ID
 
-  // Function to fetch initial data
+  // Get the logged-in user's ID from Redux
+  const userId = useSelector((state) => state.user?.user?.id);
+
+  // Fetch friends and their profiles
   const fetchFriends = async () => {
-    // const userId = (await supabase.auth.getUser()).data?.user?.id; // Get the authenticated user's ID
-
     if (!userId) {
       setFriends([]);
       setLoading(false);
       return;
     }
 
-    if (!userId) {
-      setFriends([]);
-      setLoading(false);
-      return;
-    }
-  
     const { data, error } = await supabase
-      .from("friends")
-      .select("*")
-      .or(`user_id.eq.${userId},friend_id.eq.${userId}`) // Ensure the authenticated user is part of the friendship
-      .eq("status", "accepted"); // Filter for accepted friendships
+    .from("friends")
+    .select(`
+      id,
+      user_id,
+      friend_id,
+      status,
+      profiles:user_id!inner(username, avatar_url),
+      friend_profiles:friend_id!inner(username, avatar_url)
+    `)
+    .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
+    .eq("status", "accepted");
   
-    if (!error) setFriends(data || []);
+
+    if (error) {
+      console.error("Error fetching friends:", error);
+      setFriends([]);
+    } else {
+      setFriends(data || []);
+    }
     setLoading(false);
   };
-  
 
   useEffect(() => {
     const loadFriends = async () => {
       await fetchFriends();
-  
-      const userId = (await supabase.auth.getUser()).data?.user?.id;
-  
+
       if (!userId) return;
-  
+
       // Subscribe to real-time changes
       const channel = supabase
         .channel("friends-updates")
@@ -62,14 +67,14 @@ const FriendAvatarGroup = () => {
           { event: "*", schema: "public", table: "friends" },
           (payload) => {
             const { new: newFriend, old: oldFriend } = payload;
-  
+
             // Ensure the update involves the authenticated user
             const isRelevant =
               (newFriend?.user_id === userId || newFriend?.friend_id === userId) ||
               (oldFriend?.user_id === userId || oldFriend?.friend_id === userId);
-  
+
             if (!isRelevant) return;
-  
+
             if (payload.eventType === "INSERT") {
               setFriends((prev) => [...prev, newFriend]);
             } else if (payload.eventType === "UPDATE") {
@@ -86,16 +91,15 @@ const FriendAvatarGroup = () => {
           }
         )
         .subscribe();
-  
+
       // Cleanup subscription on unmount
       return () => {
         supabase.removeChannel(channel);
       };
     };
-  
+
     loadFriends();
-  }, []);
-  
+  }, [userId]);
 
   // Split visible avatars and the extra count
   const visibleFriends = friends.slice(0, 6);
@@ -110,17 +114,36 @@ const FriendAvatarGroup = () => {
         ))
       ) : (
         <>
-          {visibleFriends.map((friend) => (
-            <Avatar
-              key={friend.id}
-              size="sm"
-              name={friend.name}
-              src={friend.avatar_url || ""}
-              css={ringCss}
-            />
-          ))}
+          {visibleFriends.map((friend) => {
+            // Determine the friend's profile details
+            const isSender = friend.user_id === userId;
+            const friendProfile = isSender ? friend.friend_profiles : friend.profiles;
+
+            return (
+              <Tooltip
+                ids={{trigger: friend.id}}
+                content={`${friendProfile?.username || "Unknown"} is online`} // Tooltip Content
+                
+                positioning={{ offset: { mainAxis: 15, crossAxis: -5 }  }}
+              >
+                <Avatar
+                ids={{ root: friend.id }}
+                  size="sm"
+                  name={friendProfile?.username || "Unknown"}
+                  src={friendProfile?.avatar_url || ""}
+                  css={ringCss}
+                />
+              </Tooltip>
+            );
+          })}
           {extraCount > 0 && (
-            <Avatar size="sm" name={`+${extraCount}`} fallback={`+${extraCount}`} />
+            <Tooltip content={`+${extraCount} more friends`}>
+              <Avatar
+                size="sm"
+                name={`+${extraCount}`}
+                fallback={`+${extraCount}`}
+              />
+            </Tooltip>
           )}
         </>
       )}
