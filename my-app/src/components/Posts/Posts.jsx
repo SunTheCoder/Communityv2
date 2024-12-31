@@ -25,7 +25,9 @@ import PostDate from "./PostDate";
 import { addLikeToCommFeed } from "../../supabaseRoutes";
 
 const Post = ({ post }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user || {});
+  const userId = user?.id; // Safely access userId
+
   const [parentPost, setParentPost] = useState(null); // State to store parent post content
   const [likesCount, setLikesCount] = useState(post.likes_count || 0); // Track likes locally
   const [userAvatar, setUserAvatar] = useState(null); // Store user avatar URL
@@ -304,10 +306,12 @@ const Post = ({ post }) => {
       
     />
     <LikeButton
+    
     postId={post.id}
-    initialLikes={post.likes_count}
-    userId={user?.id}
+    likesCount={post.likes_count} // Pass real-time likes_count
+    userId={userId} // Pass the current user's ID
   />
+  
   </Box>
   );
 };
