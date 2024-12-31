@@ -66,7 +66,8 @@ const NotificationIcon = () => {
       </IconButton>
       {notificationCount > 0 && (
         <Float offsetY="10px" offsetX="7px" p="3px" colorPalette="teal">
-          <Circle size="3" bg="red.500" color="white">
+          <Circle size="4" fontSize="12px"
+          bg="red.500" color="white">
             {notificationCount}
           </Circle>
         </Float>
