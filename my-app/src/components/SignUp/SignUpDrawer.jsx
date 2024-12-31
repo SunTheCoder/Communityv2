@@ -146,7 +146,7 @@ login({
   region: profile.region,
   bio: profile.bio,
   walletAddress: profile.user_wallet?.[0]?.wallet_address || null, // User wallet
-  communityWalletAddress: communityWallet?.wallet_address || null, // Community wallet
+  communityWallet: communityWallet?.wallet_address || null, // Community wallet
 })
 );
 
