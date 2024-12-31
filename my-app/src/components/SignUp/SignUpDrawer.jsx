@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
-import { Box, Stack, Card, Input, Text } from "@chakra-ui/react";
+import { Box, Stack, Card, Input, Text, HStack } from "@chakra-ui/react";
 import { Button } from "../ui/button";
 import { Field } from "../ui/field";
 import { PasswordInput, PasswordStrengthMeter } from "../ui/password-Input";
@@ -244,11 +244,13 @@ const SignUpDrawer = ({ open, onClose }) => {
             )}
           </Stack>
         </Box>
-        <Box justifyContent="space-between">
+        <HStack>
+        <Box mt="15px" display="flex" justifyContent="space-between">
           <Button 
               variant="solid" 
               onClick={() => setIsSignUp(!isSignUp)}
               signup
+              mx="15px"
               >
             {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
           </Button>
@@ -263,6 +265,7 @@ const SignUpDrawer = ({ open, onClose }) => {
             </Button>
           </DrawerActionTrigger>
         </Box>
+        </HStack>
       </form>
           
         </DrawerBody>
