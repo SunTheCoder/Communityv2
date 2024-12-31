@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
-import { Box, Stack, Card, Input, Text } from "@chakra-ui/react";
+import { Box, Stack, Card, Input, Text, HStack } from "@chakra-ui/react";
 import { Button } from "../ui/button";
 import { Field } from "../ui/field";
 import { PasswordInput, PasswordStrengthMeter } from "../ui/password-Input";
@@ -130,18 +130,30 @@ const SignUpDrawer = ({ open, onClose }) => {
   };
 
   return (
-    <DrawerRoot open={open} onOpenChange={onClose} size="md" placement="start">
+    <DrawerRoot open={open} onOpenChange={onClose} size="xs" placement="start">
       <DrawerBackdrop />
-      <DrawerContent>
+      <DrawerContent
+        borderRightRadius="lg"
+        border="2px solid"
+        borderColor="pink.400"
+        borderLeft="none"
+        bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
+        _dark={{
+          borderColor: "pink.600",
+          bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
+        }}
+        mt="73px"
+        mb="430px"
+      >
         <DrawerHeader>
           <DrawerTitle>{isSignUp ? "Sign Up" : "Login"}</DrawerTitle>
         </DrawerHeader>
         <DrawerBody>
-          <Card.Root maxW="sm" mx="auto" shadow="lg" _dark={{ bg: "gray.800" }}>
+         
             <Toaster />
-            <Card.Body>
+            
             <form onSubmit={handleSubmit(isSignUp ? handleSignUp : handleLogin)}>
-        <Card.Body>
+        <Box maxW="270px">
           <Stack spacing={4}>
             {/* Email Field */}
             <Field
@@ -231,12 +243,14 @@ const SignUpDrawer = ({ open, onClose }) => {
               </>
             )}
           </Stack>
-        </Card.Body>
-        <Card.Footer justifyContent="space-between">
+        </Box>
+        <HStack>
+        <Box mt="15px" display="flex" justifyContent="space-between">
           <Button 
               variant="solid" 
               onClick={() => setIsSignUp(!isSignUp)}
               signup
+              mx="15px"
               >
             {isSignUp ? "Switch to Login" : "Switch to Sign Up"}
           </Button>
@@ -250,10 +264,10 @@ const SignUpDrawer = ({ open, onClose }) => {
                 {isSignUp ? "Sign Up" : "Login"} <RiArrowRightLine />
             </Button>
           </DrawerActionTrigger>
-        </Card.Footer>
+        </Box>
+        </HStack>
       </form>
-            </Card.Body>
-          </Card.Root>
+          
         </DrawerBody>
         <DrawerFooter>
           <DrawerCloseTrigger asChild>
