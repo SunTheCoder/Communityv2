@@ -112,29 +112,39 @@ const CommunityFeed = () => {
     const initializePosts = async () => {
       await fetchInitialPosts();
     };
-
+  
     initializePosts();
-
+  
     const channel = supabase
       .channel("realtime:posts")
       .on(
         "postgres_changes",
         { event: "*", schema: "public", table: "posts" },
-        (payload) => {
+        async (payload) => {
           console.log("Change received:", payload);
-
+  
           if (payload.eventType === "INSERT") {
             setPosts((prevPosts) => {
               const exists = prevPosts.some((post) => post.id === payload.new.id);
               return exists ? prevPosts : [payload.new, ...prevPosts];
             });
-          
           } else if (payload.eventType === "UPDATE") {
-            setPosts((prevPosts) =>
-              prevPosts.map((post) =>
-                post.id === payload.new.id ? payload.new : post
-              )
-            );
+            // Refetch the updated post to include related data (e.g., profiles.role)
+            const { data: updatedPost, error } = await supabase
+              .from("posts")
+              .select("*, profiles(role)") // Include related profile data
+              .eq("id", payload.new.id)
+              .single();
+  
+            if (error) {
+              console.error("Error refetching updated post:", error);
+            } else {
+              setPosts((prevPosts) =>
+                prevPosts.map((post) =>
+                  post.id === updatedPost.id ? updatedPost : post
+                )
+              );
+            }
           } else if (payload.eventType === "DELETE") {
             setPosts((prevPosts) =>
               prevPosts.filter((post) => post.id !== payload.old.id)
@@ -143,11 +153,12 @@ const CommunityFeed = () => {
         }
       )
       .subscribe();
-
+  
     return () => {
       supabase.removeChannel(channel);
     };
   }, []);
+  
 
   useEffect(() => {
     if (!loadMoreRef.current || !hasMore) return;
