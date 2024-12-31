@@ -59,6 +59,7 @@ const WalletDrawer = ({ walletAddress }) => {
   const [balance, setBalance] = useState({ eth: null, matic: null });
   const [errorMessage, setErrorMessage] = useState(null);
 
+
   const [gasFees, setGasFees] = useState({ gasPriceGwei: null, gasFeeMatic: null });
 
 
@@ -434,22 +435,42 @@ const WalletDrawer = ({ walletAddress }) => {
       console.error("Failed to add Polygon network:", error);
     }
   };
-  
+
 
   return (
     <DrawerRoot placement="right" size="md">
       <DrawerBackdrop />
-      <Tooltip content={user ? walletDescription : ""}>
-      <DrawerTrigger 
-        asChild
-        p={2} 
-        borderRadius="4xl" 
-        _hover={user ? { bg: "pink.300", cursor: "pointer" } : { bg: "none" }}
-        _dark={{_hover:{bg:"pink.700"}}}
+      {user ? (
+      <Tooltip content={walletDescription}>
+        
+        <DrawerTrigger 
+          asChild
+          p={2} 
+          borderRadius="4xl" 
+          _hover={{ bg: "pink.300", cursor: "pointer" }}
+          _dark={{ _hover: { bg: "pink.700" } }}
         >
-        <IoWalletOutline  size="35px"/>
-      </DrawerTrigger>
+          <IoWalletOutline size="35px" />
+        </DrawerTrigger>
+
         </Tooltip>
+      ) : (
+        <Tooltip content={walletDescriptionLoggedOut}>
+          <DrawerTrigger 
+            asChild
+            p={2} 
+            borderRadius="4xl" 
+            _hover={{ bg: "pink.300", cursor: "pointer" }}
+            _dark={{ _hover: { bg: "pink.700" } }}
+            onClick={(e) => {
+              e.preventDefault(); // Prevents interaction
+              console.log("DrawerTrigger is disabled");
+            }}
+            >
+            <IoWalletOutline size="35px"  />
+          </DrawerTrigger>
+        </Tooltip>
+      )}
       <DrawerContent
         borderRightRadius="lg"
         border="2px solid"
