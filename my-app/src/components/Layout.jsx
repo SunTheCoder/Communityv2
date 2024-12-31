@@ -43,6 +43,7 @@ import WalletMenu from "./Wallet/WalletMenu";
 import WalletDrawer from "./Wallet/WalletDrawer";
 import AvatarImageUpload from "./Avatar/AvatarImageUpload";
 import ProfileDrawer from "./Profile/ProfileDrawer";
+import NotificationIcon from "./NotificationIcon";
 
 
 
@@ -246,7 +247,7 @@ const Layout = () => {
             />
         <ProfileDrawer user={user}/>
         
-          <IoNotificationsOutline
+          {/* <IoNotificationsOutline
             size="20"
             cursor="pointer"
             onClick={() =>
@@ -256,7 +257,8 @@ const Layout = () => {
                 type: "info",
               })
             }
-          />
+          /> */}
+          <NotificationIcon/>
       
         
       <HiOutlineChatBubbleLeftEllipsis 
