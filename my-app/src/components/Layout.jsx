@@ -79,7 +79,7 @@ const Layout = () => {
   const { user, isLoggedIn } = useSelector((state) => state.user);
   const [resources, setResources] = useState([]);
 
-  const walletDescriptionLoggedOut = "Login to connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
+  // const walletDescriptionLoggedOut = "Login to connect your/a crypto wallet to participate in projects that benefit your community. Invest in local proposals, track funding goals, and see how your contributions create real impact. Secure and transparent transactions powered by blockchain ensure your support goes where it is needed most."
 
   // Fetch the logged-in user's profile
   useEffect(() => {
@@ -287,18 +287,18 @@ const Layout = () => {
           /> */}
           {/* <WalletMenu/> */}
 
-          <Tooltip content={!user ? walletDescriptionLoggedOut : ""}>
-          <div
+          {/* <Tooltip content={!user ? walletDescriptionLoggedOut : ""}> */}
+          {/* <div
             style={{
               opacity: user ? 1 : 0.5, // Adjust opacity
               // pointerEvents: user ? "auto" : "none", // Disable interaction if conditions aren't met
               cursor: user ? "default" : "not-allowed", // Optional cursor change
             }}
             
-          >
+          > */}
             <WalletDrawer walletAddress={walletAddress} />
-          </div>
-          </Tooltip>
+          {/* </div> */}
+          {/* </Tooltip> */}
           
         </Box>
         
