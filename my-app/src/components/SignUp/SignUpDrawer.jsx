@@ -101,25 +101,59 @@ const SignUpDrawer = ({ open, onClose }) => {
         return;
       }
 
-      const { data: profile, error: profileError } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", authData.user.id)
-        .single();
+      // Fetch the profile with the user wallet
+const { data: profile, error: profileError } = await supabase
+.from("profiles")
+.select(`
+  *,
+  user_wallet:wallets(wallet_address)
+`)
+.eq("id", authData.user.id) // Match the user ID from auth
+.eq("user_wallet.wallet_type", "user") // Ensure it's the user wallet
+.single();
 
-      if (profileError) {
-        throw new Error("Failed to fetch profile.");
-      }
+if (profileError) {
+throw new Error("Failed to fetch profile.");
+}
 
-      dispatch(
-        login({
-          id: authData.user.id,
-          email,
-          username: profile.username,
-          avatarUrl: profile.avatar_url,
-          role: profile.role,
-        })
-      );
+// Debugging: Ensure the user_wallet is part of the response
+console.log("Profile data:", profile);
+
+// Fetch the community wallet based on the user's zip_code
+const { data: communityWallet, error: communityWalletError } = await supabase
+.from("wallets")
+.select("wallet_address")
+.eq("wallet_type", "zip_code") // Ensure it's a zip_code wallet
+.eq("zip_code", profile.zip_code) // Match zip code from profile
+.single();
+
+if (communityWalletError) {
+throw new Error("Failed to fetch community wallet.");
+}
+
+// Debugging: Ensure the community wallet is fetched correctly
+console.log("Community wallet data:", communityWallet);
+
+// Dispatch the data
+dispatch(
+login({
+  id: authData.user.id,
+  email,
+  username: profile.username,
+  avatarUrl: profile.avatar_url,
+  role: profile.role,
+  zipCode: profile.zip_code,
+  region: profile.region,
+  bio: profile.bio,
+  walletAddress: profile.user_wallet?.[0]?.wallet_address || null, // User wallet
+  communityWalletAddress: communityWallet?.wallet_address || null, // Community wallet
+})
+);
+
+
+
+    
+    
 
       toaster.create({ description: "Login Successful! Welcome back.", type: "success" });
     } catch (error) {
