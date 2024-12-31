@@ -5,6 +5,7 @@ import { Avatar } from '../ui/avatar';
 import { HStack, Stack, Text, defineStyle } from '@chakra-ui/react';
 import { supabase } from '../../App';
 import { logout } from '../../redux/userSlice'; // Adjust the import path for your Redux slice
+import { resetFriends } from '../../redux/friendSlice'; // Adjust the import path for your Redux slice
 import { Toaster, toaster } from '../ui/toaster';
 import SignUpDrawer from '../SignUp/SignUpDrawer';
 import ProfileDrawer from '../Profile/ProfileDrawer';
@@ -30,6 +31,8 @@ const UserAvatar = () => {
 
       // Clear user from Redux store
       dispatch(logout());
+      dispatch(resetFriends()); // Clear friend slice
+
 
       toaster.create({
         description: "Logged out successfully",

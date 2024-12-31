@@ -45,6 +45,12 @@ const friendSlice = createSlice({
     deleteFriend(state, action) {
       state.list = state.list.filter((friend) => friend.id !== action.payload.id);
     },
+    resetFriends(state) {
+      // Reset the state to the initial values
+      state.list = [];
+      state.status = "idle";
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -62,5 +68,5 @@ const friendSlice = createSlice({
   },
 });
 
-export const { updateFriend, deleteFriend } = friendSlice.actions;
+export const { updateFriend, deleteFriend, resetFriends } = friendSlice.actions;
 export default friendSlice.reducer;

@@ -21,7 +21,7 @@ const ProposalsList = () => {
 
   const user = useSelector((state) => state.user.user);
   const userZipCode = user?.zipCode;
-  const communityWallet = user.communityWallet; // Ensure this is correct
+  const communityWallet = user?.communityWallet; // Ensure this is correct
 
   const fetchCommunityWalletBalance = async () => {
     try {
