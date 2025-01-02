@@ -18,8 +18,8 @@ import { useState } from "react";
 import { Avatar, AvatarGroup } from "@/components/ui/avatar"
 import { Field } from "@/components/ui/field"
 import AvatarImageUpload from "../Avatar/AvatarImageUpload";
-import AddFriendship from "../Friendships/AddFriendship";
-import PendingRequests from "../Friendships/PendingRequests";
+import AddFriendship from "./AddFriendship";
+import PendingRequests from "./PendingRequests";
 
 
 

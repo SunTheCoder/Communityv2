@@ -35,7 +35,7 @@ const SignUp = ({navigate}) => {
   } = useForm();
 
   const handleSignUp = async (data) => {
-    const { email, password, username, avatarUrl } = data;
+    const { email, password, username, avatarUrl, zipCode } = data;
 
     setIsLoading(true);
     try {
@@ -57,7 +57,9 @@ const SignUp = ({navigate}) => {
       const { error: profileError } = await supabase.from("profiles").insert({
         id: userData.user.id,
         username: username || "New User",
+        email: email,
         avatar_url: avatarUrl?.trim() || null,
+        zip_code: zipCode,
       });
 
       if (profileError) {
@@ -71,6 +73,7 @@ const SignUp = ({navigate}) => {
           email,
           username,
           avatarUrl,
+          zipCode,
         })
       );
 
@@ -128,6 +131,7 @@ const SignUp = ({navigate}) => {
           email,
           username: profile.username,
           avatarUrl: profile.avatar_url,
+          zipCode: profile.zip_code,
         })
       );
 
@@ -166,6 +170,7 @@ const SignUp = ({navigate}) => {
               label="Email"
               errorText={errors.email?.message}
               invalid={!!errors.email}
+              required
             >
               <Input
                 variant='subtle'
@@ -186,6 +191,7 @@ const SignUp = ({navigate}) => {
               label="Password"
               errorText={errors.password?.message}
               invalid={!!errors.password}
+              required
             >
               <Stack>
                 <PasswordInput
@@ -207,11 +213,29 @@ const SignUp = ({navigate}) => {
 
             {isSignUp && (
               <>
+              {/* Confirm Password Field */}
+                <Field
+                  label="Confirm Password"
+                  errorText={errors.confirmPassword?.message}
+                  invalid={!!errors.confirmPassword}
+                  required
+                >
+                  <PasswordInput
+                    variant='subtle'
+                    placeholder="ex. password123"
+                    {...register("confirmPassword", {
+                      required: "Please confirm your password",
+                      validate: (value) =>
+                        value === watch("password") || "Passwords do not match",
+                    })}
+                  />
+                </Field>
                 {/* Username Field */}
                 <Field
                   label="Username"
                   errorText={errors.username?.message}
                   invalid={!!errors.username}
+                  required
                 >
                   <Input
                     variant='subtle'
@@ -223,6 +247,28 @@ const SignUp = ({navigate}) => {
                         value: 3,
                         message: "Username must be at least 3 characters",
                       },
+                    })}
+                  />
+                </Field>
+
+                {/* ZipCode Field */}
+                <Field
+                  label="Zip Code"
+                  errorText={errors.zipCode?.message}
+                  invalid={!!errors.zipCode}
+                  required
+                >
+                  <Input
+                    variant='subtle'
+                    type="zip code"
+                    placeholder="ex. 23224"
+                    {...register("zipCode", {
+                      required: "Zip code is required",
+                      pattern: {
+                        value: /^\d{5}(-\d{4})?$/,
+                        message: "Invalid zip code",
+                      },
+
                     })}
                   />
                 </Field>
