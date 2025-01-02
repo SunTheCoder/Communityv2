@@ -476,7 +476,8 @@ const WalletDrawer = ({ walletAddress }) => {
         border="2px solid"
         borderColor="pink.300"
         borderLeft="none"
-        bg="radial-gradient(circle, #FFE4E1, #F6E6FA)"
+        bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
+      
         _dark={{
           borderColor: "pink.600",
           bg: "radial-gradient(circle, #8B4A62, #2C2A35)",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../App"; // Adjust this path as needed
 import { useSelector } from "react-redux"; // Assuming ZIP code is in Redux state
+import { Box, Heading } from "@chakra-ui/react";
 
 const AddFriendship = () => {
   const { zipCode, id: currentUserId } = useSelector((state) => state.user?.user); // Assuming Redux stores the logged-in user's info
@@ -61,11 +62,11 @@ const AddFriendship = () => {
   }, [zipCode, currentUserId]);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
-      <h2>Add Friendship</h2>
+    <Box style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
+      <Heading>Add Friendship</Heading>
 
       {/* Dropdown to select a user */}
-      <div style={{ marginBottom: "10px" }}>
+      <Box style={{ marginBottom: "10px" }}>
         <label htmlFor="userSelect">Select a user to add as a friend:</label>
         <select
           id="userSelect"
@@ -80,7 +81,7 @@ const AddFriendship = () => {
             </option>
           ))}
         </select>
-      </div>
+      </Box>
 
       {/* Add Friend Button */}
       <button
@@ -109,7 +110,7 @@ const AddFriendship = () => {
           {statusMessage}
         </div>
       )}
-    </div>
+    </Box>
   );
 };
 
