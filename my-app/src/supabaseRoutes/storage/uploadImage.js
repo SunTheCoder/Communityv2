@@ -9,14 +9,17 @@ import { supabase } from "../../App"; // Import your initialized Supabase client
  */
 export const uploadImage = async (file, bucket, folder = "") => {
   try {
-    // Construct file path with folder and file name
-    const filePath = `${folder}/${file.name}`;
-    
+    // Sanitize the filename: replace spaces and special characters
+    const sanitizedFileName = file.name.replace(/\s+/g, "_").replace(/[^\w.-]/g, "");
+
+    // Construct file path
+    const filePath = folder ? `${folder}/${sanitizedFileName}` : sanitizedFileName;
+
     const { data, error } = await supabase.storage
       .from(bucket)
       .upload(filePath, file, {
         cacheControl: "3600", // Optional: Cache control for images
-        upsert: false,       // Avoid overwriting existing files
+        upsert: false, // Avoid overwriting existing files
       });
 
     if (error) {
@@ -28,6 +31,6 @@ export const uploadImage = async (file, bucket, folder = "") => {
     return data.path; // Returns the file path
   } catch (error) {
     console.error("Upload failed:", error);
-    return null;
+    throw error;
   }
 };

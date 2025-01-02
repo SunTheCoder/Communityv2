@@ -14,15 +14,18 @@ import {
 import { Toaster, toaster } from "../ui/toaster";
 import { supabase } from "../../App";
 import { useSelector } from "react-redux";
-import DynamicUploadImage from "../CommunityFeed/DynamicUploadImage"; // Import the DynamicUploadImage component
+import DynamicUploadImage from "../CommunityFeed/DynamicUploadImage";
+import { uploadImage } from "../../supabaseRoutes/storage/uploadImage";
+import { getPublicUrl } from "../../supabaseRoutes/storage/getPublicUrl";
 
 const PostReplyDrawer = ({ parentPostId, trigger }) => {
   const [replyContent, setReplyContent] = useState("");
-  const [imageUrl, setImageUrl] = useState(null); // Store uploaded image URL
-  const [parentPostCreator, setParentPostCreator] = useState(null); // Store parent post creator's name
+  const [imageUrl, setImageUrl] = useState(null); // Uploaded image URL
+  const [selectedFile, setSelectedFile] = useState(null); // Selected file
+  const [clearPreview, setClearPreview] = useState(false); // Clear preview logic
+  const [parentPostCreator, setParentPostCreator] = useState(null); // Parent post creator
   const { user } = useSelector((state) => state.user);
 
-  // Fetch the parent post creator
   useEffect(() => {
     const fetchParentPostCreator = async () => {
       try {
@@ -49,7 +52,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
       if (!user) {
         throw new Error("User not logged in. Please log in to reply.");
       }
-
+  
       if (!replyContent.trim()) {
         toaster.create({
           title: "Reply content is required",
@@ -57,26 +60,37 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
         });
         return;
       }
-
+  
+      // Handle image upload if a file is selected
+      let uploadedImageUrl = imageUrl; // Preserve existing image URL
+      if (selectedFile) {
+        const filePath = await uploadImage(selectedFile, "images", "reply_images");
+        if (!filePath) throw new Error("Failed to upload image.");
+        uploadedImageUrl = getPublicUrl(filePath, "images");
+      }
+  
       const { error } = await supabase.from("posts").insert([
         {
           content: replyContent.trim(),
-          image_url: imageUrl, // Attach the uploaded image URL to the reply
+          image_url: uploadedImageUrl, // Use the preserved or newly uploaded image URL
           parent_post_id: parentPostId,
           author_username: user.username,
           user_id: user.id,
         },
       ]);
-
+  
       if (error) throw error;
-
+  
       toaster.create({
         description: "Reply submitted successfully!",
         type: "success",
       });
-
-      setReplyContent(""); // Clear the reply content
-      setImageUrl(null); // Clear the uploaded image URL
+  
+      setReplyContent("");
+      setImageUrl(null);
+      setSelectedFile(null);
+      setClearPreview(true);
+      setTimeout(() => setClearPreview(false), 0); // Reset clearPreview flag
     } catch (error) {
       console.error("Error submitting reply:", error.message);
       toaster.create({
@@ -86,13 +100,14 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
       });
     }
   };
+  
 
   return (
     <DrawerRoot placement="bottom">
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
       <DrawerContent
-      position="abolute"
+        position="absolute"
         roundedTop="md"
         width="47%"
         ml="6%"
@@ -100,7 +115,6 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
         borderColor="pink.300"
         borderBottom="none"
         bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
-
         _dark={{
           borderColor: "pink.600",
           bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
@@ -119,7 +133,6 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
         </DrawerHeader>
         <DrawerBody>
           <VStack spacing={4} align="stretch">
-            {/* Reply Content */}
             <Textarea
               placeholder="Write your reply..."
               resize="none"
@@ -141,10 +154,9 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
               }}
             />
 
-            {/* Image Upload */}
             <DynamicUploadImage
-              uploadType="reply_images" // Specify the folder for replies
-              onUploadComplete={(url) => setImageUrl(url)} // Set the uploaded image URL
+              onFileSelect={setSelectedFile}
+              clearPreview={clearPreview}
             />
           </VStack>
         </DrawerBody>
