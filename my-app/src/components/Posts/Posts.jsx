@@ -100,7 +100,7 @@ const Post = ({ post }) => {
 
 
   return (
-    <Box>
+    <Box position="relative">
     <PostReplyDrawer
       parentPostId={post.id}
       trigger={

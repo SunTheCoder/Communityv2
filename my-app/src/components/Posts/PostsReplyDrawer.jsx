@@ -92,13 +92,15 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerBackdrop />
       <DrawerContent
+      position="abolute"
         roundedTop="md"
-        width="48%"
+        width="47%"
         ml="6%"
         border="2px solid"
         borderColor="pink.300"
         borderBottom="none"
-        bg="radial-gradient(circle, #FFE4E1, #F6E6FA)"
+        bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
+
         _dark={{
           borderColor: "pink.600",
           bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
