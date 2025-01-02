@@ -124,10 +124,20 @@ const CommunityFeed = () => {
           console.log("Change received:", payload);
   
           if (payload.eventType === "INSERT") {
-            setPosts((prevPosts) => {
-              const exists = prevPosts.some((post) => post.id === payload.new.id);
-              return exists ? prevPosts : [payload.new, ...prevPosts];
-            });
+            const { data: newPost, error } = await supabase
+              .from("posts")
+              .select(`
+                *,
+                profiles(role) -- Include the related profile data
+              `)
+              .eq("id", payload.new.id)
+              .single();
+      
+            if (error) {
+              console.error("Error fetching new post with profile data:", error);
+            } else {
+              setPosts((prevPosts) => [newPost, ...prevPosts]);
+            }
           } else if (payload.eventType === "UPDATE") {
             // Refetch the updated post to include related data (e.g., profiles.role)
             const { data: updatedPost, error } = await supabase
