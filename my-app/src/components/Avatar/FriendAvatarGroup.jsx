@@ -5,9 +5,17 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { Avatar } from "@/components/ui/avatar";
 import { fetchFriends } from "../../redux/friendSlice";
 
+
+const colorPalette = ["red", "green", "yellow", "purple", "orange"]
+
+  const pickPalette = (name) => {
+    const index = name.charCodeAt(0) % colorPalette.length
+    return colorPalette[index]
+  }
+
 const ringCss = defineStyle({
     outlineWidth: "2px",
-    outlineColor: "teal",
+    outlineColor: "blue.500",
     outlineOffset: "2px",
     outlineStyle: "solid",
   });
@@ -52,8 +60,9 @@ const FriendAvatarGroup = () => {
                 positioning={{ placement: "right-end", offset: { mainAxis: 20, crossAxis: -5 }  }}
               >
                 <Avatar
-                    ids={{ root: friend.id }}
-                    
+                  ids={{ root: friend.id }}
+                  colorPalette={pickPalette(friendProfile?.username)}
+
                   size="sm"
                   name={friendProfile?.username || "Unknown"}
                   src={friendProfile?.avatar_url || ""}

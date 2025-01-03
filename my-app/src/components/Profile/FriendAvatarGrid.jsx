@@ -16,6 +16,13 @@ const FriendAvatarGrid = () => {
   const { id: userId } = useSelector((state) => state.user?.user);
   const { list: friends, status } = useSelector((state) => state.friends);
 
+  const colorPalette = ["red", "blue", "green", "yellow", "purple", "orange"]
+
+  const pickPalette = (name) => {
+    const index = name.charCodeAt(0) % colorPalette.length
+    return colorPalette[index]
+  }
+
 
   useEffect(() => {
     if (userId) {
@@ -32,27 +39,29 @@ const FriendAvatarGrid = () => {
   });
 
   return (
-    <VStack align="stretch" spacing={4}>
+    <VStack align="stretch" spacing={4} mb="25px">
       <Text fontWeight="bold" fontSize="lg">
         Your Friends
       </Text>
-      <Grid templateColumns="repeat(auto-fill, minmax(60px, 1fr))" gap={4}>
+      <Grid templateColumns="repeat(auto-fill, minmax(60px, 1fr))" gap={4}  >
         {isLoading
           ? Array.from({ length: 6 }).map((_, index) => (
               <Box key={index} width="60px" height="60px" bg="gray.200" borderRadius="full" />
             ))
           : visibleFriends.map((friend) => (
               <Box key={friend.id} textAlign="center">
-                <HoverCardRoot>
-  <HoverCardTrigger asChild>
-    <Avatar size="md" src={friend.avatar_url} name={friend.username} />
-  </HoverCardTrigger>
-  <HoverCardContent>
-    <HoverCardArrow />
-    <Text>{friend.username}</Text>
-  </HoverCardContent>
-</HoverCardRoot>
+               
+    <Avatar 
+        size="md" 
+        src={friend.avatar_url} 
+        name={friend.username} 
+        colorPalette={pickPalette(friend.username)}
 
+    />
+
+            <Text
+                fontSize="xs"
+            >{friend.username}</Text>
              
               </Box>
             ))}

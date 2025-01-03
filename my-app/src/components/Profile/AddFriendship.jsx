@@ -14,6 +14,14 @@ const AddFriendship = () => {
   const containerRef = useRef(null); // Ref for the grid container
 
 
+  const colorPalette = ["red", "blue", "green", "yellow", "purple", "orange"]
+
+  const pickPalette = (name) => {
+    const index = name.charCodeAt(0) % colorPalette.length
+    return colorPalette[index]
+  }
+
+
   const handleClickOutside = (event) => {
     if (containerRef.current && !containerRef.current.contains(event.target)) {
       setSelectedUser(null); // Deselect user if clicking outside the container
@@ -90,21 +98,23 @@ const AddFriendship = () => {
   }, [zipCode, currentUserId]);
 
   return (
-    <VStack align="stretch" spacing={4} p="4" maxWidth="600px" m="auto">
+    <VStack align="stretch" spacing={4} >
       <Text fontWeight="bold" fontSize="lg">
         Add New Friends
       </Text>
-      <Grid templateColumns="repeat(auto-fill, minmax(100px, 1fr))" gap={4}  >
+      <Grid templateColumns="repeat(auto-fill, minmax(60px, 1fr))" gap={4}  >
         {users.length === 0 && !loading ? (
           <Text>No users available to add as friends.</Text>
         ) : (
           users.map((user) => (
-            <Box key={user.id} position="relative" ref={containerRef}>
+            <Box key={user.id} ref={containerRef}>
               <VStack>
               <Avatar
   size="md"
   src={user.avatar_url}
   name={user.username}
+  colorPalette={pickPalette(user.username)}
+  _hover={{ cursor: "pointer" }}
   onClick={() =>
     setSelectedUser((prev) => (prev?.id === user.id ? null : user))
   } // Select or deselect user on click
@@ -124,8 +134,11 @@ const AddFriendship = () => {
           ))
         )}
       </Grid>
+      <VStack>
       <Button
-        mt="4"
+        
+        py="2px"
+        px="4px"
         login
         size="xxs"
         onClick={handleAddFriend}
@@ -133,7 +146,7 @@ const AddFriendship = () => {
         disabled={!selectedUser}
       >
         Add Friend
-      </Button>
+      </Button></VStack>
       {statusMessage && (
         <Box
           mt="4"

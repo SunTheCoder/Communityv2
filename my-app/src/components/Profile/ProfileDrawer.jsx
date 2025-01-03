@@ -146,6 +146,18 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
                 {user?.city}
               
             </Text>
+            <HStack
+              justify="center"
+              gap="20px"
+              mt="10px"
+              mb="20px"
+            >
+            <DrawerActionTrigger asChild>
+            <Button logout size="xs" variant="outline" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </DrawerActionTrigger>
+          <Button firstFlow onClick={handleSave} size="xs">Save</Button></HStack>
             <FriendAvatarGrid/>
             {/* <FriendAccordionList/> */}
           <AddFriendship/>
@@ -153,12 +165,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
           </Box>
         </DrawerBody>
         <DrawerFooter>
-          <DrawerActionTrigger asChild>
-            <Button logout size="xs" variant="outline" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-          </DrawerActionTrigger>
-          <Button firstFlow onClick={handleSave} size="xs">Save</Button>
+          
         </DrawerFooter>
         <DrawerCloseTrigger />
       </DrawerContent>
