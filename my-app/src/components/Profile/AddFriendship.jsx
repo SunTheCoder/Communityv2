@@ -95,7 +95,7 @@ const AddFriendship = () => {
     if (zipCode && currentUserId) {
       fetchUsers();
     }
-  }, [zipCode, currentUserId]);
+  }, [zipCode, currentUserId, friends]);
 
   return (
     <VStack align="stretch" spacing={4} >
