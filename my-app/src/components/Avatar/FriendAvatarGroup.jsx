@@ -1,24 +1,24 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { VStack, Skeleton, defineStyle} from "@chakra-ui/react";
+import { VStack, Skeleton, defineStyle } from "@chakra-ui/react";
 import { Tooltip } from "@/components/ui/tooltip";
 import { Avatar } from "@/components/ui/avatar";
 import { fetchOnlineFriends } from "../../redux/friendSlice";
+import { supabase } from "@/App";
 
+const colorPalette = ["red", "green", "yellow", "purple", "orange"];
 
-const colorPalette = ["red", "green", "yellow", "purple", "orange"]
-
-  const pickPalette = (name) => {
-    const index = name.charCodeAt(0) % colorPalette.length
-    return colorPalette[index]
-  }
+const pickPalette = (name) => {
+  const index = name.charCodeAt(0) % colorPalette.length;
+  return colorPalette[index];
+};
 
 const ringCss = defineStyle({
-    outlineWidth: "2px",
-    outlineColor: "blue.500",
-    outlineOffset: "2px",
-    outlineStyle: "solid",
-  });
+  outlineWidth: "2px",
+  outlineColor: "blue.500",
+  outlineOffset: "2px",
+  outlineStyle: "solid",
+});
 
 const FriendAvatarGroup = () => {
   const dispatch = useDispatch();
@@ -29,8 +29,29 @@ const FriendAvatarGroup = () => {
     if (userId) {
       dispatch(fetchOnlineFriends(userId));
     }
+
+    // Subscribe to Realtime updates for profiles
+    const profiles = supabase.channel('realtime:profiles')
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'profiles' },
+        (payload) => {
+          console.log('Change received!', payload);
+
+          // Refresh online friends when user_status changes
+          const { new: updatedProfile } = payload;
+          if (["online", "offline"].includes(updatedProfile.user_status)) {
+            dispatch(fetchOnlineFriends(userId));
+          }
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on component unmount
+    return () => {
+      supabase.removeChannel(profiles);
+    };
   }, [userId, dispatch]);
-  
 
   const loading = status === "loading";
 
@@ -51,19 +72,17 @@ const FriendAvatarGroup = () => {
             // Determine the friend's profile details
             const isSender = friend.user_id === userId;
             const friendProfile = isSender ? friend.friend_profiles : friend.profiles;
-  
+
             return (
               <Tooltip
                 key={`tooltip-${friend.id}`} // Add a unique key here
-                ids={{trigger: friend.id}}
+                ids={{ trigger: friend.id }}
                 content={`${friendProfile?.username || "Unknown"} is online`} // Tooltip Content
-                
-                positioning={{ placement: "right-end", offset: { mainAxis: 20, crossAxis: -5 }  }}
+                positioning={{ placement: "right-end", offset: { mainAxis: 20, crossAxis: -5 } }}
               >
                 <Avatar
                   ids={{ root: friend.id }}
                   colorPalette={pickPalette(friendProfile?.username)}
-
                   size="sm"
                   name={friendProfile?.username || "Unknown"}
                   src={friendProfile?.avatar_url || ""}
@@ -74,11 +93,7 @@ const FriendAvatarGroup = () => {
           })}
           {extraCount > 0 && (
             <Tooltip content={`+${extraCount} more friends`}>
-              <Avatar
-                size="sm"
-                name={`+${extraCount}`}
-                fallback={`+${extraCount}`}
-              />
+              <Avatar size="sm" name={`+${extraCount}`} fallback={`+${extraCount}`} />
             </Tooltip>
           )}
         </>
