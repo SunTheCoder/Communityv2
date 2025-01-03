@@ -144,11 +144,16 @@ const NotificationIcon = ({ user }) => {
                 <HStack
                   key={notif.id}
                   p="2"
-                  borderRadius="md"
+                  borderRadius="sm"
                  
-                  _dark={{ bg: "gray.700" }}
+                
                   justify="space-between"
                   bg="radial-gradient(circle,rgb(222, 179, 172),rgb(216, 160, 230))"
+                  _dark={{
+                    borderColor: "pink.600",
+                    bg: "radial-gradient(circle,rgb(99, 46, 65),rgb(24, 23, 29))",
+                  }}
+                  shadow="md"
 
                 >
                   <Text fontSize="sm"><strong>{notif.message.split(" ")[0]}</strong> liked your post!</Text>
