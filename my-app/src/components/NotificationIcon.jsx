@@ -149,7 +149,7 @@ const NotificationIcon = ({ user }) => {
                  
                 
                   justify="space-between"
-                  bg="radial-gradient(circle,rgb(222, 179, 172),rgb(216, 160, 230))"
+                  bg="radial-gradient(circle,rgb(222, 179, 172),rgb(230, 190, 240))"
                   _dark={{
                     borderColor: "pink.600",
                     bg: "radial-gradient(circle,rgb(99, 46, 65),rgb(24, 23, 29))",
