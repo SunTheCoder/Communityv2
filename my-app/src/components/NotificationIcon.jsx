@@ -145,7 +145,7 @@ const NotificationIcon = ({ user }) => {
                   bg="radial-gradient(circle,rgb(222, 179, 172),rgb(216, 160, 230))"
 
                 >
-                  <Text fontSize="sm">{notif.message}</Text>
+                  <Text fontSize="sm"><strong>{notif.message.split(" ")[0]}</strong> liked your post!</Text>
                   {!notif.is_read && (
                     <Button
                       firstFlow
