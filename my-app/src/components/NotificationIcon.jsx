@@ -29,7 +29,7 @@ const NotificationIcon = ({ user }) => {
         return;
       }
 
-      setNotifications(data);
+      setNotifications(data.filter((notif) => !notif.is_read));
       setNotificationCount(data.filter((notif) => !notif.is_read).length);
     };
 
@@ -37,21 +37,24 @@ const NotificationIcon = ({ user }) => {
 
     const handleEvent = (payload) => {
       if (payload.new.user_id !== userId) return;
-
+    
       if (payload.eventType === "INSERT") {
         setNotifications((prev) => [payload.new, ...prev]);
         setNotificationCount((prev) => prev + 1);
       } else if (payload.eventType === "UPDATE") {
         if (payload.new.is_read) {
+          // Remove notifications marked as read
+          setNotifications((prev) => prev.filter((notif) => notif.id !== payload.new.id));
           setNotificationCount((prev) => Math.max(prev - 1, 0));
+        } else {
+          // Update the notification if it's not marked as read
+          setNotifications((prev) =>
+            prev.map((notif) => (notif.id === payload.new.id ? payload.new : notif))
+          );
         }
-        setNotifications((prev) =>
-          prev.map((notif) =>
-            notif.id === payload.new.id ? payload.new : notif
-          )
-        );
       }
     };
+    
 
     const notificationsChannel = supabase
       .channel("notifications")
