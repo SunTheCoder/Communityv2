@@ -114,7 +114,11 @@ const AddFriendship = () => {
   src={user.avatar_url}
   name={user.username}
   colorPalette={pickPalette(user.username)}
-  _hover={{ cursor: "pointer" }}
+  _hover={{ 
+    cursor: "pointer",
+    filter: "brightness(0.85)", 
+    transition: "filter 0.2s",
+     }}
   onClick={() =>
     setSelectedUser((prev) => (prev?.id === user.id ? null : user))
   } // Select or deselect user on click
