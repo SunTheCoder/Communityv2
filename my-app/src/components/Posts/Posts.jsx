@@ -183,7 +183,7 @@ const Post = ({ post }) => {
                <HStack>
                 {post.user_id === user?.id ? (            
                   <Avatar
-                    size="xs"
+                    size="lg"
                     src={user?.avatarUrl || "User avatar"}
                     alt={user?.username || "User username"}
                     colorPalette="pink"
@@ -192,7 +192,7 @@ const Post = ({ post }) => {
                   />                
                 ) : (
                   <Avatar 
-                    size="xs" 
+                    size="lg" 
                     src={userAvatar || "User avatar"} 
                     alt={user?.username || "User username"}
                     colorPalette="blue"
