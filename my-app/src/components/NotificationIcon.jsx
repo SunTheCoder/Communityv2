@@ -108,7 +108,17 @@ const NotificationIcon = ({ user }) => {
   return (
     <PopoverRoot positioning={{ placement: "bottom-end" }} >
     <PopoverTrigger asChild>
-      <Button size="sm" px="2px" variant="ghost" position="relative" borderRadius="4xl">
+        
+        <Button 
+          size="sm" 
+          px="2px" 
+          variant="ghost" 
+          position="relative" 
+          borderRadius="4xl" 
+          _hover={{bg:"pink.300"}}
+          _dark={{ _hover: { bg: "pink.700" } }}
+
+          >
         <IoNotificationsOutline />
         {notificationCount > 0 && (
           <Circle
