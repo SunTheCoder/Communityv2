@@ -258,7 +258,7 @@ const Layout = () => {
               })
             }
           /> */}
-          <NotificationIcon/>
+          <NotificationIcon user={user}/>
       
         
       <HiOutlineChatBubbleLeftEllipsis 

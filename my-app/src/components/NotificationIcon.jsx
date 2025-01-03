@@ -1,43 +1,58 @@
 import React, { useState, useEffect } from "react";
-import { IconButton, Box, Circle, Float } from "@chakra-ui/react";
-import { IoNotificationsOutline } from "react-icons/io5";
 import { supabase } from "../App";
+import {
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverRoot,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Circle, VStack, Text, HStack, Separator } from "@chakra-ui/react";
+import { IoNotificationsOutline } from "react-icons/io5";
 
-const NotificationIcon = () => {
+const NotificationIcon = ({ user }) => {
+  const userId = user?.id;
   const [notificationCount, setNotificationCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    // Function to fetch unread notifications initially
-    const fetchUnreadNotifications = async () => {
+    const fetchNotifications = async () => {
       const { data, error } = await supabase
         .from("notifications")
-        .select("id")
-        .eq("is_read", false); // Fetch only unread notifications
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("Error fetching unread notifications:", error);
+        console.error("Error fetching notifications:", error);
         return;
       }
 
-      setNotificationCount(data.length); // Set the initial count
+      setNotifications(data);
+      setNotificationCount(data.filter((notif) => !notif.is_read).length);
     };
 
-    fetchUnreadNotifications();
+    fetchNotifications();
 
-    // Function to handle real-time updates
     const handleEvent = (payload) => {
-      console.log("Notification change received:", payload);
+      if (payload.new.user_id !== userId) return;
 
       if (payload.eventType === "INSERT") {
-        setNotificationCount((prev) => prev + 1); // Increment count for new notifications
+        setNotifications((prev) => [payload.new, ...prev]);
+        setNotificationCount((prev) => prev + 1);
       } else if (payload.eventType === "UPDATE") {
         if (payload.new.is_read) {
-          setNotificationCount((prev) => Math.max(prev - 1, 0)); // Decrement count for read notifications
+          setNotificationCount((prev) => Math.max(prev - 1, 0));
         }
+        setNotifications((prev) =>
+          prev.map((notif) =>
+            notif.id === payload.new.id ? payload.new : notif
+          )
+        );
       }
     };
 
-    // Subscribe to changes in the notifications table
     const notificationsChannel = supabase
       .channel("notifications")
       .on(
@@ -47,32 +62,77 @@ const NotificationIcon = () => {
       )
       .subscribe();
 
-    // Cleanup on component unmount
     return () => {
       supabase.removeChannel(notificationsChannel);
     };
-  }, []);
+  }, [userId]);
+
+  const markAsRead = async (id) => {
+    const { error } = await supabase
+      .from("notifications")
+      .update({ is_read: true })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
 
   return (
-    <Box position="relative">
-      <IconButton
-        aria-label="Notifications"
-        variant="ghost"
-        borderRadius="4xl"
-        size="sm"
-        onClick={() => setNotificationCount(0)} // Reset count when clicked
-      >
-        <IoNotificationsOutline />
-      </IconButton>
-      {notificationCount > 0 && (
-        <Float offsetY="10px" offsetX="7px" p="3px" colorPalette="teal">
-          <Circle size="4" fontSize="12px"
-          bg="red.500" color="white">
-            {notificationCount}
-          </Circle>
-        </Float>
-      )}
-    </Box>
+    <PopoverRoot positioning={{ placement: "bottom-end" }}>
+      <PopoverTrigger asChild>
+        <Button size="sm" px="2px" variant="outline" position="relative">
+          <IoNotificationsOutline />
+          {notificationCount > 0 && (
+            <Circle
+              size="20px"
+              fontSize="12px"
+              bg="red.500"
+              color="white"
+              ml="-10px"
+              mt="-10px"
+              position="absolute"
+              left="32px"
+              bottom="18px"
+            >
+              {notificationCount}
+            </Circle>
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverArrow />
+        <PopoverBody>
+          <VStack align="stretch" spacing={3}>
+            {notifications.length === 0 ? (
+              <Text textAlign="center">No notifications</Text>
+            ) : (
+              notifications.map((notif) => (
+                <HStack
+                  key={notif.id}
+                  p="2"
+                  borderRadius="md"
+                  bg="gray.50"
+                  justify="space-between"
+                >
+                  <Text fontSize="sm">{notif.message}</Text>
+                  {!notif.is_read && (
+                    <Button
+                      size="xs"
+                      onClick={() => markAsRead(notif.id)}
+                      colorScheme="teal"
+                    >
+                      Mark as Read
+                    </Button>
+                  )}
+                </HStack>
+              ))
+            )}
+            <Separator mt="2" />
+          </VStack>
+        </PopoverBody>
+      </PopoverContent>
+    </PopoverRoot>
   );
 };
 
