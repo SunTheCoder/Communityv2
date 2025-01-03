@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import DynamicUploadImage from "../CommunityFeed/DynamicUploadImage";
 import { uploadImage } from "../../supabaseRoutes/storage/uploadImage";
 import { getPublicUrl } from "../../supabaseRoutes/storage/getPublicUrl";
+import { Tooltip } from "../ui/tooltip";
 
 const PostReplyDrawer = ({ parentPostId, trigger }) => {
   const [replyContent, setReplyContent] = useState("");
@@ -153,19 +154,31 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
                 bg: "gray.200",
               }}
             />
-
-            <DynamicUploadImage
-              onFileSelect={setSelectedFile}
-              clearPreview={clearPreview}
-            />
+             
           </VStack>
         </DrawerBody>
         <DrawerFooter justify="flex-end" gap={4}>
+          <Tooltip
+            content="Upload an image"
+          >
+          <Button
+            as="label" // Use label to trigger file input
+            cursor="pointer"
+            size="xs"
+            variant="ghost"
+            firstFlow
+            w="50px"
+           >
+      {/* Dynamic Image Upload */}
+      <DynamicUploadImage onFileSelect={setSelectedFile} clearPreview={clearPreview} />
+
+      
+    </Button></Tooltip>
           <DrawerActionTrigger asChild>
             <Button
               variant="ghost"
               onClick={() => toaster.create({ title: "Canceled", type: "info" })}
-              bg="gray.100"
+              logout
               _hover={{ bg: "gray.300", _dark: { bg: "gray.600" } }}
               shadow="sm"
               size="xs"

@@ -41,6 +41,7 @@ const DynamicUploadImage = ({ onFileSelect, clearPreview }) => {
     justifyContent="center"
     height="100%" // Ensure the box fills its parent's height
     width="100%" // Optional: Center horizontally as well
+    
   >
     <Image
       src={previewUrl}
@@ -48,6 +49,7 @@ const DynamicUploadImage = ({ onFileSelect, clearPreview }) => {
       maxWidth="50px"
       borderRadius="md"
       boxShadow="sm"
+      mb="35px"
     />
   </Box>
 )}

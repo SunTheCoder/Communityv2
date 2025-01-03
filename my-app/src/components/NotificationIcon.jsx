@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import the hook
+
 import { supabase } from "../App";
 import {
   PopoverArrow,
@@ -10,11 +12,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Circle, VStack, Text, HStack, Separator } from "@chakra-ui/react";
 import { IoNotificationsOutline } from "react-icons/io5";
+import ViewAllNotificationsDrawer from "./ViewAllNotificationsDrawer";
 
 const NotificationIcon = ({ user }) => {
   const userId = user?.id;
   const [notificationCount, setNotificationCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const [open, setOpen] = useState(false);
+
 
   useEffect(() => {
     if (!userId) return; // Skip the effect if userId is undefined
@@ -101,7 +108,17 @@ const NotificationIcon = ({ user }) => {
   return (
     <PopoverRoot positioning={{ placement: "bottom-end" }} >
     <PopoverTrigger asChild>
-      <Button size="sm" px="2px" variant="ghost" position="relative" borderRadius="4xl">
+        
+        <Button 
+          size="sm" 
+          px="2px" 
+          variant="ghost" 
+          position="relative" 
+          borderRadius="4xl" 
+          _hover={{bg:"pink.300"}}
+          _dark={{ _hover: { bg: "pink.700" } }}
+
+          >
         <IoNotificationsOutline />
         {notificationCount > 0 && (
           <Circle
@@ -184,14 +201,21 @@ const NotificationIcon = ({ user }) => {
                 </Button>
               )}
               {/* "View All" Button */}
+              <PopoverTrigger>
               <Button
-              firstFlow
-                size="sm"
-                variant="link"
-                onClick={() => console.log("Navigate to all notifications page")}
-              >
-                View All Notifications
-              </Button>
+        firstFlow
+        size="sm"
+        variant="link"
+        onClick={() => setOpen(true)} // Open the drawer
+      >
+        View All Notifications
+      </Button></PopoverTrigger>
+
+      <ViewAllNotificationsDrawer
+        open={open}
+        onOpenChange={(e) => setOpen(e.open)} // Handle open/close
+        user={user}
+      />
               </VStack>
             </>
           )}
