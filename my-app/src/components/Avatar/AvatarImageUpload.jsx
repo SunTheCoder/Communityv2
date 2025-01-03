@@ -114,8 +114,8 @@ const AvatarImageUpload = () => {
       {/* Submit Button */}
       {selectedFile && (
         <Button
-          colorScheme="teal"
-          size="sm"
+          login
+          size="xs"
           onClick={handleUpload}
           isDisabled={isUploading}
         >

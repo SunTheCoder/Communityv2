@@ -46,7 +46,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
   };
 
   return (
-    <DrawerRoot open={open} onOpenChange={(e) => setOpen(e.open)} placement="start" position="relative">
+    <DrawerRoot open={open} onOpenChange={(e) => setOpen(e.open)} placement="start" position="relative" size="md">
       <DrawerBackdrop />
       
       <DrawerContent
@@ -61,7 +61,8 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
           bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
         }}
         mt="73px"
-        mb="430px"
+        maxH="700px"
+        
       >
         <DrawerHeader>
           <DrawerTitle>{user?.username}'s Profile</DrawerTitle>
