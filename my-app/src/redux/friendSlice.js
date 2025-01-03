@@ -12,7 +12,7 @@ export const fetchFriends = createAsyncThunk(
           user_id,
           friend_id,
           status,
-          profiles:user_id!inner(username, avatar_url),
+          profiles:user_id!inner(username, avatar_url, bio),
           friend_profiles:friend_id!inner(username, avatar_url)
         `)
         .or(`user_id.eq.${userId},friend_id.eq.${userId}`)
