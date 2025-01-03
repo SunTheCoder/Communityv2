@@ -4,17 +4,17 @@ import { useSelector } from "react-redux"; // Access Redux state
 import { Toaster, toaster } from "../ui/toaster";
 import { supabase } from "../../App"; // Supabase client setup
 
-const ProposalForm = () => {
+const ProposalForm = ( {user} ) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const user = useSelector((state) => state.user.user); // Extract user from Redux
+  // const user = useSelector((state) => state.user?.user); // Extract user from Redux
   const userZipCode = user?.zipCode; // User's zip code from Redux
 
-  if (!userZipCode) {
-    throw new Error("User zip code is not available. Please set it in your profile.");
-  }
+  // if (!userZipCode) {
+  //   throw new Error("User zip code is not available. Please set it in your profile.");
+  // }
 
   const handleSubmit = async () => {
     if (!title || !description) {

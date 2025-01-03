@@ -20,6 +20,8 @@ import { Field } from "@/components/ui/field"
 import AvatarImageUpload from "../Avatar/AvatarImageUpload";
 import AddFriendship from "./AddFriendship";
 import PendingRequests from "./PendingRequests";
+import FriendAvatarGrid from "./FriendAvatarGrid";
+import FriendAccordionList from "./FriendAccordionComponent";
 
 
 
@@ -44,7 +46,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
   };
 
   return (
-    <DrawerRoot open={open} onOpenChange={(e) => setOpen(e.open)} placement="start">
+    <DrawerRoot open={open} onOpenChange={(e) => setOpen(e.open)} placement="start" position="relative">
       <DrawerBackdrop />
       
       <DrawerContent
@@ -56,7 +58,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
         bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
         _dark={{
           borderColor: "pink.600",
-          bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
+          bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
         }}
         mt="73px"
         mb="430px"
@@ -79,6 +81,7 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
               <Avatar
                 src={user?.avatarUrl}
                 size="3xl"
+                
                 mb="10px"
                 shadow="md"
                 onUpload={(url) =>
@@ -143,17 +146,26 @@ const ProfileDrawer = ({ user, open, setOpen  }) => {
                 {user?.city}
               
             </Text>
-          </Box>
-        </DrawerBody>
-        <DrawerFooter>
-          <DrawerActionTrigger asChild>
+            <HStack
+              justify="center"
+              gap="20px"
+              mt="10px"
+              mb="20px"
+            >
+            <DrawerActionTrigger asChild>
             <Button logout size="xs" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
           </DrawerActionTrigger>
-          <Button firstFlow onClick={handleSave} size="xs">Save</Button>
+          <Button firstFlow onClick={handleSave} size="xs">Save</Button></HStack>
+            <FriendAvatarGrid/>
+            {/* <FriendAccordionList/> */}
           <AddFriendship/>
           <PendingRequests/>
+          </Box>
+        </DrawerBody>
+        <DrawerFooter>
+          
         </DrawerFooter>
         <DrawerCloseTrigger />
       </DrawerContent>

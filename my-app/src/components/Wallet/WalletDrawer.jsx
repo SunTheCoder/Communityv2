@@ -480,7 +480,7 @@ const WalletDrawer = ({ walletAddress }) => {
       
         _dark={{
           borderColor: "pink.600",
-          bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
+          bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
         }}
       >
         <DrawerCloseTrigger borderRadius="sm" outlineColor="pink.400">
@@ -636,10 +636,10 @@ const WalletDrawer = ({ walletAddress }) => {
             </VStack>
           </VStack>
          
-          <ProposalForm />
+          <ProposalForm user={user} />
           {/* <SendTransactionComponent defaultNetwork="matic" /> */}
 
-          <ProposalsList />
+          <ProposalsList user={user} />
           
         </DrawerBody>
         <DrawerFooter>

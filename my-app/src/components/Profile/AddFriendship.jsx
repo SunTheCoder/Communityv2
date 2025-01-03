@@ -1,52 +1,88 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../../App"; // Adjust this path as needed
-import { useSelector } from "react-redux"; // Assuming ZIP code is in Redux state
-import { Box, Heading } from "@chakra-ui/react";
+import React, { useState, useEffect, useRef  } from "react";
+import { useSelector } from "react-redux";
+import { supabase } from "../../App";
+import { VStack, Grid, Box, Text, Button } from "@chakra-ui/react";
+import { Avatar } from "@/components/ui/avatar";
 
 const AddFriendship = () => {
-  const { zipCode, id: currentUserId } = useSelector((state) => state.user?.user); // Assuming Redux stores the logged-in user's info
-  const [users, setUsers] = useState([]); // List of users in the same ZIP code
-  const [selectedUserId, setSelectedUserId] = useState(""); // Selected user to friend
-  const [statusMessage, setStatusMessage] = useState(""); // Display success/error messages
-  const [loading, setLoading] = useState(false); // Loading state
+  const { zipCode, id: currentUserId } = useSelector((state) => state.user?.user);
+  const friends = useSelector((state) => state.friends.list);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null); // Track selected user
+  const containerRef = useRef(null); // Ref for the grid container
+
+
+  const colorPalette = ["red", "blue", "green", "yellow", "purple", "orange"]
+
+  const pickPalette = (name) => {
+    const index = name.charCodeAt(0) % colorPalette.length
+    return colorPalette[index]
+  }
+
+
+  const handleClickOutside = (event) => {
+    if (containerRef.current && !containerRef.current.contains(event.target)) {
+      setSelectedUser(null); // Deselect user if clicking outside the container
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside); // Listen for clicks
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup
+    };
+  }, []);
 
   const fetchUsers = async () => {
     try {
-      // Fetch all users in the same ZIP code except the current user
-      const { data, error } = await supabase
+      const { data: usersData, error: usersError } = await supabase
         .from("profiles")
-        .select("id, username")
-        .eq("zip_code", zipCode) // Filter by ZIP code
-        .neq("id", currentUserId); // Exclude the current user
+        .select("id, username, avatar_url")
+        .eq("zip_code", zipCode)
+        .neq("id", currentUserId);
 
-      if (error) throw error;
-      setUsers(data);
+      if (usersError) throw usersError;
+
+      const friendIds = new Set(
+        friends.flatMap((friend) =>
+          friend.user_id === currentUserId
+            ? friend.friend_id
+            : friend.user_id
+        )
+      );
+
+      const filteredUsers = usersData.filter((user) => !friendIds.has(user.id));
+      setUsers(filteredUsers);
     } catch (error) {
       console.error("Error fetching users:", error.message);
     }
   };
 
   const handleAddFriend = async () => {
-    if (!selectedUserId) {
+    if (!selectedUser) {
       setStatusMessage("Please select a user to send a friend request.");
       return;
     }
 
     setLoading(true);
-    setStatusMessage(""); // Clear status message
+    setStatusMessage("");
 
     try {
       const { error } = await supabase
         .from("friends")
         .insert({
-          user_id: currentUserId, // Current user's ID
-          friend_id: selectedUserId, // Selected user's ID
+          user_id: currentUserId,
+          friend_id: selectedUser.id,
           status: "pending",
         });
 
       if (error) throw error;
 
       setStatusMessage("Friend request sent successfully!");
+      setUsers((prev) => prev.filter((user) => user.id !== selectedUser.id)); // Remove the user from the grid
+      setSelectedUser(null); // Reset selection
     } catch (error) {
       console.error("Error adding friend:", error.message);
       setStatusMessage("Error sending friend request. Check console for details.");
@@ -57,60 +93,73 @@ const AddFriendship = () => {
 
   useEffect(() => {
     if (zipCode && currentUserId) {
-      fetchUsers(); // Fetch users when ZIP code and user ID are available
+      fetchUsers();
     }
   }, [zipCode, currentUserId]);
 
   return (
-    <Box style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
-      <Heading>Add Friendship</Heading>
-
-      {/* Dropdown to select a user */}
-      <Box style={{ marginBottom: "10px" }}>
-        <label htmlFor="userSelect">Select a user to add as a friend:</label>
-        <select
-          id="userSelect"
-          value={selectedUserId}
-          onChange={(e) => setSelectedUserId(e.target.value)}
-          style={{ width: "100%", padding: "8px", marginTop: "5px" }}
-        >
-          <option value="">-- Select User --</option>
-          {users.map((user) => (
-            <option key={user.id} value={user.id}>
-              {user.username}
-            </option>
-          ))}
-        </select>
-      </Box>
-
-      {/* Add Friend Button */}
-      <button
+    <VStack align="stretch" spacing={4} >
+      <Text fontWeight="bold" fontSize="lg">
+        Add New Friends
+      </Text>
+      <Grid templateColumns="repeat(auto-fill, minmax(60px, 1fr))" gap={4}  >
+        {users.length === 0 && !loading ? (
+          <Text>No users available to add as friends.</Text>
+        ) : (
+          users.map((user) => (
+            <Box key={user.id} ref={containerRef}>
+              <VStack>
+              <Avatar
+  size="md"
+  src={user.avatar_url}
+  name={user.username}
+  colorPalette={pickPalette(user.username)}
+  _hover={{ 
+    cursor: "pointer",
+    filter: "brightness(0.85)", 
+    transition: "filter 0.2s",
+     }}
+  onClick={() =>
+    setSelectedUser((prev) => (prev?.id === user.id ? null : user))
+  } // Select or deselect user on click
+  css={
+    selectedUser?.id === user.id
+      ? {
+          outline: "2px solid teal",
+          outlineOffset: "2px",
+        }
+      : {}
+  }
+/>
+              <Text fontSize="xs" >
+                {user.username}
+              </Text></VStack>
+            </Box>
+          ))
+        )}
+      </Grid>
+      <VStack>
+      <Button
+        
+        py="2px"
+        px="4px"
+        login
+        size="xxs"
         onClick={handleAddFriend}
-        disabled={loading}
-        style={{
-          padding: "10px 20px",
-          backgroundColor: loading ? "gray" : "#007BFF",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: loading ? "not-allowed" : "pointer",
-        }}
+        isLoading={loading}
+        disabled={!selectedUser}
       >
-        {loading ? "Sending..." : "Add Friend"}
-      </button>
-
-      {/* Status Message */}
+        Add Friend
+      </Button></VStack>
       {statusMessage && (
-        <div
-          style={{
-            marginTop: "15px",
-            color: statusMessage.includes("Error") ? "red" : "green",
-          }}
+        <Box
+          mt="4"
+          color={statusMessage.includes("Error") ? "red.500" : "green.500"}
         >
           {statusMessage}
-        </div>
+        </Box>
       )}
-    </Box>
+    </VStack>
   );
 };
 

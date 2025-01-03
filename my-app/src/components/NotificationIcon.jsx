@@ -17,6 +17,7 @@ const NotificationIcon = ({ user }) => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
+    if (!userId) return; // Skip the effect if userId is undefined
     const fetchNotifications = async () => {
       const { data, error } = await supabase
         .from("notifications")
@@ -100,7 +101,7 @@ const NotificationIcon = ({ user }) => {
   return (
     <PopoverRoot positioning={{ placement: "bottom-end" }} >
     <PopoverTrigger asChild>
-      <Button size="sm" px="2px" variant="outline" position="relative">
+      <Button size="sm" px="2px" variant="ghost" position="relative" borderRadius="4xl">
         <IoNotificationsOutline />
         {notificationCount > 0 && (
           <Circle
@@ -126,7 +127,10 @@ const NotificationIcon = ({ user }) => {
       borderRadius="md"
       p="0" // Remove default padding
       bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
-      
+      _dark={{
+        borderColor: "pink.600",
+        bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
+      }}
 
     >
       <PopoverArrow />
@@ -141,11 +145,16 @@ const NotificationIcon = ({ user }) => {
                 <HStack
                   key={notif.id}
                   p="2"
-                  borderRadius="md"
+                  borderRadius="sm"
                  
-                  _dark={{ bg: "gray.700" }}
+                
                   justify="space-between"
-                  bg="radial-gradient(circle,rgb(222, 179, 172),rgb(216, 160, 230))"
+                  bg="radial-gradient(circle,rgb(222, 179, 172),rgb(230, 190, 240))"
+                  _dark={{
+                    borderColor: "pink.600",
+                    bg: "radial-gradient(circle,rgb(99, 46, 65),rgb(24, 23, 29))",
+                  }}
+                  shadow="md"
 
                 >
                   <Text fontSize="sm"><strong>{notif.message.split(" ")[0]}</strong> liked your post!</Text>
