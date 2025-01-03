@@ -112,7 +112,7 @@ const ViewAllNotificationsDrawer = ({ open, onOpenChange, user }) => {
         length: Math.min(PAGE_SIZE, total - (page - 1) * PAGE_SIZE) || 10,
       }).map((_, index) => (
         <HStack key={index} gap="5">
-          <SkeletonCircle size="12" />
+          <SkeletonCircle size="14" />
           <Stack flex="1">
             <Skeleton height="5" />
             <Skeleton height="5" width="80%" />
