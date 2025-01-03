@@ -191,6 +191,7 @@ const NotificationIcon = ({ user }) => {
                 </Button>
               )}
               {/* "View All" Button */}
+              <PopoverTrigger>
               <Button
         firstFlow
         size="sm"
@@ -198,7 +199,7 @@ const NotificationIcon = ({ user }) => {
         onClick={() => setOpen(true)} // Open the drawer
       >
         View All Notifications
-      </Button>
+      </Button></PopoverTrigger>
 
       <ViewAllNotificationsDrawer
         open={open}
