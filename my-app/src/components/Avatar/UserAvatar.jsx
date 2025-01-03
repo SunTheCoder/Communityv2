@@ -25,23 +25,44 @@ const UserAvatar = () => {
   });
 
   const handleLogout = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+  try {
+    // Get the currently logged-in user
+    
+    
+    if (user) {
+      // Update user_status to "offline"
+      const { error: statusError } = await supabase
+        .from("profiles")
+        .update({ user_status: "offline" })
+        .eq("id", user.id);
 
-      // Clear user from Redux store
-      dispatch(logout());
-      dispatch(resetFriends()); // Clear friend slice
-
-
-      toaster.create({
-        description: "Logged out successfully",
-        type: "success",
-      });
-    } catch (error) {
-      console.error("Error logging out:", error.message);
+      if (statusError) {
+        console.error("Error updating user status to offline:", statusError.message);
+        throw new Error("Failed to update user status.");
+      }
     }
-  };
+
+    // Sign out the user
+    const { error: authError } = await supabase.auth.signOut();
+    if (authError) throw authError;
+
+    // Clear user and friends from Redux store
+    dispatch(logout());
+    dispatch(resetFriends());
+
+    toaster.create({
+      description: "Logged out successfully",
+      type: "success",
+    });
+  } catch (error) {
+    console.error("Error logging out:", error.message);
+    toaster.create({
+      description: "Failed to log out. Please try again.",
+      type: "error",
+    });
+  }
+};
+
 
   return (
     <HStack gap={4}>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { VStack, Skeleton, defineStyle} from "@chakra-ui/react";
 import { Tooltip } from "@/components/ui/tooltip";
 import { Avatar } from "@/components/ui/avatar";
-import { fetchFriends } from "../../redux/friendSlice";
+import { fetchOnlineFriends } from "../../redux/friendSlice";
 
 
 const colorPalette = ["red", "green", "yellow", "purple", "orange"]
@@ -23,13 +23,14 @@ const ringCss = defineStyle({
 const FriendAvatarGroup = () => {
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user?.user?.id); // Get logged-in user's ID
-  const { list: friends, status } = useSelector((state) => state.friends);
+  const { onlineList: friends, status } = useSelector((state) => state.friends);
 
   useEffect(() => {
     if (userId) {
-      dispatch(fetchFriends(userId));
+      dispatch(fetchOnlineFriends(userId));
     }
   }, [userId, dispatch]);
+  
 
   const loading = status === "loading";
 
