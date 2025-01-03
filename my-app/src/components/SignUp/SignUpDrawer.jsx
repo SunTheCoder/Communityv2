@@ -61,6 +61,8 @@ const SignUpDrawer = ({ open, onClose }) => {
         avatar_url: avatarUrl?.trim() || null,
         role: "user",
         zipCode: zipCode,
+        user_status: "online", // Set initial status to online
+
       });
 
       if (profileError) {
@@ -97,41 +99,51 @@ const SignUpDrawer = ({ open, onClose }) => {
         email,
         password,
       });
-
+  
       if (authError) {
         toaster.create({ description: authError.message, type: "error" });
         return;
       }
-
+  
+      // Update user_status to "online" after successful login
+      const { error: statusError } = await supabase
+        .from("profiles")
+        .update({ user_status: "online" })
+        .eq("id", authData.user.id);
+  
+      if (statusError) {
+        throw new Error("Failed to update user status.");
+      }
+  
       // Fetch the profile with the user wallet
-const { data: profile, error: profileError } = await supabase
-.from("profiles")
-.select(`
-  *,
-  user_wallet:wallets(wallet_address)
-`)
-.eq("id", authData.user.id) // Match the user ID from auth
-.eq("user_wallet.wallet_type", "user") // Ensure it's the user wallet
-.single();
-
-if (profileError) {
-throw new Error("Failed to fetch profile.");
-}
-
-// Debugging: Ensure the user_wallet is part of the response
-console.log("Profile data:", profile);
-
-// Fetch the community wallet based on the user's zip_code
-const { data: communityWallet, error: communityWalletError } = await supabase
-.from("wallets")
-.select("wallet_address")
-.eq("wallet_type", "zip_code") // Ensure it's a zip_code wallet
-.eq("zip_code", profile.zip_code) // Match zip code from profile
-.single();
-
-if (communityWalletError) {
-throw new Error("Failed to fetch community wallet.");
-}
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select(`
+          *,
+          user_wallet:wallets(wallet_address)
+        `)
+        .eq("id", authData.user.id) // Match the user ID from auth
+        .eq("user_wallet.wallet_type", "user") // Ensure it's the user wallet
+        .single();
+  
+      if (profileError) {
+        throw new Error("Failed to fetch profile.");
+      }
+  
+      // Debugging: Ensure the user_wallet is part of the response
+      console.log("Profile data:", profile);
+  
+      // Fetch the community wallet based on the user's zip_code
+      const { data: communityWallet, error: communityWalletError } = await supabase
+        .from("wallets")
+        .select("wallet_address")
+        .eq("wallet_type", "zip_code") // Ensure it's a zip_code wallet
+        .eq("zip_code", profile.zip_code) // Match zip code from profile
+        .single();
+  
+      if (communityWalletError) {
+        throw new Error("Failed to fetch community wallet.");
+      }
 
 // Debugging: Ensure the community wallet is fetched correctly
 console.log("Community wallet data:", communityWallet);
