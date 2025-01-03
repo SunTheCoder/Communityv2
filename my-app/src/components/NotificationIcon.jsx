@@ -100,7 +100,7 @@ const NotificationIcon = ({ user }) => {
   return (
     <PopoverRoot positioning={{ placement: "bottom-end" }} >
     <PopoverTrigger asChild>
-      <Button size="sm" px="2px" variant="outline" position="relative">
+      <Button size="sm" px="2px" variant="ghost" position="relative" borderRadius="4xl">
         <IoNotificationsOutline />
         {notificationCount > 0 && (
           <Circle
@@ -126,7 +126,10 @@ const NotificationIcon = ({ user }) => {
       borderRadius="md"
       p="0" // Remove default padding
       bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
-      
+      _dark={{
+        borderColor: "pink.600",
+        bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
+      }}
 
     >
       <PopoverArrow />

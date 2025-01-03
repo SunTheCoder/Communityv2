@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import CommunityWalletBalance from "../Wallet/CommunityWalletBalance";
 
-const ProposalsList = () => {
+const ProposalsList = ( {user} ) => {
   const [proposals, setProposals] = useState([]);
   const [closedProposals, setClosedProposals] = useState([]);
   const [votingHistory, setVotingHistory] = useState([]);
@@ -19,7 +19,7 @@ const ProposalsList = () => {
     const [exchangeRates, setExchangeRates] = useState({ eth: 0, matic: 0 });
 
 
-  const user = useSelector((state) => state.user.user);
+  // const user = useSelector((state) => state.user.user);
   const userZipCode = user?.zipCode;
   const communityWallet = user?.communityWallet; // Ensure this is correct
 

@@ -117,7 +117,7 @@ const PostReplyDrawer = ({ parentPostId, trigger }) => {
         bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
         _dark={{
           borderColor: "pink.600",
-          bg: "radial-gradient(circle, #8B4A62, #2C2A35)",
+          bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
         }}
       >
         <Toaster />
