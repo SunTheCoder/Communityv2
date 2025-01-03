@@ -17,6 +17,7 @@ const NotificationIcon = ({ user }) => {
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
+    if (!userId) return; // Skip the effect if userId is undefined
     const fetchNotifications = async () => {
       const { data, error } = await supabase
         .from("notifications")

@@ -45,6 +45,7 @@ const FriendAvatarGroup = () => {
   
             return (
               <Tooltip
+                key={`tooltip-${friend.id}`} // Add a unique key here
                 ids={{trigger: friend.id}}
                 content={`${friendProfile?.username || "Unknown"} is online`} // Tooltip Content
                 
