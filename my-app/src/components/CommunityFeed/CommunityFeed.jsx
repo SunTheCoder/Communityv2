@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { supabase } from "../../App";
 import { Box, Text, VStack, Separator, Button, HStack, Circle, Center } from "@chakra-ui/react";
 import {
@@ -11,6 +12,7 @@ import PostsAddDrawer from "../Posts/PostsAddDrawer";
 import AddPostInput from "./AddPostInput";
 
 const CommunityFeed = () => {
+  const user  = useSelector((state) => state.user?.user);
   const [posts, setPosts] = useState([]); // All fetched posts
   const [loading, setLoading] = useState(false); // For initial fetch
   const [loadingMore, setLoadingMore] = useState(false); // For lazy loading
@@ -18,22 +20,39 @@ const CommunityFeed = () => {
 
   const loadMoreRef = useRef(); // Ref for the scroll trigger
 
+  const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const shouldShowImage = () => Math.random() > 0.5; // 50% chance to show an image
+
+
   const renderSkeleton = () => (
-    <VStack gap="6"  w="full" >
-      <Separator my={4} w="100%" borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
-        {[...Array(5)].map((_, index) => (
+    <VStack gap="6" w="full">
+      <Separator my={4} w="100%" borderColor="pink.300" _dark={{ borderColor: "pink.600" }} />
+      {[...Array(25)].map((_, index) => {
+        const hasImage = shouldShowImage();
+        const textLines = getRandomInt(1, 5); // Randomize number of text lines (1 to 5)
+        const textWidth = `${getRandomInt(60, 90)}%`; // Randomize text width (60% to 90%)
+  
+        return (
           <Box key={index} w="full">
-            
-            <HStack width="full">
+            <HStack width="75%" mb={4}>
               <SkeletonCircle size="10" />
-              <SkeletonText noOfLines={2} spacing="4" skeletonHeight="2" />
+              <SkeletonText
+                noOfLines={textLines}
+                spacing="4"
+                skeletonHeight="2"
+                width={textWidth} // Randomized text width
+              />
             </HStack>
-            <Skeleton height="200px" mt="4" />
+            {hasImage && (
+              <Skeleton ml="48px" height="200px" mt="4" w={`${getRandomInt(30, 50)}%`} /> // Randomize image width (30% to 50%)
+            )}
           </Box>
-        ))}
+        );
+      })}
     </VStack>
   );
-
+  
   // Fetch initial 25 posts
   const fetchInitialPosts = async () => {
     try {
@@ -223,7 +242,7 @@ const CommunityFeed = () => {
   return (
     <Box maxHeight="1000px" overflow="auto" mt="23px" width="100%">
       <VStack spacing={4} align="stretch" maxHeight="75.9vh" mx="20px">
-        {loading ? (
+        {loading || !user ? (
           renderSkeleton()
         ) : (
           <>
