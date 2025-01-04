@@ -234,7 +234,7 @@ const Layout = () => {
             )}
         </Box>
         <Box gridColumn="span 8" display="flex" alignItems="center" justifyContent="start" position="relative" left="40px" gap="50px">
-          <HiOutlinePencilSquare
+          {/* <HiOutlinePencilSquare
             size="20"
             cursor="pointer"
             onClick={() =>
@@ -244,7 +244,7 @@ const Layout = () => {
                     type: "info",
                 })
             }
-            />
+            /> */}
         <ProfileDrawer user={user}/>
         
           {/* <IoNotificationsOutline

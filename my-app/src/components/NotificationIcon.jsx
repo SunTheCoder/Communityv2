@@ -110,7 +110,7 @@ const NotificationIcon = ({ user }) => {
     <PopoverTrigger asChild>
         
         <Button 
-          size="sm" 
+          size="md" 
           px="2px" 
           variant="ghost" 
           position="relative" 
