@@ -57,7 +57,7 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
         </DrawerBody>
         <DrawerFooter>
           <DrawerActionTrigger asChild>
-            <Button logout size="xs" variant="outline">Cancel</Button>
+            <Button logout size="xs" >Cancel</Button>
           </DrawerActionTrigger>
         </DrawerFooter>
         <DrawerCloseTrigger />

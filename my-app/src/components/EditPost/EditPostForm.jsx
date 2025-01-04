@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { toaster } from "../ui/toaster";
 import DynamicUploadImage from "../CommunityFeed/DynamicUploadImage";
 import { Button } from "@/components/ui/button"; // Adjust path to your Button component
+import { Tooltip } from "../ui/tooltip";
 import { uploadImage } from "../../supabaseRoutes/storage/uploadImage";
 import { getPublicUrl } from "../../supabaseRoutes/storage/getPublicUrl";
 import { supabase } from "@/App";
+import { Field } from "../ui/field";
+import { Box, HStack, Textarea } from "@chakra-ui/react";
 
 const EditPostForm = ({ postId, currentContent, currentImageUrl, onClose }) => {
   const [content, setContent] = useState(currentContent || "");
@@ -59,26 +62,40 @@ const EditPostForm = ({ postId, currentContent, currentImageUrl, onClose }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="content">Content</label>
-        <textarea
-          id="content"
+      <Field label="Post">
+        
+        <Textarea
+          id="post"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="Edit your post content"
           required
         />
-      </div>
+      </Field>
 
-      <div>
-        <label htmlFor="imageUpload">Upload Image</label>
+      <HStack mt="10px">
+        <Tooltip
+            content="Upload an image"
+          >
+          <Button
+            as="label" // Use label to trigger file input
+            cursor="pointer"
+            size="xs"
+            variant="ghost"
+            firstFlow
+            w="50px"
+           >
+      {/* Dynamic Image Upload */}
         <DynamicUploadImage onFileSelect={handleFileSelect} clearPreview={!selectedFile} />
-      </div>
 
+      
+    </Button></Tooltip>
       {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-      <Button type="submit">
+      <Button login size="xs" type="submit">
         Save Changes
       </Button>
+      </HStack>
+
     </form>
   );
 };
