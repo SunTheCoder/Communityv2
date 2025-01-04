@@ -53,7 +53,8 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
           <DrawerTitle>Edit Post</DrawerTitle>
         </DrawerHeader>
         <DrawerBody>
-          <EditPostForm postId={postId} currentContent={currentContent} currentImageUrl={currentImageUrl} />
+          <EditPostForm postId={postId} currentContent={currentContent} currentImageUrl={currentImageUrl} onClose={() => setOpen(false)} // Close the drawer
+          />
         </DrawerBody>
         <DrawerFooter>
           <DrawerActionTrigger asChild>
