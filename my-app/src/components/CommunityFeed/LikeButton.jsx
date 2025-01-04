@@ -25,6 +25,7 @@ const LikeButton = ({ postId, likesCount, userId }) => {
       position="relative"
       left="52px"
       top="-30px"
+      
     >
       <HStack spacing={2}>
         <Box as={BsHandThumbsUpFill} color="pink.300" height="13px" _hover={{ color: "pink.500" }} />

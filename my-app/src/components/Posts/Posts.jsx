@@ -23,6 +23,7 @@ import { supabase } from "../../App";
 import PostReplyDrawer from "./PostsReplyDrawer";
 import PostDate from "./PostDate";
 import { addLikeToCommFeed } from "../../supabaseRoutes";
+import EditPostDrawer from "../EditPost/EditPostDrawer";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user || {});
@@ -260,7 +261,8 @@ const Post = ({ post }) => {
                 mx={2}
                 mt={2}
               >{post.content}</Text>)}
-            </Box>
+
+</Box>
             
         
             
@@ -305,13 +307,15 @@ const Post = ({ post }) => {
       }
       
     />
+    <HStack>
     <LikeButton
     
     postId={post.id}
     likesCount={post.likes_count} // Pass real-time likes_count
     userId={userId} // Pass the current user's ID
   />
-  
+    <EditPostDrawer postId={post.id} currentContent={post.content} currentImageUrl={post.image_url} />
+  </HStack>
   </Box>
   );
 };
