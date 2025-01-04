@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import EditPostForm from "./EditPostForm";
 import { FaRegEdit } from "react-icons/fa";
+import { Tooltip } from "../ui/tooltip";
 
 const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
   const [open, setOpen] = useState(false);
@@ -31,9 +32,13 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
       >
       <DrawerBackdrop />
       <DrawerTrigger asChild>
+        <Tooltip
+          content="Edit Post"
+        >
         <Button variant="ghost" size="xs" position="relative" left="35px" bottom="30.5px" borderRadius="4xl" _hover={{bg:"pink.300"}}>
         <FaRegEdit />
         </Button>
+        </Tooltip>
       </DrawerTrigger>
       <DrawerContent  
         position="absolute"
