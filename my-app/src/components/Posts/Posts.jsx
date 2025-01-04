@@ -280,7 +280,7 @@ const Post = ({ post }) => {
             </Box>
            
             {post.image_url && (
-              <Flex  borderRadius="8px" shadow="md" maxWidth= "150px" ml="47px" mt={2} mb={4}>
+              <Flex  borderRadius="8px" shadow="md" maxWidth= "150px" ml="59px" mt={2} mb={4}>
                 <Image
                   src={post.image_url}
                   alt="Post Image"
@@ -307,7 +307,7 @@ const Post = ({ post }) => {
       }
       
     />
-    <HStack>
+    <HStack ml="11px">
     <LikeButton
     
     postId={post.id}
