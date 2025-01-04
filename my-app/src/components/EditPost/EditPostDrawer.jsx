@@ -31,15 +31,15 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
       
       >
       <DrawerBackdrop />
-      <DrawerTrigger asChild>
         <Tooltip
           content="Edit Post"
         >
+      <DrawerTrigger asChild>
         <Button variant="ghost" size="xs" position="relative" left="35px" bottom="30.5px" borderRadius="4xl" _hover={{bg:"pink.300"}}>
         <FaRegEdit />
         </Button>
-        </Tooltip>
       </DrawerTrigger>
+        </Tooltip>
       <DrawerContent  
         position="absolute"
         roundedTop="md"
