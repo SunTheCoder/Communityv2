@@ -314,7 +314,14 @@ const Post = ({ post }) => {
     likesCount={post.likes_count} // Pass real-time likes_count
     userId={userId} // Pass the current user's ID
   />
-    <EditPostDrawer postId={post.id} currentContent={post.content} currentImageUrl={post.image_url} />
+    {user.id === post.user_id && (
+  <EditPostDrawer 
+    postId={post.id} 
+    currentContent={post.content} 
+    currentImageUrl={post.image_url} 
+  />
+)}
+
   </HStack>
   </Box>
   );
