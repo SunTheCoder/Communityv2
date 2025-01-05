@@ -24,6 +24,8 @@ import PostReplyDrawer from "./PostsReplyDrawer";
 import PostDate from "./PostDate";
 import { addLikeToCommFeed } from "../../supabaseRoutes";
 import EditPostDrawer from "../EditPost/EditPostDrawer";
+import DeletePostButton from "../DeletePost/DeletePost";
+import { Tooltip } from "../ui/tooltip";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user || {});
@@ -315,12 +317,19 @@ const Post = ({ post }) => {
     userId={userId} // Pass the current user's ID
   />
     {user.id === post.user_id && (
-  <EditPostDrawer 
-    postId={post.id} 
-    currentContent={post.content} 
-    currentImageUrl={post.image_url} 
-  />
-)}
+      <EditPostDrawer 
+      postId={post.id} 
+      currentContent={post.content} 
+      currentImageUrl={post.image_url} 
+      />
+
+      
+    )}
+    {user.id === post.user_id && (
+    
+        <DeletePostButton postId={post.id}/>
+
+    )}
 
   </HStack>
   </Box>
