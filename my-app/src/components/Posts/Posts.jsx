@@ -26,6 +26,7 @@ import { addLikeToCommFeed } from "../../supabaseRoutes";
 import EditPostDrawer from "../EditPost/EditPostDrawer";
 import DeletePostButton from "../DeletePost/DeletePost";
 import { Tooltip } from "../ui/tooltip";
+import PostDetailsDrawer from "./PostDetailsDrawer";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user || {});
@@ -331,6 +332,10 @@ const Post = ({ post }) => {
         <DeletePostButton postId={post.id}/>
 
     )}
+    
+    
+<PostDetailsDrawer user={user} post={post} parentPost={parentPost} />
+
 
   </HStack>
   </Box>
