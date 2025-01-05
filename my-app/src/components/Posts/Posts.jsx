@@ -26,6 +26,7 @@ import { addLikeToCommFeed } from "../../supabaseRoutes";
 import EditPostDrawer from "../EditPost/EditPostDrawer";
 import DeletePostButton from "../DeletePost/DeletePost";
 import { Tooltip } from "../ui/tooltip";
+import PostDetailsDrawer from "./PostDetailsDrawer";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user || {});
@@ -183,9 +184,7 @@ const Post = ({ post }) => {
                   </HStack>
                 )}
 
-               <HStack
-                flexWrap="wrap"
-               >
+               <HStack>
                 {post.user_id === user?.id ? (            
                   <Avatar
                     size="lg"
@@ -209,7 +208,7 @@ const Post = ({ post }) => {
                
             <Box
               maxHeight="100%"
-              maxWidth="100%"
+              maxWidth="90%"
               color="gray.700"
               _dark={{ color: "pink.200" }}
              
@@ -333,6 +332,10 @@ const Post = ({ post }) => {
         <DeletePostButton postId={post.id}/>
 
     )}
+    
+    
+<PostDetailsDrawer user={user} post={post} parentPost={parentPost} />
+
 
   </HStack>
   </Box>
