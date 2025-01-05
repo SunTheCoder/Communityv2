@@ -183,7 +183,9 @@ const Post = ({ post }) => {
                   </HStack>
                 )}
 
-               <HStack>
+               <HStack
+                flexWrap="wrap"
+               >
                 {post.user_id === user?.id ? (            
                   <Avatar
                     size="lg"
@@ -213,7 +215,8 @@ const Post = ({ post }) => {
              
               
             >
-              <HStack>
+              <HStack   
+              >
                 <Text
                   size="xs"
                   color="gray.700"
