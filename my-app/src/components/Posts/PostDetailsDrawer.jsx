@@ -82,7 +82,19 @@ const PostDetailsDrawer = ({ user, post, parentPost }) => {
 
       {/* Drawer Content */}
       <DrawerBackdrop />
-      <DrawerContent>
+      <DrawerContent
+        borderLeftRadius="lg"
+        border="2px solid"
+        borderColor="pink.300"
+        borderRight="none"
+        bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
+        _dark={{
+          borderColor: "pink.600",
+          bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
+        }}
+      
+      
+      >
         <DrawerHeader>
           <DrawerTitle>Post Details</DrawerTitle>
         </DrawerHeader>
