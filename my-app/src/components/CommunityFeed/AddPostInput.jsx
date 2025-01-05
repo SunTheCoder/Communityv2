@@ -11,7 +11,18 @@ import DynamicUploadImage from "./DynamicUploadImage";
 import { useState } from "react";
 import { uploadImage } from "../../supabaseRoutes/storage/uploadImage";
 import { getPublicUrl } from "../../supabaseRoutes/storage/getPublicUrl";
-
+import {
+  DrawerRoot,
+  DrawerBackdrop,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerBody,
+  DrawerFooter,
+  DrawerTrigger,
+  DrawerActionTrigger,
+} from "@/components/ui/drawer";
+import { Tooltip } from "../ui/tooltip";
 
 
 const AddPostInput = () => {
@@ -20,6 +31,9 @@ const AddPostInput = () => {
 
   const [selectedFile, setSelectedFile] = useState(null); // Store the selected file
   const [clearPreview, setClearPreview] = useState(false); // For clearing preview
+
+  const [content, setContent] = useState("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [imageUrl, setImageUrl] = useState(null); // Store uploaded image URL
   
@@ -64,6 +78,8 @@ const AddPostInput = () => {
 
       reset();
       setSelectedFile(null);
+      setContent("");
+      setDrawerOpen(false);
       handleUploadComplete(); // Clear preview after successful post submission
     } catch (error) {
       console.error("Error creating post:", error.message);
@@ -95,8 +111,12 @@ const AddPostInput = () => {
           {...register("content", {
             required: "Post content is required",
             minLength: { value: 5, message: "Content must be at least 5 characters" },
-          })}
-          
+          })}            
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+            if (e.target.value.length > 75) setDrawerOpen(true); // Open drawer for long posts
+          }}
           
           borderRightRadius="none"
           shadow="sm"
@@ -165,6 +185,68 @@ const AddPostInput = () => {
         {/* Submit Button */}
        
       </VStack>
+       {/* Drawer for long posts */}
+       <DrawerRoot open={drawerOpen} onOpenChange={(e) => setDrawerOpen(e.open)} placement="bottom">
+        <DrawerBackdrop />
+        <DrawerContent
+          position="absolute"
+          roundedTop="md"
+          width="47%"
+          ml="6%"
+          border="2px solid"
+          borderColor="pink.300"
+          borderBottom="none"
+          bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
+          _dark={{
+            borderColor: "pink.600",
+            bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
+          }}
+        
+        >
+          <DrawerHeader>
+            <DrawerTitle>Post</DrawerTitle>
+          </DrawerHeader>
+          <DrawerBody>
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              style={{
+                width: "100%",
+                height: "100px",
+                padding: "10px",
+                fontSize: "16px",
+                borderRadius: "4px",
+                borderColor: "gray",
+              }}
+              placeholder="Write your full post here..."
+            />
+          </DrawerBody>
+          <DrawerFooter>
+          <Tooltip
+            content="Upload an image"
+          >
+          <Button
+            as="label" // Use label to trigger file input
+            cursor="pointer"
+            size="xs"
+            variant="ghost"
+            firstFlow
+            w="50px"
+           >
+      {/* Dynamic Image Upload */}
+      <DynamicUploadImage onFileSelect={setSelectedFile} clearPreview={clearPreview} />
+
+      
+    </Button></Tooltip>
+            <DrawerActionTrigger asChild>
+              <Button logout size="xs" onClick={() => setDrawerOpen(false)}>
+                Cancel
+              </Button>
+            </DrawerActionTrigger>
+            <Button login size="xs" onClick={handleSubmit(onSubmit)}>Save</Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </DrawerRoot>
     </Box>
   );
 };

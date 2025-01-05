@@ -523,9 +523,9 @@ const WalletDrawer = ({ walletAddress }) => {
   </Collapsible.Root>
          {/* Wallet Connection & Creation */}
          <VStack mt={4} >
+            <Button login size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
             <ConnectWallet />
             {/* <Button login size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button> */}
-            <Button login size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
             </VStack>
             {/* Admin: Community Wallet Creation */}
             {userRole === "admin" && (

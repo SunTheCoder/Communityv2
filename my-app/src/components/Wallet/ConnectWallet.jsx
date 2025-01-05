@@ -1,4 +1,4 @@
-import { Box, Button, createListCollection } from "@chakra-ui/react";
+import { Box, Button, createListCollection, VStack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { supabase } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
@@ -110,9 +110,10 @@ const userId = (user?.id || null);
     
       {/* Fetch Accounts Button */}
       {!walletsFetched && (
-  <Button my="2" size="xs" onClick={fetchAccounts}>
+        <VStack>
+  <Button login my="2" size="xs" onClick={fetchAccounts}>
     Find Wallets
-  </Button>
+  </Button></VStack>
 )}
 
 
@@ -141,7 +142,9 @@ const userId = (user?.id || null);
 
       {/* Connect Wallet Button */}
       {selectedAccount && (
+        <VStack>
         <Button my="3" login size="xs" onClick={connectWalletHandler}>Connect Selected Wallet</Button>
+        </VStack>
       )}
 
       {/* Error Message */}
