@@ -183,9 +183,7 @@ const Post = ({ post }) => {
                   </HStack>
                 )}
 
-               <HStack
-                flexWrap="wrap"
-               >
+               <HStack>
                 {post.user_id === user?.id ? (            
                   <Avatar
                     size="lg"
@@ -209,7 +207,7 @@ const Post = ({ post }) => {
                
             <Box
               maxHeight="100%"
-              maxWidth="100%"
+              maxWidth="90%"
               color="gray.700"
               _dark={{ color: "pink.200" }}
              
