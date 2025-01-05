@@ -522,11 +522,11 @@ const WalletDrawer = ({ walletAddress }) => {
     </Collapsible.Content>
   </Collapsible.Root>
          {/* Wallet Connection & Creation */}
-         <HStack mt={4} >
+         <VStack mt={4} >
             <ConnectWallet />
             {/* <Button login size="xs" w="fit-content" onClick={connectWalletHandler}>Connect Wallet</Button> */}
             <Button login size="xs" w="fit-content" onClick={createWalletHandler}>Create Wallet</Button>
-            </HStack>
+            </VStack>
             {/* Admin: Community Wallet Creation */}
             {userRole === "admin" && (
               <VStack>

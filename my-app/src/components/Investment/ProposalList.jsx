@@ -166,7 +166,7 @@ const ProposalsList = ( {user} ) => {
   
       fetchExchangeRates();
     }
-  }, [userZipCode, user.id]);
+  }, [userZipCode, user?.id]);
 
   useEffect(() => {
     if (exchangeRates.matic > 0) {

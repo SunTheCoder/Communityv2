@@ -1,17 +1,28 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, createListCollection } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { supabase } from "../../App";
 import { useSelector, useDispatch } from "react-redux";
 import userSlice from "../../redux/userSlice";
 import { login, updateUser } from "../../redux/userSlice";
 import { ethers } from "ethers";
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from "@/components/ui/select"
+
+
 
 const ConnectWallet = () => {
 const user = useSelector((state) => state.user?.user);
 const userId = (user?.id || null);
   const [accounts, setAccounts] = useState([]);
-  const [selectedAccount, setSelectedAccount] = useState("");
+  const [selectedAccount, setSelectedAccount] = useState(user?.walletAddress);
   const [errorMessage, setErrorMessage] = useState("");
+  const [walletsFetched, setWalletsFetched] = useState(false);
   const dispatch = useDispatch();
 
   const fetchAccounts = async () => {
@@ -19,11 +30,12 @@ const userId = (user?.id || null);
       if (!window.ethereum) throw new Error("MetaMask is not installed.");
 
       // Request wallet connection
-      const accounts = await window.ethereum.request({ method: "eth_accounts" });
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
       if (accounts.length === 0) throw new Error("No MetaMask accounts found.");
         console.log("Connected accounts:", accounts);
       setAccounts(accounts); // Store accounts in state
       setSelectedAccount(accounts[0]); // Default to the first account
+      setWalletsFetched(true);
     } catch (error) {
       console.error("Error fetching accounts:", error);
       setErrorMessage(error.message);
@@ -86,33 +98,45 @@ const userId = (user?.id || null);
     }
   };
   
+  const selectAccounts = createListCollection({
+    items: accounts.map((account) => ({
+      label: account, // Display the account address as the label
+      value: account, // Use the account address as the value
+    })),
+  });
   
-  
-
   return (
     <Box>
-      <h3>Connect Your Wallet</h3>
-
+    
       {/* Fetch Accounts Button */}
-      <Button my="2" login size="xs" onClick={fetchAccounts}>Fetch Accounts</Button>
+      {!walletsFetched && (
+  <Button my="2" size="xs" onClick={fetchAccounts}>
+    Find Wallets
+  </Button>
+)}
+
 
       {/* Dropdown for Account Selection */}
       {accounts.length > 0 && (
-        <Box>
-          <label htmlFor="account-select">Select Wallet:</label>
-          <select
+        <SelectRoot           collection={selectAccounts}
+         w="400px">
+          <SelectLabel htmlFor="account-select">Select Wallet:</SelectLabel>
+          <SelectTrigger
             id="account-select"
             value={selectedAccount}
             onChange={(e) => setSelectedAccount(e.target.value)}
             
           >
-            {accounts.map((account) => (
-              <option key={account} value={account}>
-                {account}
-              </option>
+            <SelectValueText placeholder="Select Wallet" />
+              </SelectTrigger>
+            <SelectContent zIndex={9999}>
+            {selectAccounts.items.map((account) => (
+              <SelectItem key={account.value} item={account}>
+                {account.label}
+              </SelectItem>
             ))}
-          </select>
-        </Box>
+          </SelectContent>
+        </SelectRoot>
       )}
 
       {/* Connect Wallet Button */}
