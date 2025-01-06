@@ -76,11 +76,11 @@ const DeletePostButton = ({ postId }) => {
   return (
     <DialogRoot lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
       {/* Trigger to open the dialog */}
-      <DialogTrigger asChild>
           <Tooltip
                 content="Delete Post"
                
               >
+      <DialogTrigger asChild>
         <Button
           variant="ghost"
           size="sm"
@@ -92,9 +92,9 @@ const DeletePostButton = ({ postId }) => {
           _hover={{ bg: "pink.300" }}
         >
           <RiDeleteBin2Fill />
-        </Button></Tooltip>
+        </Button>
       </DialogTrigger>
-
+</Tooltip>
       {/* Dialog Content */}
       <DialogContent>
         <DialogHeader>
