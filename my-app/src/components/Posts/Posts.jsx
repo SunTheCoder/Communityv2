@@ -27,6 +27,8 @@ import EditPostDrawer from "../EditPost/EditPostDrawer";
 import DeletePostButton from "../DeletePost/DeletePost";
 import { Tooltip } from "../ui/tooltip";
 import PostDetailsDrawer from "./PostDetailsDrawer";
+import AddReaction from "../CommunityFeed/AddReactionComponent";
+import PostReactions from "../CommunityFeed/PostReactions";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user || {});
@@ -312,6 +314,8 @@ const Post = ({ post }) => {
       
     />
     <HStack ml="11px">
+      <AddReaction postId={post.id} reactorId={userId}/>
+      <PostReactions postId={post.id} />
     <LikeButton
     
     postId={post.id}

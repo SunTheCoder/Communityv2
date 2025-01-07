@@ -69,7 +69,7 @@ const CommunityFeed = () => {
           user_id,
           author_username,
           parent_post_id,
-          posts_reactions (reaction_type, user_id),
+          posts_reactions (reactions, user_id),
           tagged_users (user_id),
           tagged_resources (resource_id, resources (resource_name)),
           profiles (role)

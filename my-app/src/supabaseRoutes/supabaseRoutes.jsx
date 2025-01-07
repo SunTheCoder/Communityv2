@@ -116,6 +116,96 @@ export const fetchResourceById = async (resourceId) => {
   };
 
 
+  export const addReactionToCommFeed = async (postId, reactorId, reactionType) => {
+    try {
 
+      // Check if the user already reacted with the same type on this post
+    const { data: existingReaction, error: existingReactionError } = await supabase
+    .from("posts_reactions")
+    .select("*")
+    .eq("post_id", postId)
+    .eq("user_id", reactorId)
+    .eq("reactions", reactionType)
+    .single();
+
+  if (existingReactionError && existingReactionError.code !== "PGRST116") { // Ignore "row not found" error
+    throw existingReactionError;
+  }
+
+  if (existingReaction) {
+    return { success: false, message: "User has already reacted with this type" };
+  }
+      // Fetch the current reactions and post owner
+      const { data: post, error: fetchError } = await supabase
+        .from("posts")
+        .select("reactions, user_id")
+        .eq("id", postId)
+        .single();
   
+      if (fetchError) {
+        throw fetchError;
+      }
+  
+      // Initialize or update the reactions object
+      const currentReactions = post.reactions || {};
+      const updatedReactions = {
+        ...currentReactions,
+        [reactionType]: (currentReactions[reactionType] || 0) + 1,
+      };
+  
+      // Update the reactions column in the posts table
+      const { error: updateError } = await supabase
+        .from("posts")
+        .update({ reactions: updatedReactions })
+        .eq("id", postId);
+  
+      if (updateError) {
+        throw updateError;
+      }
+  
+      // Insert a new reaction into the posts_reactions table
+      const { error: insertReactionError } = await supabase
+        .from("posts_reactions")
+        .insert({
+          post_id: postId,
+          user_id: reactorId,
+          reactions: reactionType,
+        });
+  
+      if (insertReactionError) {
+        throw insertReactionError;
+      }
+  
+      // Fetch the username of the reactor
+      const { data: reactorProfile, error: reactorError } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", reactorId)
+        .single();
+  
+      if (reactorError) {
+        throw reactorError;
+      }
+  
+      const reactorUsername = reactorProfile?.username || "Someone";
+  
+      // Create a notification for the post owner
+      const notificationMessage = `${reactorUsername} reacted to your post with ${reactionType}!`;
+      const notificationResponse = await createNotification(
+        post.user_id, // Notify the post owner
+        "post_reaction",
+        notificationMessage,
+        reactorId // UUID of the user who reacted
+      );
+  
+      if (!notificationResponse.success) {
+        console.error("Failed to create notification:", notificationResponse.error);
+      }
+  
+      return { success: true, message: "Reaction added successfully" };
+    } catch (error) {
+      console.error("Error adding reaction:", error);
+      return { success: false, message: "Error adding reaction", error };
+    }
+  };
   
