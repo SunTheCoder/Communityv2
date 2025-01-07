@@ -1,5 +1,5 @@
-import { createNotification } from "../HelperFunctions/createNotification";
 import { supabase } from "../App";
+import { createNotification } from "../HelperFunctions/createNotification";
 
 
 export const fetchResourceById = async (resourceId) => {
@@ -118,27 +118,30 @@ export const fetchResourceById = async (resourceId) => {
 
   export const addReactionToCommFeed = async (postId, reactorId, reactionType) => {
     try {
-
       // Check if the user already reacted with the same type on this post
-    const { data: existingReaction, error: existingReactionError } = await supabase
-    .from("posts_reactions")
-    .select("*")
-    .eq("post_id", postId)
-    .eq("user_id", reactorId)
-    .eq("reactions", reactionType)
-    .single();
+      const { error: insertError } = await supabase
+  .from("posts_reactions")
+  .select("*")
+  .eq("post_id", postId)
+  .eq("user_id", reactorId)
+  .eq("reactions", reactionType)
+ 
 
-  if (existingReactionError && existingReactionError.code !== "PGRST116") { // Ignore "row not found" error
-    throw existingReactionError;
-  }
 
-  if (existingReaction) {
-    return { success: false, message: "User has already reacted with this type" };
-  }
-      // Fetch the current reactions and post owner
+  console.log("postId:", postId);
+console.log("reactorId:", reactorId);
+console.log("reactionType:", reactionType);
+
+      // Check for unique constraint violation
+    if (insertError && insertError.code === '23505') {
+      return { success: false, message: 'User has already reacted with this type' };
+    }
+
+  
+      // Fetch the current reactions for the post
       const { data: post, error: fetchError } = await supabase
         .from("posts")
-        .select("reactions, user_id")
+        .select("reactions")
         .eq("id", postId)
         .single();
   
@@ -146,7 +149,6 @@ export const fetchResourceById = async (resourceId) => {
         throw fetchError;
       }
   
-      // Initialize or update the reactions object
       const currentReactions = post.reactions || {};
       const updatedReactions = {
         ...currentReactions,
@@ -174,32 +176,6 @@ export const fetchResourceById = async (resourceId) => {
   
       if (insertReactionError) {
         throw insertReactionError;
-      }
-  
-      // Fetch the username of the reactor
-      const { data: reactorProfile, error: reactorError } = await supabase
-        .from("profiles")
-        .select("username")
-        .eq("id", reactorId)
-        .single();
-  
-      if (reactorError) {
-        throw reactorError;
-      }
-  
-      const reactorUsername = reactorProfile?.username || "Someone";
-  
-      // Create a notification for the post owner
-      const notificationMessage = `${reactorUsername} reacted to your post with ${reactionType}!`;
-      const notificationResponse = await createNotification(
-        post.user_id, // Notify the post owner
-        "post_reaction",
-        notificationMessage,
-        reactorId // UUID of the user who reacted
-      );
-  
-      if (!notificationResponse.success) {
-        console.error("Failed to create notification:", notificationResponse.error);
       }
   
       return { success: true, message: "Reaction added successfully" };
