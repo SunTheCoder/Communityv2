@@ -190,7 +190,7 @@ const NotificationIcon = ({ user }) => {
               <Separator mt="2" />
               <VStack>
               {/* "Mark All as Read" Button */}
-              {notificationCount > 0 && (
+              {notificationCount > 1 && (
                 <Button
                   firstFlow
                   size="sm"
@@ -201,6 +201,10 @@ const NotificationIcon = ({ user }) => {
                 </Button>
               )}
               {/* "View All" Button */}
+
+              </VStack>
+            </>
+          )}
               <PopoverTrigger>
               <Button
         firstFlow
@@ -210,15 +214,11 @@ const NotificationIcon = ({ user }) => {
       >
         View All Notifications
       </Button></PopoverTrigger>
-
-      <ViewAllNotificationsDrawer
-        open={open}
-        onOpenChange={(e) => setOpen(e.open)} // Handle open/close
-        user={user}
-      />
-              </VStack>
-            </>
-          )}
+          <ViewAllNotificationsDrawer
+            open={open}
+            onOpenChange={(e) => setOpen(e.open)} // Handle open/close
+            user={user}
+          />
         </VStack>
       </PopoverBody>
     </PopoverContent>
