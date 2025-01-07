@@ -29,6 +29,9 @@ import { Tooltip } from "../ui/tooltip";
 import PostDetailsDrawer from "./PostDetailsDrawer";
 import AddReaction from "../CommunityFeed/AddReactionComponent";
 import PostReactions from "../CommunityFeed/PostReactions";
+import HoverLikeButton from "../CommunityFeed/HoverLikeButton";
+import { addReactionToCommFeed } from "@/supabaseRoutes/supabaseRoutes";
+import ReactionSummary from "../CommunityFeed/ReactionSummary";
 
 const Post = ({ post }) => {
   const { user } = useSelector((state) => state.user || {});
@@ -309,19 +312,21 @@ const Post = ({ post }) => {
               ))}
             </VStack>
           )}
+      <PostReactions postId={post.id} reactions={post.reactions}/>
         </Box>
       }
       
     />
     <HStack ml="11px">
-      <AddReaction postId={post.id} reactorId={userId}/>
-      <PostReactions postId={post.id} reactions={post.reactions}/>
-    <LikeButton
+      {/* <AddReaction postId={post.id} /> */}
+      <HoverLikeButton postId={post.id} reactorId={userId} addReaction={addReactionToCommFeed} />
+      {/* <ReactionSummary postId={post.id} reactions={post.reactions} /> */}
+    {/* <LikeButton
     
     postId={post.id}
     likesCount={post.likes_count} // Pass real-time likes_count
     userId={userId} // Pass the current user's ID
-  />
+  /> */}
     {user.id === post.user_id && (
       <EditPostDrawer 
       postId={post.id} 
