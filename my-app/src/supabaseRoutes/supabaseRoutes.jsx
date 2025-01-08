@@ -118,27 +118,25 @@ export const fetchResourceById = async (resourceId) => {
 
   export const addReactionToCommFeed = async (postId, reactorId, reactionType) => {
     try {
-      // Check if the user already reacted with the same type on this post
-      const { error: insertError } = await supabase
-  .from("posts_reactions")
-  .select("*")
-  .eq("post_id", postId)
-  .eq("user_id", reactorId)
-  .eq("reactions", reactionType)
- 
-
-
-  console.log("postId:", postId);
-console.log("reactorId:", reactorId);
-console.log("reactionType:", reactionType);
-
-      // Check for unique constraint violation
-    if (insertError && insertError.code === '23505') {
-      return { success: false, message: 'User has already reacted with this type' };
-    }
-
+      // Step 1: Insert reaction into posts_reactions
+      const { error: insertReactionError } = await supabase
+        .from("posts_reactions")
+        .insert({
+          post_id: postId,
+          user_id: reactorId,
+          reactions: reactionType,
+        });
   
-      // Fetch the current reactions for the post
+      if (insertReactionError) {
+        // If the reaction is already present, log and exit
+        if (insertReactionError.code === "23505") {
+          console.warn("Duplicate reaction detected. Skipping posts table update.");
+          return { success: false, message: "Duplicate reaction. Reaction not added." };
+        }
+        throw insertReactionError; // For other errors, throw the error
+      }
+  
+      // Step 2: Update the reactions in the posts table
       const { data: post, error: fetchError } = await supabase
         .from("posts")
         .select("reactions")
@@ -149,13 +147,14 @@ console.log("reactionType:", reactionType);
         throw fetchError;
       }
   
+      // Update the reactions JSONB object
       const currentReactions = post.reactions || {};
       const updatedReactions = {
         ...currentReactions,
         [reactionType]: (currentReactions[reactionType] || 0) + 1,
       };
   
-      // Update the reactions column in the posts table
+      // Step 3: Update the posts table with the new reactions count
       const { error: updateError } = await supabase
         .from("posts")
         .update({ reactions: updatedReactions })
@@ -165,23 +164,11 @@ console.log("reactionType:", reactionType);
         throw updateError;
       }
   
-      // Insert a new reaction into the posts_reactions table
-      const { error: insertReactionError } = await supabase
-        .from("posts_reactions")
-        .insert({
-          post_id: postId,
-          user_id: reactorId,
-          reactions: reactionType,
-        });
-  
-      if (insertReactionError) {
-        throw insertReactionError;
-      }
-  
-      return { success: true, message: "Reaction added successfully" };
+      return { success: true, message: "Reaction added successfully!" };
     } catch (error) {
       console.error("Error adding reaction:", error);
-      return { success: false, message: "Error adding reaction", error };
+      return { success: false, message: "Error adding reaction.", error };
     }
   };
+  
   
