@@ -85,11 +85,12 @@ const DeletePostButton = ({ postId }) => {
           variant="ghost"
           size="sm"
           position="relative"
-          bottom="63px"
-          left="216px"
+          // bottom="64px"
+          left="233px"
           borderRadius="4xl"
           px="0"
           _hover={{ bg: "pink.300" }}
+          h="25px"
         >
           <RiDeleteBin2Fill />
         </Button>

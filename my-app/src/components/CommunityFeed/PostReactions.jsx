@@ -13,7 +13,7 @@ const PostReactions = ({ postId, reactions }) => {
         {Object.keys(reactions || {}).length === 0 ? (
           <Box></Box>
         ) : (
-          <Box position="absolute" left= "85px" display= "flex" alignItems="center" gap="2px">
+          <Box position="absolute" left= "85px"  display= "flex" alignItems="center" gap="2px">
             {Object.entries(reactions).map(([reactionType, count]) => (
               <Box key={reactionType} style={{ textAlign: "center" }}>
                 <Box style={{ fontSize: ".8rem"}}>

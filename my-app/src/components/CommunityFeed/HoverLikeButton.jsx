@@ -65,7 +65,7 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
   };
 
   return (
-    <HoverCardRoot open={open} onOpenChange={(e) => setOpen(e.open)} closeDelay={1000}>
+    <HoverCardRoot open={open} onOpenChange={(e) => setOpen(e.open)} closeDelay={800}>
       <HoverCardTrigger asChild>
         <Button
          variant="ghost"
