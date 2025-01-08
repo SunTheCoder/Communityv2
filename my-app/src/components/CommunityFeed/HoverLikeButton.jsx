@@ -36,12 +36,12 @@ const reactionIcons = {
   
 const ReactionPopover = ({ onReact }) => {
   return (
-    <Flex p={0} >
+    <Flex p={0} pos="relative" bottom="20px">
       {Object.entries(reactionIcons).map(([reactionType, icon]) => (
         <Box key={reactionType} label={reactionLabels[reactionType]} >
           <IconButton
             aria-label={reactionType}
-        
+            
             onClick={() => onReact(reactionType)}
             variant="ghost"
             size="md"
@@ -56,6 +56,8 @@ const ReactionPopover = ({ onReact }) => {
 
 const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
   const [isHovering, setIsHovering] = useState(false);
+  const [open, setOpen] = useState(false)
+
 
   const handleReaction = async (reactionType) => {
     await addReaction(postId, reactorId, reactionType);
@@ -63,7 +65,7 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
   };
 
   return (
-    <HoverCardRoot open={isHovering} onOpenChange={(open) => setIsHovering(open)}>
+    <HoverCardRoot open={open} onOpenChange={(e) => setOpen(e.open)} closeDelay={1000}>
       <HoverCardTrigger asChild>
         <Button
          variant="ghost"
@@ -71,22 +73,21 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
           _hover={{ bg: "pink.300" }}
           px="7px"
           size="2xs"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+       
         >
            {/* <Box as={BsHandThumbsUpFill} color="pink.700" height="13px"/> */}
            Like
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent         
+      <HoverCardContent  
+               
         bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
-        
+        h="10px"
         _dark={{
           borderColor: "pink.600",
           bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
         }}
-        
- onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} >
+        >
         <HoverCardArrow />
         <ReactionPopover onReact={handleReaction} />
       </HoverCardContent>
