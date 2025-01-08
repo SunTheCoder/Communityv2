@@ -20,7 +20,7 @@ const reactionIcons = {
     // impressed: <FaHandsHelping color="purple" />,
     support: <FaHandsHelping color="teal" />,
     laugh: <FaRegLaughSquint color="purple" />,
-    idea: <FaLightbulb color="orange" />,
+    idea: <FaLightbulb color="yellow" />,
   };
   
   const reactionLabels = {
@@ -36,16 +36,17 @@ const reactionIcons = {
   
 const ReactionPopover = ({ onReact }) => {
   return (
-    <Flex >
+    <Flex p={0} >
       {Object.entries(reactionIcons).map(([reactionType, icon]) => (
         <Box key={reactionType} label={reactionLabels[reactionType]} >
           <IconButton
             aria-label={reactionType}
-            
+        
             onClick={() => onReact(reactionType)}
             variant="ghost"
-            size="lg"
-            _hover={{ transform: "scale(1.2)" }}
+            size="md"
+            borderRadius="4xl"
+            _hover={{ transform: "scale(1.2)", bg: "pink.200" }}
           >{icon}</IconButton>
         </Box>
       ))}
@@ -62,7 +63,7 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
   };
 
   return (
-    <HoverCardRoot open={isHovering} onOpenChange={(open) => setIsHovering(open)}>
+    <HoverCardRoot open={isHovering} onOpenChange={(open) => setIsHovering(open)} >
       <HoverCardTrigger asChild>
         <Button
          variant="ghost"
@@ -72,11 +73,19 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
-           <Box as={BsHandThumbsUpFill} color="pink.500" height="13px" _hover={{ color: "pink.700" }} />
+           {/* <Box as={BsHandThumbsUpFill} color="pink.700" height="13px"/> */}
            Like
         </Button>
       </HoverCardTrigger>
-      <HoverCardContent onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+      <HoverCardContent         
+        bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
+      
+        _dark={{
+          borderColor: "pink.600",
+          bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
+        }}
+        
+ onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} >
         <HoverCardArrow />
         <ReactionPopover onReact={handleReaction} />
       </HoverCardContent>

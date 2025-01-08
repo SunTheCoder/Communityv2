@@ -43,7 +43,7 @@ const getReactionEmoji = (reactionType) => {
             // impressed: <FaHandsHelping color="purple" />,
             support: <FaHandsHelping color="teal" />,
             laugh: <FaRegLaughSquint color="purple" />,
-            idea: <FaLightbulb color="orange" />,
+            idea: <FaLightbulb color="yellow" />,
           
       };
 

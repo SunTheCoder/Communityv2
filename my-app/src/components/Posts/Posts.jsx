@@ -317,9 +317,9 @@ const Post = ({ post }) => {
       }
       
     />
-    <HStack ml="11px">
-      {/* <AddReaction postId={post.id} /> */}
       <HoverLikeButton postId={post.id} reactorId={userId} addReaction={addReactionToCommFeed} />
+    <HStack >
+      {/* <AddReaction postId={post.id} /> */}
       {/* <ReactionSummary postId={post.id} reactions={post.reactions} /> */}
     {/* <LikeButton
     
