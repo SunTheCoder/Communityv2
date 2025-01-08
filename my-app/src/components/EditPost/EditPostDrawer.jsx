@@ -35,7 +35,7 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
           content="Edit Post"
         >
       <DrawerTrigger asChild>
-        <Button variant="ghost" size="xs" position="relative" left="35px" bottom="30.5px" borderRadius="4xl" _hover={{bg:"pink.300"}} px="0">
+        <Button h="25px" variant="ghost" size="xs" position="relative" left="240px"  borderRadius="4xl" _hover={{bg:"pink.300"}} px="0">
         <FaRegEdit />
         </Button>
       </DrawerTrigger>
@@ -53,6 +53,7 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
           borderColor: "pink.600",
           bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",
         }}
+        
         >
         <DrawerHeader>
           <DrawerTitle>Edit Post</DrawerTitle>

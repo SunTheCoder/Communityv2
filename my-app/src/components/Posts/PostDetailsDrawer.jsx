@@ -51,11 +51,12 @@ const PostDetailsDrawer = ({ user, post, parentPost }) => {
         size="xs" 
         variant="ghost"
         position="absolute"
-        bottom="24px"
-        left="125px"
+        // bottom="31px"
+        left="250px"
         borderRadius="4xl" 
         _hover={{bg:"pink.300"}} 
         px="0"
+        h="25px"
         >
           <BiDetail />
         </Button>
@@ -69,11 +70,12 @@ const PostDetailsDrawer = ({ user, post, parentPost }) => {
       size="xs" 
       variant="ghost"
       position="absolute"
-      bottom="31px"
-      left="200px"
+      // bottom="66px"
+      left="250px"
       borderRadius="4xl" 
       _hover={{bg:"pink.300"}} 
       px="0"
+      h="25px"
       >
         <BiDetail />
       </Button>

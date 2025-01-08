@@ -115,7 +115,7 @@ const AddPostInput = () => {
           value={content}
           onChange={(e) => {
             setContent(e.target.value);
-            if (e.target.value.length > 75) setDrawerOpen(true); // Open drawer for long posts
+            if (e.target.value.length > 55) setDrawerOpen(true); // Open drawer for long posts
           }}
           
           borderRightRadius="none"
