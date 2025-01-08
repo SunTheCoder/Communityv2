@@ -85,8 +85,8 @@ const DeletePostButton = ({ postId }) => {
           variant="ghost"
           size="sm"
           position="relative"
-          bottom="30px"
-          left="30px"
+          bottom="63px"
+          left="216px"
           borderRadius="4xl"
           px="0"
           _hover={{ bg: "pink.300" }}

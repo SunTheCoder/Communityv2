@@ -8,10 +8,10 @@ const PostReactions = ({ postId, reactions }) => {
     const totalCount = Object.values(reactions || {}).reduce((sum, count) => sum + count, 0);
 
     return (
-      <Box >
+      <Box alignItems="center">
         {/* <h4>Reactions</h4> */}
         {Object.keys(reactions || {}).length === 0 ? (
-          <p>No reactions yet.</p>
+          <Box></Box>
         ) : (
           <Box position="absolute" left= "85px" display= "flex" alignItems="center" gap="2px">
             {Object.entries(reactions).map(([reactionType, count]) => (
@@ -22,7 +22,7 @@ const PostReactions = ({ postId, reactions }) => {
                 {/* <Text textStyle="2xs">{count}</Text> */}
               </Box>
             ))}
-               <Text fontSize="sm" fontWeight="bold" ml="0.5rem">
+               <Text textStyle="xs" fontWeight="bold" ml="0.5rem">
            {totalCount}
           </Text>
           </Box>

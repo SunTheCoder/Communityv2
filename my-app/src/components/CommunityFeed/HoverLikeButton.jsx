@@ -63,13 +63,14 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
   };
 
   return (
-    <HoverCardRoot open={isHovering} onOpenChange={(open) => setIsHovering(open)} >
+    <HoverCardRoot open={isHovering} onOpenChange={(open) => setIsHovering(open)}>
       <HoverCardTrigger asChild>
         <Button
          variant="ghost"
           borderRadius="4xl"
           _hover={{ bg: "pink.300" }}
           px="7px"
+          size="2xs"
           onMouseEnter={() => setIsHovering(true)}
           onMouseLeave={() => setIsHovering(false)}
         >
@@ -79,7 +80,7 @@ const HoverLikeButton = ({ postId, reactorId, addReaction }) => {
       </HoverCardTrigger>
       <HoverCardContent         
         bg="radial-gradient(circle,rgb(230, 191, 186),rgb(232, 189, 243))"
-      
+        
         _dark={{
           borderColor: "pink.600",
           bg: "radial-gradient(circle,rgb(87, 36, 54),rgb(24, 23, 29))",

@@ -35,7 +35,7 @@ const EditPostDrawer = ({ postId, currentContent, currentImageUrl }) => {
           content="Edit Post"
         >
       <DrawerTrigger asChild>
-        <Button variant="ghost" size="xs" position="relative" left="35px" bottom="30.5px" borderRadius="4xl" _hover={{bg:"pink.300"}} px="0">
+        <Button variant="ghost" size="xs" position="relative" left="290px" bottom="64px" borderRadius="4xl" _hover={{bg:"pink.300"}} px="0">
         <FaRegEdit />
         </Button>
       </DrawerTrigger>
