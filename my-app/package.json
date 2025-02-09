@@ -18,10 +18,11 @@
     "@reduxjs/toolkit": "^2.4.0",
     "@supabase/supabase-js": "^2.46.1",
     "axios": "^1.7.8",
+    "core-js": "^3.40.0",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.4",
-    "framer-motion": "^11.12.0",
+    "framer-motion": "^11.18.2",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
@@ -47,6 +48,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
+    "redux-mock-store": "^1.5.5",
     "vite": "^6.0.0",
     "vite-jsconfig-paths": "^2.0.1"
   }

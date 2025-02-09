@@ -261,19 +261,24 @@ const Layout = () => {
           <NotificationIcon user={user}/>
       
         
-      <HiOutlineChatBubbleLeftEllipsis 
-
+        {/* Direct Messages Button - Disabled */}
+        <HiOutlineChatBubbleLeftEllipsis 
             size="20"
-            cursor="pointer"
-            onClick={() =>
+            style={{
+              opacity: 0.5,
+              cursor: "not-allowed"
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               toaster.create({
                 title: "Direct Messages",
-                description: "Enables user to user direct communication. Feature under development!",
+                description: "IN DEVELOPMENT",
                 type: "info",
-              })
-            }
-          />
-        {/* <IoWalletOutline 
+              });
+            }}
+        />
+          {/* <IoWalletOutline 
 
             size="20"
             cursor="pointer"

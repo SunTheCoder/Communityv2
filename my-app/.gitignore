@@ -78,3 +78,4 @@ coverage/
 notes.md
 git-guidelines.md
 documentation
+jest.setup.js
