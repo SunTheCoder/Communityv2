@@ -96,6 +96,8 @@ We welcome contributors who share our vision of technology serving community nee
 ### License
 This project is licensed under [License Type] - see the LICENSE.md file for details
 
+<a href="https://www.freepik.com/icon/cat-toy_1303542#fromView=keyword&page=1&position=8&uuid=7908f70b-6c93-4597-85e8-eb8dcc0af6a9">Icon by Freepik</a>
+
 ### Contact
 For more information about contributing or implementing this platform in your community, reach out to [contact information].
 
