@@ -44,6 +44,7 @@ import WalletDrawer from "./Wallet/WalletDrawer";
 import AvatarImageUpload from "./Avatar/AvatarImageUpload";
 import ProfileDrawer from "./Profile/ProfileDrawer";
 import NotificationIcon from "./NotificationIcon";
+import About from './About/About';
 
 
 
@@ -374,7 +375,9 @@ const Layout = () => {
             >
               <Tabs.Trigger value="first">Feed</Tabs.Trigger>
               {/* <Tabs.Trigger value="second">Map</Tabs.Trigger> */}
-              <Tabs.Trigger value="third">Resource List</Tabs.Trigger>
+              <Tabs.Trigger value="resources">Resource List</Tabs.Trigger>
+              <Tabs.Trigger value="about">About</Tabs.Trigger>
+             
               {/* <Tabs.Trigger value="fourth">Fourth tab</Tabs.Trigger>
               <Tabs.Trigger value="fifth">Fifth tab</Tabs.Trigger> */}
               <Tabs.Indicator borderBottom='1px solid' borderColor='pink.300' _dark={{borderColor:"pink.600"}} bg="transparent" shadow='none'/>
@@ -391,14 +394,12 @@ const Layout = () => {
             <Tabs.Content value="second">
                 <Text>Map Placeholder</Text>
             </Tabs.Content>
-            <Tabs.Content value="third">
+            <Tabs.Content value="resources">
                 <ResourceList />
             </Tabs.Content>
-            {/* <Tabs.Content value="fourth">
-                
-                
-                <SignUp />
-                </Tabs.Content> */}
+            <Tabs.Content value="about">
+              <About />
+            </Tabs.Content>
                 {user?.role === "admin" && (
                     <AdminDashboard/>
                     )}
