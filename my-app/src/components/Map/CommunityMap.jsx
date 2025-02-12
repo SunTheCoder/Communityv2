@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { supabase } from "../../App"; // Import your Supabase client setup
+import L from 'leaflet'; // Add this import
 import {
   Box,
   Heading,
@@ -10,6 +11,14 @@ import {
   Spinner,
   Flex,
 } from "@chakra-ui/react";
+
+// Fix for default marker icons in production
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const ResourceMap = () => {
   const [resources, setResources] = useState([]);
@@ -40,14 +49,10 @@ const ResourceMap = () => {
 
   return (
     <Flex
-    
       direction="row"
-    //   align="center"
-    
-    justify="space-around"
+      justify="space-around"
       w="full"
       minH="100vh"
-      
       py="45px"
     >
       <VStack spacing={4} mb={6}>
@@ -71,16 +76,24 @@ const ResourceMap = () => {
           borderWidth="1px"
           shadow="sm"
           mt={1}
+          position="relative"
         >
           <MapContainer
             center={[37.54812, -77.44675]}
             zoom={13}
-            style={{ height: "100%", width: "100%" }}
+            style={{ 
+              height: "100%", 
+              width: "100%",
+              position: "relative",
+              zIndex: 1
+            }}
+            scrollWheelZoom={true}
           >
             {/* Add OpenStreetMap Tiles */}
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution="&copy; OpenStreetMap contributors"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              maxZoom={19}
             />
 
             {/* Map over resources and add markers */}
