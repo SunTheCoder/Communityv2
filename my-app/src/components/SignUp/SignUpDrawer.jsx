@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
 import { Box, Stack, Card, Input, Text, HStack } from "@chakra-ui/react";
-import { Button } from "../ui/button";
-import { Field } from "../ui/field";
-import { PasswordInput, PasswordStrengthMeter } from "../ui/password-Input";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
+import { PasswordInput, PasswordStrengthMeter } from "@/components/ui/password-input";
 import { RiArrowRightLine } from "react-icons/ri";
-import { Toaster, toaster } from "../ui/toaster";
+import { Toaster, toaster } from "@/components/ui/toaster";
 import { login } from "../../redux/userSlice";
 import {
   DrawerBackdrop,
@@ -19,7 +19,7 @@ import {
   DrawerHeader,
   DrawerRoot,
   DrawerTitle,
-} from "../ui/drawer";
+} from "@/components/ui/drawer";
 import { supabase } from "../../App";
 
 
