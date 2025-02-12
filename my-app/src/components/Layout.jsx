@@ -194,7 +194,27 @@ const Layout = () => {
     fetchUserProfile();
   }, [dispatch]);
 
+  useEffect(() => {
+    const checkAndUpdateStatus = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('user_status')
+          .eq('id', user.id)
+          .single();
+        
+        if (data?.user_status !== 'online') {
+          await supabase
+            .from('profiles')
+            .update({ user_status: 'online' })
+            .eq('id', user.id);
+        }
+      }
+    };
 
+    checkAndUpdateStatus();
+  }, []);
 
   return (
     <Box 

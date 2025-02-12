@@ -172,3 +172,30 @@ export const fetchResourceById = async (resourceId) => {
   };
   
   
+export const updateUserStatus = async (userId, status) => {
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({ user_status: status })
+      .eq('id', userId);
+    
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    console.error('Error updating user status:', err);
+    return { success: false, error: err };
+  }
+};
+
+export const handleUserLogout = async (userId) => {
+  try {
+    // Set status to offline before logging out
+    await updateUserStatus(userId, 'offline');
+    await supabase.auth.signOut();
+    return { success: true };
+  } catch (err) {
+    console.error('Logout error:', err);
+    return { success: false, error: err };
+  }
+};
+  
