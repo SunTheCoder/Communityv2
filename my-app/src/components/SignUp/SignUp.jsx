@@ -8,7 +8,7 @@ import { Field } from "@/components/ui/field";
 import {
   PasswordInput,
   PasswordStrengthMeter,
-} from "@/components/ui/password-Input";
+} from "@/components/ui/password-input";
 import { RiArrowRightLine } from "react-icons/ri";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import { login, logout } from "../../redux/userSlice";
