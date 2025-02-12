@@ -4,7 +4,7 @@ This map platform is designed to put the power of local knowledge and resources 
 
 ### Connecting community to needs, with the community in control.
 
-## Made with accessibility in mind.
+### Made with accessibility in mind.
 
 ### Stack & Features
 #### Backend
