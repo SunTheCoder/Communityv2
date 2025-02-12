@@ -10,6 +10,7 @@ import {
   VStack,
   Spinner,
   Flex,
+  Image,
 } from "@chakra-ui/react";
 
 // Fix for default marker icons in production
@@ -30,7 +31,7 @@ const ResourceMap = () => {
       try {
         const { data, error } = await supabase
           .from("resources")
-          .select("id, resource_name, description, latitude, longitude");
+          .select("id, resource_name, description, latitude, longitude, image_url");
 
         if (error) {
           console.error("Error fetching resources:", error.message);
@@ -104,10 +105,28 @@ const ResourceMap = () => {
               >
                 <Popup>
                   <Box p={2} borderRadius="md" boxShadow="lg">
-                    <VStack spacing={1} align="start">
+                    <VStack spacing={2} align="start">
                       <Text fontWeight="bold" fontSize="md">
                         {resource.resource_name}
                       </Text>
+                      
+                      {resource.image_url && (
+                        <Box 
+                          width="200px" 
+                          height="150px" 
+                          overflow="hidden" 
+                          borderRadius="md"
+                        >
+                          <Image
+                            src={resource.image_url}
+                            alt={resource.resource_name}
+                            objectFit="cover"
+                            width="100%"
+                            height="100%"
+                          />
+                        </Box>
+                      )}
+                      
                       <Text fontSize="sm">{resource.description}</Text>
                     </VStack>
                   </Box>
