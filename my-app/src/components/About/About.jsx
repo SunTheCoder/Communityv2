@@ -58,8 +58,8 @@ const About = () => {
           <Heading size="md" mb={3}>Contact</Heading>
           <Text>
             For inquiries or collaboration opportunities, reach out at{' '}
-            <Link color="pink.500" href="mailto:your-email@example.com">
-              your-email@example.com
+            <Link color="pink.500" href="mailto:sunenglishjr@gmail.com">
+              sunenglishjr@gmail.com
             </Link>
           </Text>
         </Box>
