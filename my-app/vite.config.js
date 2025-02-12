@@ -18,4 +18,15 @@ export default defineConfig({
     host: '0.0.0.0', // Listen on all network interfaces
     port: 3000, // Optional: Specify a port (default is 5173)
   },
+  build: {
+    chunkSizeWarningLimit: 1000, // Increase the size limit to 1000kb
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'ethers'],
+          ui: ['@chakra-ui/react']
+        }
+      }
+    }
+  },
 });

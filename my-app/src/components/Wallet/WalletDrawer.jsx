@@ -329,8 +329,8 @@ const WalletDrawer = ({ walletAddress }) => {
   
       const zipCodeId = zipData.id;
   
-      // Use Infura to create a wallet
-      const provider = new ethers.providers.JsonRpcProvider(import.meta.env.VITE_INFURA_API_KEY);
+      // Create a new wallet using ethers v6 syntax
+      const provider = new ethers.JsonRpcProvider(import.meta.env.VITE_INFURA_API_KEY);
       const wallet = ethers.Wallet.createRandom().connect(provider);
   
       const walletAddress = wallet.address;
