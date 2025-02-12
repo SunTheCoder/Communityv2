@@ -60,3 +60,43 @@ This map platform is designed to put the power of local knowledge and resources 
 - Mobile-first design
 - Offline capabilities
 - Privacy-focused features
+
+---
+
+## Project Vision & Impact
+
+### Community Empowerment
+This platform is built on the belief that communities know best what they need. By providing tools for resource mapping, communication, and collective action, we aim to amplify existing community networks and knowledge.
+
+### Digital Sovereignty
+- **Privacy First**: Your data belongs to you
+- **Open Source**: Community-owned and transparent
+- **Decentralized**: No single point of control
+- **Offline First**: Works without constant internet access
+
+### Historical Context
+Our work stands on the shoulders of community organizers who have long understood the power of mapping and resource sharing:
+- Fannie Lou Hamer's cooperative farming initiatives
+- Harriet Tubman's navigation of the Underground Railroad
+- Black Panther Party's community survival programs
+- Mutual aid networks during the Civil Rights Movement
+
+### Technical Philosophy
+- Built with and for the community
+- Accessibility is not optional
+- Privacy by design
+- Performance on all devices
+- Resilient architecture
+
+### Get Involved
+We welcome contributors who share our vision of technology serving community needs. Whether you're a developer, designer, community organizer, or someone passionate about digital sovereignty, there's a place for you in this project.
+
+---
+
+### License
+This project is licensed under [License Type] - see the LICENSE.md file for details
+
+### Contact
+For more information about contributing or implementing this platform in your community, reach out to [contact information].
+
+✊🏾 Built with love for the community, by the community
