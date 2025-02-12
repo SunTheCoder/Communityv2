@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { createClient } from "@supabase/supabase-js";
 import { Box, Stack, Card, Input, Text } from "@chakra-ui/react";
-import { Button } from "../ui/button";
-import { Field } from "../ui/field";
+import { Button } from "@/components/ui/button";
+import { Field } from "@/components/ui/field";
 import {
   PasswordInput,
   PasswordStrengthMeter,
-} from "../ui/password-Input";
+} from "@/components/ui/password-Input";
 import { RiArrowRightLine } from "react-icons/ri";
-import { Toaster, toaster } from "../ui/toaster";
+import { Toaster, toaster } from "@/components/ui/toaster";
 import { login, logout } from "../../redux/userSlice";
 import { supabase } from "../../App";
 import AddResourceDrawer from "../AddResourceDrawer";

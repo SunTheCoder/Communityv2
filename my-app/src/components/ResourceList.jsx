@@ -12,7 +12,8 @@ import {
   Card,
   Flex,
   Input,
-  createListCollection
+  createListCollection,
+  HStack
 } from "@chakra-ui/react";
 import States from "../states"
 import Types from "../resourceTypes"
@@ -34,6 +35,11 @@ import { supabase } from "../App";
 import AddResourceDrawer from "./AddResourceDrawer";
 import RequestResourceDrawer from "./RequestResourceDrawer";
 import ResourceDetailsModal from "./ResourceDetailsDrawer";
+import { motion } from "framer-motion";
+
+// Add these new styled components using motion
+const MotionGrid = motion(Grid);
+const MotionCard = motion(Card.Root);
 
 const ResourceList = () => {
   const [resources, setResources] = useState([]);
@@ -177,178 +183,230 @@ const paginatedResources = filteredResources.slice(
   startIndex + itemsPerPage
 );
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0,
+      y: 20
+    },
+    show: { 
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3
+      }
+    },
+    hover: {
+      scale: 1.03,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
   return (
     <Flex mt="46.3px" direction="column">
-      <Box display="flex"  justifyContent="center" gap={8}  m={6}>
-      <SelectRoot
-  collection={Types}
-  value={filterType}
-  onValueChange={(selectedItem) => setFilterType([selectedItem.value])} // Wrap in array
-  maxWidth="320px"
-  // border="1px solid"
-  // borderColor="gray.300"
-  borderRadius="sm"
-  shadow="sm"
->
-  <SelectTrigger>
-    <SelectValueText placeholder="Filter by Type" />
-  </SelectTrigger>
-  <SelectContent>
-    {Types.items.map((type) => (
-      <SelectItem item={type} key={type.value}>
-        {type.label}
-      </SelectItem>
-    ))}
-  </SelectContent>
-</SelectRoot>
-
-        <SelectRoot
-  collection={States}
-  value={filterState}
-  onValueChange={(selectedItem) => setFilterState([selectedItem.value])} // Wrap in array
-  width="320px"
-   borderRadius="sm"
-  shadow="sm"
->
-  <SelectTrigger>
-    <SelectValueText placeholder="Filter by State" />
-  </SelectTrigger>
-  <SelectContent>
-    {States.items.map((state) => (
-      <SelectItem item={state} key={state.value}>
-        {state.label}
-      </SelectItem>
-    ))}
-  </SelectContent>
-</SelectRoot>
-
-      <Input
-  placeholder="Filter by City"
-  value={filterCity}
-  onChange={(e) => setFilterCity(e.target.value)}
-  maxWidth="200px"
-  _hover={{cursor: "text"}}
-   borderRadius="sm"
-  shadow="sm"
-/>
-      </Box>
-
-
-    <ResourceDetailsModal
-    resourceId={selectedResourceId}
-    trigger={
-    <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
-      {/* <Heading as="h2" size="lg" mb={6} textAlign="center">
-        Resource List
-      </Heading> */}
-
-      {loading ? (
-        <Spinner size="lg" />
-      ) : errorMessage ? (
-        <Text color="red.500">{errorMessage}</Text>
-      ) : resources.length > 0 ? (
-        <>
-         
-
-          {/* Other Resources */}
-          <Grid
-            templateColumns={{
-              base: "repeat(1, 1fr)",
-              md: "repeat(2, 1fr)",
-              lg: "repeat(3, 1fr)",
-              xl: "repeat(4, 1fr)",
-            }}
-            gap={6}
-          >
-            {paginatedResources.map((resource) => (
-  <Card.Root
-    maxHeight="250px"
-    maxWidth="180px"
-    size="xs"
-    key={resource.id}
-    borderWidth="1px"
-    borderRadius="sm"
-    overflow="hidden"
-    shadow="sm"
-    bg="gray.100"
-    _dark={{ bg: "gray.700" }}
-    _hover={{
-      transform: "scale(1.02)",
-      border: "1px solid",
-      borderColor: "gray.400",
-      cursor: "pointer",
-    }}
-    onClick={() => handleCardClick(resource.id)} // Open drawer for the clicked resource
-    
-  >
-    <Image
-      src={resource.image_url || "/no-image.png"}
-      alt={resource.resource_name || "Unnamed Resource"}
-      height="200px"
-      objectFit="cover"
-    />
-    <Card.Body gap={2} p={2}>
-      <Card.Title>{resource.resource_name || "Unnamed Resource"}</Card.Title>
-      <Text fontSize="sm">
-        {resource.city || "Unknown"}
-      </Text>
-      <Text fontSize="sm">
-       {resource.resource_type || "Unknown"}
-      </Text>
-    </Card.Body>
-  </Card.Root>
-))}
-
-
-          </Grid>
-          
-
-
-         
-        </>
-      ) : (
-        <Text>No resources available.</Text>
-      )}
-      
-    </Box>
-    }
-    />
-     {/* Add Resource Button */}
-     {user?.role === "admin" ? (
-      <Box py={10} textAlign="center">
-        <AddResourceDrawer 
-          initialData={selectedRequest}
-        />
-      </Box>
-    ) : user?.role === "user" ? (
-      <Box py={10} textAlign="center">
-        <RequestResourceDrawer />
-      </Box>
-    ) : (
-      <Box py={10} textAlign="center">
-        <p>You do not have access to this feature.</p>
-      </Box>
-    )}
-
-
-    {/* Pagination */}
-    <Box textAlign="center" p={3}>
-      <PaginationRoot
-        page={page}
-        count={resources.length}
-        pageSize={itemsPerPage}
-        onPageChange={(details) => setPage(details.page)}
+      {/* Animate the filters */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
       >
-        <Box mt={4}>
-          <PaginationPrevTrigger />
-          <PaginationItems siblingCount={1} />
-          <PaginationNextTrigger />
-          <Box py={5}>
-            <PaginationPageText />
-          </Box>
+        <Box display="flex" justifyContent="center" gap={8} m={6}>
+          <SelectRoot
+            collection={Types}
+            value={filterType}
+            onValueChange={(selectedItem) => setFilterType([selectedItem.value])} // Wrap in array
+            maxWidth="320px"
+            // border="1px solid"
+            // borderColor="gray.300"
+            borderRadius="sm"
+            shadow="sm"
+          >
+            <SelectTrigger>
+              <SelectValueText placeholder="Filter by Type" />
+            </SelectTrigger>
+            <SelectContent>
+              {Types.items.map((type) => (
+                <SelectItem item={type} key={type.value}>
+                  {type.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+
+          <SelectRoot
+            collection={States}
+            value={filterState}
+            onValueChange={(selectedItem) => setFilterState([selectedItem.value])} // Wrap in array
+            width="320px"
+             borderRadius="sm"
+            shadow="sm"
+          >
+            <SelectTrigger>
+              <SelectValueText placeholder="Filter by State" />
+            </SelectTrigger>
+            <SelectContent>
+              {States.items.map((state) => (
+                <SelectItem item={state} key={state.value}>
+                  {state.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </SelectRoot>
+
+          <Input
+            placeholder="Filter by City"
+            value={filterCity}
+            onChange={(e) => setFilterCity(e.target.value)}
+            maxWidth="200px"
+            _hover={{cursor: "text"}}
+             borderRadius="sm"
+            shadow="sm"
+          />
         </Box>
-      </PaginationRoot>
-    </Box>
+      </motion.div>
+
+      <ResourceDetailsModal
+        resourceId={selectedResourceId}
+        trigger={
+          <Box maxW="1200px" mx="auto" textAlign="start" p={6}>
+            {loading ? (
+              <Spinner size="lg" />
+            ) : errorMessage ? (
+              <Text color="red.500">{errorMessage}</Text>
+            ) : resources.length > 0 ? (
+              <MotionGrid
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                templateColumns={{
+                  base: "repeat(1, 1fr)",
+                  md: "repeat(2, 1fr)",
+                  lg: "repeat(3, 1fr)",
+                  xl: "repeat(4, 1fr)",
+                }}
+                gap={6}
+              >
+                {paginatedResources.map((resource) => (
+                  <MotionCard
+                    key={resource.id}
+                    variants={cardVariants}
+                    whileHover="hover"
+                    layoutId={`card-${resource.id}`}
+                    onClick={() => handleCardClick(resource.id)}
+                    maxHeight="280px"
+                    maxWidth="220px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    bg="white"
+                    _dark={{ 
+                      bg: "gray.800",
+                      borderColor: "gray.600" 
+                    }}
+                    boxShadow="lg"
+                    position="relative"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Image
+                        src={resource.image_url || "/no-image.png"}
+                        alt={resource.resource_name || "Unnamed Resource"}
+                        height="180px"
+                        width="100%"
+                        objectFit="cover"
+                      />
+                    </motion.div>
+                    <Card.Body p={4}>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <Text 
+                          fontSize="lg" 
+                          fontWeight="bold"
+                          mb={2}
+                        >
+                          {resource.resource_name || "Unnamed Resource"}
+                        </Text>
+                        <HStack spacing={2} mb={1}>
+                          <Text fontSize="sm" color="gray.500">
+                            📍 {resource.city || "Unknown"}
+                          </Text>
+                        </HStack>
+                        <Text 
+                          fontSize="sm" 
+                          color="pink.500"
+                          fontWeight="medium"
+                        >
+                          {resource.resource_type || "Unknown"}
+                        </Text>
+                      </motion.div>
+                    </Card.Body>
+                  </MotionCard>
+                ))}
+              </MotionGrid>
+            ) : (
+              <Text>No resources available.</Text>
+            )}
+          </Box>
+        }
+      />
+
+      {/* Add Resource Button */}
+      {user?.role === "admin" ? (
+        <Box py={10} textAlign="center">
+          <AddResourceDrawer 
+            initialData={selectedRequest}
+          />
+        </Box>
+      ) : user?.role === "user" ? (
+        <Box py={10} textAlign="center">
+          <RequestResourceDrawer />
+        </Box>
+      ) : (
+        <Box py={10} textAlign="center">
+          <p>You do not have access to this feature.</p>
+        </Box>
+      )}
+
+      {/* Animate the pagination */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <Box textAlign="center" p={3}>
+          <PaginationRoot
+            page={page}
+            count={resources.length}
+            pageSize={itemsPerPage}
+            onPageChange={(details) => setPage(details.page)}
+          >
+            <Box mt={4}>
+              <PaginationPrevTrigger />
+              <PaginationItems siblingCount={1} />
+              <PaginationNextTrigger />
+              <Box py={5}>
+                <PaginationPageText />
+              </Box>
+            </Box>
+          </PaginationRoot>
+        </Box>
+      </motion.div>
     </Flex>
   );
 };
