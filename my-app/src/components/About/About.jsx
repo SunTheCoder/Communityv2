@@ -16,9 +16,16 @@ const About = () => {
             Created by Sun English Jr., a software engineer passionate about using technology 
             for community empowerment and social justice.
           </Text>
+          <Box mb={2}></Box>
           <Link href="https://www.sunthecoder.com">
             <Text color="pink.500">
               View Sun's Portfolio
+            </Text>
+          </Link>
+          <Box mb={2}></Box>
+          <Link href="https://github.com/sunthecoder">
+            <Text color="pink.500">
+              View Sun's GitHub
             </Text>
           </Link>
         </Box>
