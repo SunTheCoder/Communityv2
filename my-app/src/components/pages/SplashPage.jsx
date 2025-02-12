@@ -60,6 +60,8 @@ const SplashPage = () => {
             <MotionText
               fontSize="2xl"
               fontWeight="bold"
+              color="gray.800"
+              _dark={{ color: "white" }}
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.4 }}
@@ -69,6 +71,8 @@ const SplashPage = () => {
             <MotionText
               fontSize="5xl"
               fontWeight="bold"
+              color="gray.800"
+              _dark={{ color: "white" }}
               mb={4}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -115,6 +119,8 @@ const SplashPage = () => {
           <VStack justify="center">
             <MotionText
               fontSize="4xl"
+              color="gray.800"
+              _dark={{ color: "white" }}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
@@ -123,6 +129,8 @@ const SplashPage = () => {
             </MotionText>
             <MotionText
               fontSize="4xl"
+              color="gray.800"
+              _dark={{ color: "white" }}
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 1 }}
