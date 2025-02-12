@@ -10,6 +10,8 @@ import {
 import Post from "../Posts/Posts"; // Import the Post component
 import PostsAddDrawer from "../Posts/PostsAddDrawer";
 import AddPostInput from "./AddPostInput";
+import { AutoSizer, List } from 'react-virtualized';
+import 'react-virtualized/styles.css';
 
 const CommunityFeed = () => {
   const user  = useSelector((state) => state.user?.user);
@@ -53,11 +55,12 @@ const CommunityFeed = () => {
     </VStack>
   );
   
-  // Fetch initial 25 posts
+  // Fetch initial posts
   const fetchInitialPosts = async () => {
     try {
       setLoading(true);
 
+      // Use denormalized author_avatar from posts table
       const { data, error } = await supabase
         .from("posts")
         .select(`
@@ -65,24 +68,43 @@ const CommunityFeed = () => {
           content,
           image_url,
           created_at,
-          likes_count,
           user_id,
           author_username,
-          reactions,
+          author_avatar,
           parent_post_id,
-          posts_reactions (reactions, user_id),
-          tagged_users (user_id),
-          tagged_resources (resource_id, resources (resource_name)),
-          profiles (role)
+          posts_reactions (reactions, user_id)
         `)
         .order("created_at", { descending: true })
-        .limit(100); // Fetch the first 25 posts
+        .limit(100);
 
       if (error) throw error;
-
       setPosts(data || []);
+
+      // Fetch all related data in parallel
+      if (data?.length) {
+        const userIds = [...new Set(data.map(post => post.user_id))];
+        const postIds = data.map(post => post.id);
+
+        const [profilesRes, reactionsRes, taggedUsersRes, taggedResourcesRes] = await Promise.all([
+          supabase.from('profiles').select('id, role').in('id', userIds),
+          supabase.from('posts_reactions').select('*').in('post_id', postIds),
+          supabase.from('tagged_users').select('*').in('post_id', postIds),
+          supabase.from('tagged_resources').select('*, resources(resource_name)').in('post_id', postIds)
+        ]);
+
+        // Update posts with all related data
+        setPosts(prevPosts => 
+          prevPosts.map(post => ({
+            ...post,
+            profile: profilesRes.data?.find(p => p.id === post.user_id),
+            posts_reactions: reactionsRes.data?.filter(r => r.post_id === post.id) || [],
+            tagged_users: taggedUsersRes.data?.filter(t => t.post_id === post.id) || [],
+            tagged_resources: taggedResourcesRes.data?.filter(t => t.post_id === post.id) || []
+          }))
+        );
+      }
     } catch (error) {
-      console.error("Error fetching initial posts:", error.message);
+      console.error("Error fetching posts:", error.message);
     } finally {
       setLoading(false);
     }
@@ -100,26 +122,45 @@ const CommunityFeed = () => {
           content,
           image_url,
           created_at,
-          likes_count,
           user_id,
           author_username,
-          reactions,
+          author_avatar,
           parent_post_id,
-          posts_reactions (reaction_type, user_id),
-          tagged_users (user_id),
-          tagged_resources (resource_id, resources (resource_name)),
-          profiles (role)
+          posts_reactions (reactions, user_id)
         `)
-        .lt("created_at", lastDate) // Fetch posts older than the last loaded date
+        .lt("created_at", lastDate)
         .order("created_at", { descending: true })
-        .limit(10); // Load in chunks (adjust as needed)
+        .limit(10);
 
       if (error) throw error;
 
       if (data.length === 0) {
-        setHasMore(false); // No more posts to load
+        setHasMore(false);
       } else {
-        setPosts((prev) => [...prev, ...data]);
+        setPosts(prev => [...prev, ...data]);
+        
+        const userIds = [...new Set(data.map(post => post.user_id))];
+        const postIds = data.map(post => post.id);
+
+        const [profilesRes, reactionsRes, taggedUsersRes, taggedResourcesRes] = await Promise.all([
+          supabase.from('profiles').select('id, role').in('id', userIds),
+          supabase.from('posts_reactions').select('*').in('post_id', postIds),
+          supabase.from('tagged_users').select('*').in('post_id', postIds),
+          supabase.from('tagged_resources').select('*, resources(resource_name)').in('post_id', postIds)
+        ]);
+
+        setPosts(prevPosts => 
+          prevPosts.map(post => {
+            if (!postIds.includes(post.id)) return post; // Keep existing post data if not in new batch
+            return {
+              ...post,
+              profile: profilesRes.data?.find(p => p.id === post.user_id),
+              posts_reactions: reactionsRes.data?.filter(r => r.post_id === post.id) || [],
+              tagged_users: taggedUsersRes.data?.filter(t => t.post_id === post.id) || [],
+              tagged_resources: taggedResourcesRes.data?.filter(t => t.post_id === post.id) || []
+            };
+          })
+        );
       }
     } catch (error) {
       console.error("Error fetching older posts:", error.message);
@@ -241,50 +282,77 @@ const CommunityFeed = () => {
 
   const groupedPosts = groupPostsByDate(posts);
 
-  return (
-    <Box maxHeight="1000px" overflow="auto" mt="23px" width="100%">
-      <VStack spacing={4} align="stretch" maxHeight="75.9vh" mx="20px">
-        {loading || !user ? (
-          renderSkeleton()
-        ) : (
-          <>
-            {groupedPosts.map(([date, posts]) => (
-              <Box key={date}>
-                <HStack>
-                <Separator my={4} borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
-                <Text fontWeight="bold" fontSize="xs" w="100%" color="pink.500" textAlign="center">
-                  {date.slice(0, 10) + ", " + date.slice(11)}
-                </Text>
-                <Separator my={4} borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
-                </HStack>
-
-                {posts.map((post) => (
-                  <Post key={post.id} post={post} />
-                ))}
-              </Box>
+  // Add row renderer for virtualized list
+  const rowRenderer = ({ index, key, style }) => {
+    const [date, datePosts] = groupedPosts[index];
+    
+    return (
+      <div key={key} style={{ ...style, padding: '8px 20px' }}>
+        <Box>
+          <HStack mb={4}>
+            <Separator borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
+            <Text fontWeight="bold" fontSize="xs" color="pink.500" textAlign="center">
+              {date}
+            </Text>
+            <Separator borderColor="pink.300" _dark={{borderColor: "pink.600"}}/>
+          </HStack>
+          <VStack spacing={4} align="stretch">
+            {datePosts.map((post) => (
+              <Post key={post.id} post={post} />
             ))}
+          </VStack>
+        </Box>
+      </div>
+    );
+  };
 
-              {hasMore && (
-              <Box ref={loadMoreRef}>
-                {loadingMore ? (
-                  renderSkeleton()
-                ) : (
-                  <Center>
-                  <Button 
-                    firstFlow 
-                    onClick={handleLoadMore} 
-                    my={4} 
-                    size="xs"
-                    >
-                    Load More
-                  </Button>
-                  </Center>
-                )}
-              </Box>
-            )}
-          </>
-        )}
-      </VStack>
+  // Add height calculation for rows
+  const getRowHeight = ({ index }) => {
+    const [_, datePosts] = groupedPosts[index];
+    let height = 50; // Header height
+    
+    // Calculate height for all posts in this date group
+    datePosts.forEach(post => {
+      height += 150; // Base post height
+      if (post.image_url) height += 200;
+      if (post.parent_post_id) height += 100;
+    });
+    
+    return height;
+  };
+
+  return (
+    <Box 
+      height="75vh" // Set a fixed height
+      width="100%"
+      mt="23px"
+      position="relative" // Add position relative
+    >
+      {loading || !user ? (
+        renderSkeleton()
+      ) : (
+        <Box height="100%" width="100%"> {/* Add wrapper with full dimensions */}
+          <AutoSizer>
+            {({ width, height }) => {
+              console.log('AutoSizer dimensions:', { width, height }); // Debug dimensions
+              return (
+                <List
+                  width={width}
+                  height={height}
+                  rowCount={groupedPosts.length}
+                  rowHeight={getRowHeight}
+                  rowRenderer={rowRenderer}
+                  overscanRowCount={3}
+                  style={{
+                    background: 'transparent',
+                    outline: 'none'
+                  }}
+                />
+              );
+            }}
+          </AutoSizer>
+        </Box>
+      )}
     </Box>
   );
 };
