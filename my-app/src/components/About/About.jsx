@@ -10,31 +10,6 @@ const About = () => {
           About CareMap
         </Heading>
 
-        <Box>
-          <Heading size="md" mb={3}>Creator</Heading>
-          <Text>
-            Created by Sun English Jr., a software engineer passionate about using technology 
-            for community empowerment and social justice.
-          </Text>
-          <Box mb={2}></Box>
-          <Link href="https://www.sunthecoder.com">
-            <Text color="pink.500">
-              View Sun's Portfolio
-            </Text>
-          </Link>
-          <Box mb={2}></Box>
-          <Link href="https://github.com/sunthecoder">
-            <Text color="pink.500">
-              View Sun's GitHub
-            </Text>
-          </Link>
-          <Box mb={2}></Box>
-          <Link href="https://www.linkedin.com/in/sunthecoder/">
-            <Text color="pink.500">
-              View Sun's LinkedIn
-            </Text>
-          </Link>
-        </Box>
 
         <Box>
           <Heading size="md" mb={3}>Mission</Heading>
@@ -67,6 +42,31 @@ const About = () => {
           </List.Root>
         </Box>
 
+        <Box>
+          <Heading size="md" mb={3}>Creator</Heading>
+          <Text>
+            Created by Sun English Jr., a software engineer passionate about using technology 
+            for community empowerment and social justice.
+          </Text>
+          <Box mb={2}></Box>
+          <Link href="https://www.sunthecoder.com">
+            <Text color="pink.500">
+              View Sun's Portfolio
+            </Text>
+          </Link>
+          <Box mb={2}></Box>
+          <Link href="https://github.com/sunthecoder">
+            <Text color="pink.500">
+              View Sun's GitHub
+            </Text>
+          </Link>
+          <Box mb={2}></Box>
+          <Link href="https://www.linkedin.com/in/sunthecoder/">
+            <Text color="pink.500">
+              View Sun's LinkedIn
+            </Text>
+          </Link>
+        </Box>
         <Box>
           <Heading size="md" mb={3}>Contact</Heading>
           <Text>
