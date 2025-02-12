@@ -128,8 +128,10 @@ const CommunityFeed = () => {
         {!showingAll && allPosts.length > 10 && (
           <Center mt={4}>
             <Button 
+              login
               onClick={handleShowAll}
               size="sm"
+              mb={4}
             >
               Show All Posts
             </Button>
