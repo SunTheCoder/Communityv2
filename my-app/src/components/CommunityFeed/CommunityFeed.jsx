@@ -11,7 +11,7 @@ const CommunityFeed = () => {
   const [loading, setLoading] = useState(false);
   const [showingAll, setShowingAll] = useState(false);
 
-  // Fetch all posts but only show first 10
+  // Fetch all posts but only show latest 10
   const fetchPosts = async () => {
     try {
       setLoading(true);
@@ -28,6 +28,7 @@ const CommunityFeed = () => {
       ) || [];
 
       setAllPosts(sortedData);
+      // Only show latest 10 posts
       setVisiblePosts(sortedData.slice(0, 10));
     } catch (error) {
       console.error("Error fetching posts:", error.message);
@@ -36,12 +37,50 @@ const CommunityFeed = () => {
     }
   };
 
+  // Handle realtime updates
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime:posts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, 
+        async (payload) => {
+          if (payload.eventType === "INSERT") {
+            const newPost = payload.new;
+            // Add new post to all posts
+            setAllPosts(prev => [newPost, ...prev]);
+            // Update visible posts if showing latest 10
+            if (!showingAll) {
+              setVisiblePosts(prev => [newPost, ...prev.slice(0, 9)]);
+            } else {
+              setVisiblePosts(prev => [newPost, ...prev]);
+            }
+          } else if (payload.eventType === "UPDATE") {
+            const updatedPost = payload.new;
+            setAllPosts(prev => prev.map(post => 
+              post.id === updatedPost.id ? updatedPost : post
+            ));
+            setVisiblePosts(prev => prev.map(post => 
+              post.id === updatedPost.id ? updatedPost : post
+            ));
+          } else if (payload.eventType === "DELETE") {
+            setAllPosts(prev => prev.filter(post => post.id !== payload.old.id));
+            setVisiblePosts(prev => prev.filter(post => post.id !== payload.old.id));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [showingAll]);
+
   // Load all posts when button clicked
   const handleShowAll = () => {
     setVisiblePosts(allPosts);
     setShowingAll(true);
   };
 
+  // Initial fetch
   useEffect(() => {
     if (user) {
       fetchPosts();
