@@ -68,6 +68,7 @@ const About = () => {
           </Link>
         </Box>
         <Box>
+          
           <Heading size="md" mb={3}>Contact</Heading>
           <Text>
             For inquiries or collaboration opportunities, reach out at{' '}
