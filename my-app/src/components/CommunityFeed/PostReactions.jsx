@@ -22,7 +22,7 @@ const PostReactions = ({ postId, reactions }) => {
                 {/* <Text textStyle="2xs">{count}</Text> */}
               </Box>
             ))}
-               <Text textStyle="xs" fontWeight="bold" ml="0.5rem">
+               <Text textStyle="xs" fontWeight="bold" color="gray.800" _dark={{color: "white"}} ml="0.5rem">
            {totalCount}
           </Text>
           </Box>
