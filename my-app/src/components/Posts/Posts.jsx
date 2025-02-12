@@ -50,25 +50,40 @@ const Post = ({ post }) => {
 
   // Fetch the parent post content if parent_post_id is not null
   useEffect(() => {
-    const fetchParentPost = async () => {
-      if (post.parent_post_id) {
+    const fetchPostData = async () => {
+      if (post.parent_post_id || post?.user_id) {
         try {
-          const { data, error } = await supabase
-            .from("posts")
-            .select("content, author_username")
-            .eq("id", post.parent_post_id)
-            .single();
-          if (error) throw error;
+          const [parentPostResult, avatarResult] = await Promise.all([
+            post.parent_post_id ? 
+              supabase
+                .from("posts")
+                .select("content, author_username")
+                .eq("id", post.parent_post_id)
+                .single() : 
+              Promise.resolve(null),
+            post?.user_id ?
+              supabase
+                .from("profiles")
+                .select("avatar_url")
+                .eq("id", post.user_id)
+                .single() :
+              Promise.resolve(null)
+          ]);
 
-          setParentPost(data);
+          if (parentPostResult?.data) {
+            setParentPost(parentPostResult.data);
+          }
+          if (avatarResult?.data) {
+            setUserAvatar(avatarResult.data.avatar_url);
+          }
         } catch (error) {
-          console.error("Error fetching parent post:", error.message);
+          console.error("Error fetching post data:", error);
         }
       }
     };
 
-    fetchParentPost();
-  }, [post.parent_post_id]);
+    fetchPostData();
+  }, [post.parent_post_id, post?.user_id]);
 
    // Handle the like action
    const handleLike = async () => {
@@ -83,30 +98,6 @@ const Post = ({ post }) => {
       console.error("Error adding like:", error);
     }
   };
-
-  // Fetch user's avatar URL
-  useEffect(() => {
-    const fetchUserAvatarUrl = async (userId) => {
-      try {
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("avatar_url")
-          .eq("id", userId)
-          .single();
-
-        if (error) throw error;
-
-        setUserAvatar(data.avatar_url);
-      } catch (error) {
-        console.error("Error fetching user avatar:", error);
-      }
-    };
-
-    if (post?.user_id) {
-      fetchUserAvatarUrl(post.user_id);
-    }
-  }, [post?.user_id]);
-
 
   return (
     <Box position="relative">
