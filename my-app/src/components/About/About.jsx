@@ -28,6 +28,12 @@ const About = () => {
               View Sun's GitHub
             </Text>
           </Link>
+          <Box mb={2}></Box>
+          <Link href="https://www.linkedin.com/in/sunthecoder/">
+            <Text color="pink.500">
+              View Sun's LinkedIn
+            </Text>
+          </Link>
         </Box>
 
         <Box>
