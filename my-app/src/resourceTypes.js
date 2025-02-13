@@ -40,7 +40,7 @@ const resourceTypes = createListCollection({
       { label: "Co-Op / Third Space", value: "Co-Op / Third Space" },
       { lavel: "Activist Group", value: "Activist Group" },
       { label: "Farmer's Market", value: "Farmers Market" },
-  
+      { label: "Farm", value: "Farm" },
     ],
   });
   
