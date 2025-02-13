@@ -31,7 +31,7 @@ const ResourceMap = () => {
       try {
         const { data, error } = await supabase
           .from("resources")
-          .select("id, resource_name, description, latitude, longitude, image_url");
+          .select("id, resource_name, resource_type, description, latitude, longitude, image_url");
 
         if (error) {
           console.error("Error fetching resources:", error.message);
@@ -104,10 +104,13 @@ const ResourceMap = () => {
                 position={[resource.latitude, resource.longitude]}
               >
                 <Popup>
-                  <Box p={2} borderRadius="md" boxShadow="lg">
-                    <VStack spacing={2} align="start">
+                  
+                    <VStack p={2} borderRadius="md" boxShadow="lg" spacing={2} align="start">
                       <Text fontWeight="bold" fontSize="md">
                         {resource.resource_name}
+                      </Text>
+                      <Text fontWeight="bold" fontSize="sm">
+                        {resource.resource_type}
                       </Text>
                       
                       {resource.image_url && (
@@ -129,7 +132,7 @@ const ResourceMap = () => {
                       
                       <Text fontSize="sm">{resource.description}</Text>
                     </VStack>
-                  </Box>
+              
                 </Popup>
               </Marker>
             ))}
